@@ -1,0 +1,30 @@
+import eslint from 'eslint'
+import { execSync } from 'child_process'
+import { log } from '../utility/log'
+
+// CommonJS named exports not supported.
+const { ESLint } = eslint
+const configurationPath = './node_modules/padua/configuration'
+
+export default async () => {
+  log('formatting files..')
+  execSync(
+    `prettier --write '**/*.{ts,tsx}' --config ${configurationPath}/.prettierrc.json --ignore-path ${configurationPath}/.prettierignore`,
+    { stdio: 'inherit' }
+  )
+
+  log('linting files..')
+  // https://eslint.org/docs/developer-guide/nodejs-api
+  const linter = new ESLint({
+    fix: true,
+    extensions: ['.js', '.ts', '.jsx', '.tsx'],
+  })
+
+  const results = await linter.lintFiles('.')
+  await ESLint.outputFixes(results)
+  const formatter = await linter.loadFormatter('stylish')
+  const resultText = formatter.format(results)
+
+  // eslint-disable-next-line no-console
+  console.log(resultText)
+}

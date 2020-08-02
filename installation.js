@@ -1,0 +1,31 @@
+import { join } from 'path'
+import { readFileSync, writeFileSync } from 'fs'
+import objectAssignDeep from 'object-assign-deep'
+import configuration from './configuration/package.js'
+import { formatJson } from './utility/format-json.js'
+import { log } from './utility/log.js'
+
+// Skip postinstall on local install.
+// https://stackoverflow.com/a/53239387/3185545
+const env = process.env
+if (env.INIT_CWD === env.PWD || env.INIT_CWD.indexOf(env.PWD) === 0) {
+  console.info('Skipping `postinstall` script on local installs')
+  process.exit()
+}
+
+const packageJsonPath = join(process.cwd(), '../../package.json')
+
+let packageContents = readFileSync(packageJsonPath, 'utf8')
+packageContents = JSON.parse(packageContents)
+
+// Merge existing configuration with additional required attributes.
+objectAssignDeep(packageContents, configuration)
+
+packageContents = JSON.stringify(packageContents)
+
+// Format with prettier before writing.
+packageContents = formatJson(packageContents)
+
+writeFileSync(packageJsonPath, packageContents)
+
+log('installed successfully')
