@@ -41,6 +41,7 @@
     "configuration",
     "script",
     "utility",
+    "template",
     "*.js"
   ]
 }

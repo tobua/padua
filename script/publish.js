@@ -5,6 +5,7 @@ import { log } from '../utility/log.js'
 export default async () => {
   // TODO build, lint and test before publish
   try {
+    // TODO first release
     const result = await standardVersion()
     console.log('tes', result)
   } catch (error) {
@@ -12,11 +13,11 @@ export default async () => {
     process.exit()
   }
 
-  execSync('git push --follow-tags origin master')
+  execSync('git push --follow-tags origin master', { stdout: 'inherit' })
 
   log('git tag pushed')
 
-  execSync('npm publish')
+  execSync('npm publish', { stdout: 'inherit' })
 
   log('package published to npm')
 }
