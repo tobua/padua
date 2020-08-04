@@ -11,6 +11,7 @@ export default {
     lint: 'padua lint',
     test: 'padua test',
     publish: 'padua publish',
+    update: 'padua update',
   },
   prettier: 'padua/configuration/.prettierrc.json',
   eslintConfig: {
