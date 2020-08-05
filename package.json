@@ -14,6 +14,8 @@
     "@types/jest": "^26.0.8",
     "babel-eslint": "^10.1.0",
     "chalk": "^4.1.0",
+    "chokidar": "^3.4.1",
+    "esbuild": "^0.6.16",
     "eslint": "^7.6.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",

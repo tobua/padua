@@ -1,7 +1,7 @@
 export default {
   main: 'dist/index.js',
   source: 'index.ts',
-  typings: 'dist/index.d.ts',
+  types: 'dist/index.d.ts',
   engines: {
     node: '>= 13.2.0',
   },

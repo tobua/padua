@@ -1,11 +1,17 @@
+<p align="center">
+  <img src="https://github.com/tobua/padua/raw/master/logo.png" alt="padua" height="300">
+</p>
+
 # padua
 
 Tool to configure, setup, build and publish npm plugins.
 
 ## Installation
 
+First setup a new project with `npm init` or by manually creating a `package.json` and then add this tool to the project.
+
 ```
-npm i padua
+npm i --save-dev padua
 ```
 
 ## Usage
@@ -23,6 +29,31 @@ Upon installation the following scripts along with the necessary configuration h
   }
 }
 ```
+
+## Features
+
+The goal of this package is to allow you to create npm plugins just having to focus on writing the actual features.
+
+- TypeScript / JavaScript
+- React
+- Jest
+- ESLint & Prettier Configuration and Integration
+- Standard-Versioning
+- Polyfills
+- Automatic Updates
+- Built with esbuild and tsc
+
+## Configuration
+
+Everything is **zero-configuration** but the configurations can easily be extended.
+
+### TypeScript
+
+Create and edit a `tsconfig.json` in the root of your project. When you run a build with `padua build` your configuration is detected and will be extended with the padua-defaults automatically.
+
+//
+
+### ESLint
 
 ## Future
 

@@ -9,7 +9,7 @@ const configurationPath = './node_modules/padua/configuration'
 export default async () => {
   log('formatting files..')
   execSync(
-    `prettier --write '**/*.{ts,tsx}' --config ${configurationPath}/.prettierrc.json --ignore-path ${configurationPath}/.prettierignore`,
+    `prettier --write '**/*.{ts,tsx,js,jsx}' --config ${configurationPath}/.prettierrc.json --ignore-path ${configurationPath}/.prettierignore`,
     { stdio: 'inherit' }
   )
 
