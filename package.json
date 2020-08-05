@@ -1,6 +1,6 @@
 {
   "name": "padua",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Tool to configure, setup, build, test and publish npm plugins.",
   "license": "MIT",
   "author": "Matthias Giger",
@@ -12,12 +12,14 @@
   },
   "dependencies": {
     "@types/jest": "^26.0.8",
+    "@typescript-eslint/eslint-plugin": "^3.7.1",
     "babel-eslint": "^10.1.0",
     "chalk": "^4.1.0",
     "chokidar": "^3.4.1",
     "esbuild": "^0.6.16",
     "eslint": "^7.6.0",
     "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-airbnb-typescript": "^9.0.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-babel": "^5.3.1",
     "eslint-plugin-import": "^2.22.0",

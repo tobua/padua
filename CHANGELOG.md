@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.1](https://github.com/tobua/padua/compare/v0.0.0...v0.0.1) (2020-08-05)
+
+
+### Features
+
+* **build:** collection options from files and add JS build ([097f0b6](https://github.com/tobua/padua/commit/097f0b6264196586a7f9851992cd73f5c0e2f4af))
+* **update:** implement dependency update feature ([4f9f6f8](https://github.com/tobua/padua/commit/4f9f6f8206f3b1671ff5437ca0c44625b448e10d))
+
+
+### Bug Fixes
+
+* **lint:** fix import path and complete files entry ([6f2727d](https://github.com/tobua/padua/commit/6f2727d742c94e3e389f02f0f9d0a51809e3a9b9))
+
 ## 0.0.0 (2020-08-02)
 
 
