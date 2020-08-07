@@ -1,5 +1,17 @@
+const { join } = require('path')
+
+const defaultTSConfigurationPath = join(
+  process.cwd(),
+  'node_modules/padua/configuration/tsconfig.json'
+)
+
 module.exports = {
-  extends: ['airbnb', 'prettier', 'prettier/react', 'prettier/babel'],
+  extends: [
+    'airbnb-typescript',
+    'prettier',
+    'prettier/react',
+    'prettier/babel',
+  ],
   rules: {
     'import/prefer-default-export': 0,
     'react/jsx-filename-extension': 0,
@@ -9,12 +21,8 @@ module.exports = {
   env: {
     browser: true,
   },
-  parser: 'babel-eslint',
-  settings: {
-    'import/resolver': {
-      node: {
-        paths: ['.'],
-      },
-    },
+  parser: `@typescript-eslint/parser`,
+  parserOptions: {
+    project: defaultTSConfigurationPath,
   },
 }

@@ -20,6 +20,8 @@ export default async () => {
     extensions: ['.js', '.ts', '.jsx', '.tsx'],
   })
 
+  // --print-config
+
   const results = await linter.lintFiles('.')
   await ESLint.outputFixes(results)
   const formatter = await linter.loadFormatter('stylish')
