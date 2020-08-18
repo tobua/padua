@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.2](https://github.com/tobua/padua/compare/v0.0.1...v0.0.2) (2020-08-18)
+
+
+### Features
+
+* **template:** add repository field and default template ([56cfa0b](https://github.com/tobua/padua/commit/56cfa0bf8e49c7c28111f8a22ad2b0eee8793b9e))
+
 ### [0.0.1](https://github.com/tobua/padua/compare/v0.0.0...v0.0.1) (2020-08-05)
 
 
