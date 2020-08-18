@@ -1,0 +1,10 @@
+{
+  "prompts": [
+    {
+      "name": "name"
+    }
+  ],
+  "variables": {
+    "hello": "world"
+  }
+}
