@@ -20,6 +20,10 @@ export default {
   jest: {
     transform: {
       '^.+\\.tsx?$': 'ts-jest',
+      '^.+\\.jsx?$': [
+        'babel-jest',
+        { configFile: './node_modules/padua/configuration/.babelrc' },
+      ],
     },
     globals: {
       'ts-jest': {
