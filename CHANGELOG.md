@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/tobua/padua/compare/v0.0.2...v0.0.3) (2020-08-19)
+
+
+### Bug Fixes
+
+* **test:** run JS through babel-jest and add configuration ([a2ef7ca](https://github.com/tobua/padua/commit/a2ef7ca545d896c8da6e511a51fc3a096efa87e9))
+
 ### [0.0.2](https://github.com/tobua/padua/compare/v0.0.1...v0.0.2) (2020-08-18)
 
 
