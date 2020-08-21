@@ -1,7 +1,8 @@
 import prettier from 'prettier'
+import sortPackageJson from 'sort-package-json'
 
-// TODO https://www.npmjs.com/package/sort-package-json
 export const formatJson = (packageContents) => {
+  packageContents = sortPackageJson(packageContents)
   return prettier.format(packageContents, {
     // Same config as npm uses for formatting upon install.
     trailingComma: 'es5',
