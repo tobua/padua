@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/tobua/padua/compare/v0.0.4...v0.0.5) (2020-08-24)
+
+
+### Features
+
+* **template:** add and improve node templates ([d191931](https://github.com/tobua/padua/commit/d1919314e4f40dc06e844acd92cef5b2ceb5fa97))
+
 ### [0.0.4](https://github.com/tobua/padua/compare/v0.0.3...v0.0.4) (2020-08-21)
 
 
