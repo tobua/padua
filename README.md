@@ -67,7 +67,7 @@ npm publish [-- --first-release]
 
 Add `--first-release` to avoid bumping the version on your first release.
 
-## Build with padua
+## Built with padua
 
 - epic-react
 - stylesnames

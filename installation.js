@@ -1,8 +1,9 @@
 import { join } from 'path'
 import { readFileSync, writeFileSync } from 'fs'
 import objectAssignDeep from 'object-assign-deep'
+import formatPackageJson from 'pakag'
 import configuration from './configuration/package.js'
-import { formatJson } from './utility/format-json.js'
+
 import { log } from './utility/log.js'
 
 // Skip postinstall on local install.
@@ -24,7 +25,7 @@ objectAssignDeep(packageContents, configuration)
 packageContents = JSON.stringify(packageContents)
 
 // Format with prettier before writing.
-packageContents = formatJson(packageContents)
+packageContents = formatPackageJson(packageContents)
 
 writeFileSync(packageJsonPath, packageContents)
 

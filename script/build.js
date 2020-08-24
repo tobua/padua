@@ -4,7 +4,7 @@ import { execSync } from 'child_process'
 import esbuild from 'esbuild'
 import chokidar from 'chokidar'
 import rimraf from 'rimraf'
-import { formatJson } from '../utility/format-json.js'
+import formatPackageJson from 'pakag'
 import { log } from '../utility/log.js'
 import { getOptions } from '../utility/options.js'
 
@@ -24,7 +24,7 @@ const extendUserConfiguration = (
 
   userConfiguration = JSON.stringify(userConfiguration)
 
-  userConfiguration = formatJson(userConfiguration)
+  userConfiguration = formatPackageJson(userConfiguration)
 
   writeFileSync(userConfigurationPath, userConfiguration)
 }
