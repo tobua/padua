@@ -67,8 +67,15 @@ npm publish [-- --first-release]
 
 Add `--first-release` to avoid bumping the version on your first release.
 
+## Build with padua
+
+- epic-react
+- stylesnames
+- pakag
+
 ## Future
 
 - Use https://github.com/jeremyben/tsc-prog to bundle d.ts.
 - or use compiler API: https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API
 - User tsconfig.json for ts-jest.
+- Common template which will be added to every template.
