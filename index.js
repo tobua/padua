@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
+import log from 'logua'
 import * as scripts from './script/index.js'
-import { log } from './utility/log.js'
 
 let script = process.argv.slice(2)[0]
 

@@ -14,12 +14,11 @@
   "dependencies": {
     "@babel/preset-env": "^7.11.0",
     "@types/jest": "^26.0.10",
-    "@typescript-eslint/eslint-plugin": "^3.9.1",
+    "@typescript-eslint/eslint-plugin": "^3.10.1",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.3.0",
-    "chalk": "^4.1.0",
     "chokidar": "^3.4.2",
-    "esbuild": "^0.6.26",
+    "esbuild": "^0.6.28",
     "eslint": "^7.7.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-airbnb-typescript": "^9.0.0",
@@ -29,15 +28,16 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
-    "jest": "^26.4.0",
+    "jest": "^26.4.2",
+    "logua": "^1.0.1",
     "npm-check-updates": "^7.1.1",
     "object-assign-deep": "^0.4.0",
     "pakag": "^1.0.1",
-    "prettier": "^2.0.5",
+    "prettier": "^2.1.1",
     "rimraf": "^3.0.2",
     "standard-version": "^9.0.0",
-    "ts-jest": "^26.2.0",
-    "typescript": "^3.9.7"
+    "ts-jest": "^26.3.0",
+    "typescript": "^4.0.2"
   },
   "prettier": {
     "singleQuote": true,
@@ -49,6 +49,7 @@
       "import/extensions": 0
     }
   },
+  "color": "green",
   "files": [
     "configuration",
     "script",

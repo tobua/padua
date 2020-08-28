@@ -1,5 +1,5 @@
 import ncu from 'npm-check-updates'
-import { log } from '../utility/log.js'
+import log from 'logua'
 
 export default async () => {
   log('checking for updates..')

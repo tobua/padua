@@ -1,6 +1,6 @@
 import { existsSync, writeFileSync, readFileSync } from 'fs'
 import { join } from 'path'
-import { log } from './log.js'
+import log from 'logua'
 
 const commonEntries = ['index', 'src/index']
 const extensions = [
@@ -88,6 +88,8 @@ export const getOptions = () => {
   if (existsSync(join(process.cwd(), 'test'))) {
     options.test = true
   }
+
+  loaded = true
 
   return options
 }
