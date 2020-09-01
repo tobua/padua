@@ -1,0 +1,8 @@
+{
+  "name": "<%= name %>",
+  "description": "<%= description %>",
+  "version": "0.0.0",
+  "devDependencies": {
+    "padua": "^0.0.4"
+  }
+}

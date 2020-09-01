@@ -1,6 +1,6 @@
 import eslint from 'eslint'
 import { execSync } from 'child_process'
-import { log } from '../utility/log.js'
+import log from 'logua'
 
 // CommonJS named exports not supported.
 const { ESLint } = eslint
@@ -14,7 +14,6 @@ export default async () => {
   )
 
   log('linting files..')
-  // https://eslint.org/docs/developer-guide/nodejs-api
   const linter = new ESLint({
     fix: true,
     extensions: ['.js', '.ts', '.jsx', '.tsx'],

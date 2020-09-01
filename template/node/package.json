@@ -1,0 +1,12 @@
+{
+  "name": "<%= name %>",
+  "description": "<%= description %>",
+  "version": "0.0.0",
+  "type": "module",
+  "files": [
+    "index.js"
+  ],
+  "devDependencies": {
+    "padua": "^0.0.4"
+  }
+}

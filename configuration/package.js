@@ -10,7 +10,7 @@ export default {
     build: 'padua build',
     lint: 'padua lint',
     test: 'padua test',
-    publish: 'padua publish',
+    release: 'padua release',
     update: 'padua update',
   },
   prettier: 'padua/configuration/.prettierrc.json',
@@ -20,6 +20,10 @@ export default {
   jest: {
     transform: {
       '^.+\\.tsx?$': 'ts-jest',
+      '^.+\\.jsx?$': [
+        'babel-jest',
+        { configFile: './node_modules/padua/configuration/.babelrc' },
+      ],
     },
     globals: {
       'ts-jest': {

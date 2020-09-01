@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
+import log, { configure } from 'logua'
 import * as scripts from './script/index.js'
-import { log } from './utility/log.js'
+
+configure({ name: 'padua', color: 'green' })
 
 let script = process.argv.slice(2)[0]
 
-if (['watch', 'build', 'test', 'lint', 'publish', 'update'].includes(script)) {
+if (['watch', 'build', 'test', 'lint', 'release', 'update'].includes(script)) {
   const watch = script === 'watch'
 
   if (watch) {

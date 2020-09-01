@@ -4,29 +4,28 @@ import { execSync } from 'child_process'
 import esbuild from 'esbuild'
 import chokidar from 'chokidar'
 import rimraf from 'rimraf'
-import { formatJson } from '../utility/format-json.js'
-import { log } from '../utility/log.js'
+import formatPackageJson from 'pakag'
+import log from 'logua'
 import { getOptions } from '../utility/options.js'
 
 // Extend user configuration with default configuration.
 const extendUserConfiguration = (
   userConfiguration,
-  defautConfigurationPath,
+  defaultConfigurationPath,
   userConfigurationPath
 ) => {
   // This way extends will be the property at the top.
-  userConfiguration = Object.assign(
-    {
-      extends: defautConfigurationPath,
-    },
-    userConfiguration
-  )
+  delete userConfiguration.extends
+  let newUserConfiguration = {
+    extends: defaultConfigurationPath,
+    ...userConfiguration,
+  }
 
-  userConfiguration = JSON.stringify(userConfiguration)
+  newUserConfiguration = JSON.stringify(newUserConfiguration)
 
-  userConfiguration = formatJson(userConfiguration)
+  newUserConfiguration = formatPackageJson(newUserConfiguration)
 
-  writeFileSync(userConfigurationPath, userConfiguration)
+  writeFileSync(userConfigurationPath, newUserConfiguration)
 }
 
 // Check if user configuration is available and extend if necessary.
@@ -34,10 +33,10 @@ const extendUserConfiguration = (
 const verifyUserConfiguration = (userConfigurationPath) => {
   let userConfiguration
   let outDir = 'dist'
-  let defautConfigurationPath = 'padua/configuration/tsconfig'
+  const defaultConfigurationPath = 'padua/configuration/tsconfig'
 
   if (!existsSync(userConfigurationPath)) {
-    return [false, `./node_modules/${defautConfigurationPath}.json`, outDir]
+    return [false, `./node_modules/${defaultConfigurationPath}.json`, outDir]
   }
 
   try {
@@ -49,11 +48,11 @@ const verifyUserConfiguration = (userConfigurationPath) => {
 
   if (
     userConfiguration &&
-    userConfiguration.extends !== defautConfigurationPath
+    userConfiguration.extends !== defaultConfigurationPath
   ) {
     extendUserConfiguration(
       userConfiguration,
-      defautConfigurationPath,
+      defaultConfigurationPath,
       userConfigurationPath
     )
   }
@@ -135,8 +134,8 @@ const typescript = (options, watch) => {
 
   try {
     execSync(command, { stdio: 'inherit' })
-  } catch (error) {
-    log(error, 'error')
+  } catch (_error) {
+    log(_error, 'error')
   }
 
   if (!watch) {
@@ -146,7 +145,7 @@ const typescript = (options, watch) => {
 
 const rebuildJavaScript = async (service, options) => {
   try {
-    let buildOptions = {
+    const buildOptions = {
       // entryPoints needs to be an array.
       entryPoints: [options.entry],
       outdir: 'dist',

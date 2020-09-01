@@ -25,4 +25,12 @@ module.exports = {
   parserOptions: {
     project: defaultTSConfigurationPath,
   },
+  overrides: [
+    {
+      files: ['**/*.test.js'],
+      env: {
+        jest: true,
+      },
+    },
+  ],
 }

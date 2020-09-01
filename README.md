@@ -25,7 +25,7 @@ Upon installation the following scripts along with the necessary configuration h
     "build": "padua build",
     "test": "padua test",
     "lint": "padua lint",
-    "publish": "padua publish"
+    "release": "padua release"
   }
 }
 ```
@@ -55,8 +55,27 @@ Create and edit a `tsconfig.json` in the root of your project. When you run a bu
 
 ### ESLint
 
+## Commands
+
+### Publish
+
+Bumps version according to commits, generates changelog, commits release, pushes commit and tag and releases to npm.
+
+```
+npm publish [-- --first-release]
+```
+
+Add `--first-release` to avoid bumping the version on your first release.
+
+## Built with padua
+
+- epic-react
+- stylesnames
+- pakag
+
 ## Future
 
 - Use https://github.com/jeremyben/tsc-prog to bundle d.ts.
 - or use compiler API: https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API
 - User tsconfig.json for ts-jest.
+- Common template which will be added to every template.

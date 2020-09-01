@@ -1,16 +1,17 @@
 import { join } from 'path'
 import { readFileSync, writeFileSync } from 'fs'
 import objectAssignDeep from 'object-assign-deep'
+import log, { configure } from 'logua'
+import formatPackageJson from 'pakag'
 import configuration from './configuration/package.js'
-import { formatJson } from './utility/format-json.js'
-import { log } from './utility/log.js'
+
+configure({ name: 'padua', color: 'green' })
 
 // Skip postinstall on local install.
 // https://stackoverflow.com/a/53239387/3185545
-const env = process.env
-if (env.INIT_CWD === env.PWD || env.INIT_CWD.indexOf(env.PWD) === 0) {
-  console.info('Skipping `postinstall` script on local installs')
-  process.exit()
+const { INIT_CWD, PWD } = process.env
+if (INIT_CWD === PWD || INIT_CWD.indexOf(PWD) === 0) {
+  log(`Skipping 'postinstall' on local install`, 'error')
 }
 
 const packageJsonPath = join(process.cwd(), '../../package.json')
@@ -24,7 +25,7 @@ objectAssignDeep(packageContents, configuration)
 packageContents = JSON.stringify(packageContents)
 
 // Format with prettier before writing.
-packageContents = formatJson(packageContents)
+packageContents = formatPackageJson(packageContents)
 
 writeFileSync(packageJsonPath, packageContents)
 
