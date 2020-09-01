@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.8](https://github.com/tobua/padua/compare/v0.0.7...v0.0.8) (2020-09-01)
+
+
+### Features
+
+* **lint:** configure linting for typescript ([878f329](https://github.com/tobua/padua/commit/878f329af72fdc017d50a4192b0afb29e17ec4a3))
+* **typescript:** finalize eslint config for TypeScript ([8ecbd79](https://github.com/tobua/padua/commit/8ecbd797677fffceff935581e5432e2e98c81973))
+
 ### [0.0.7](https://github.com/tobua/padua/compare/v0.0.6...v0.0.7) (2020-09-01)
 
 
