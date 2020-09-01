@@ -1,6 +1,6 @@
 {
   "name": "padua",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Tool to configure, setup, build, test and publish npm plugins.",
   "repository": "github:tobua/padua",
   "license": "MIT",

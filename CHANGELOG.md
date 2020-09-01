@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/tobua/padua/compare/v0.0.6...v0.0.7) (2020-09-01)
+
+
+### Features
+
+* **general:** various improvements ([0ee6479](https://github.com/tobua/padua/commit/0ee6479593c21f28552f87f68fb57bec6de6c30c))
+
 ### [0.0.6](https://github.com/tobua/padua/compare/v0.0.5...v0.0.6) (2020-08-28)
 
 ### [0.0.5](https://github.com/tobua/padua/compare/v0.0.4...v0.0.5) (2020-08-24)
