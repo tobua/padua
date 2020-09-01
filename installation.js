@@ -11,7 +11,7 @@ configure({ name: 'padua', color: 'green' })
 // https://stackoverflow.com/a/53239387/3185545
 const { INIT_CWD, PWD } = process.env
 if (INIT_CWD === PWD || INIT_CWD.indexOf(PWD) === 0) {
-  log(`Skipping 'postinstall' on local install`, 'error')
+  log(`Skipping 'postinstall' on local install`)
 }
 
 const packageJsonPath = join(process.cwd(), '../../package.json')

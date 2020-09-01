@@ -15,10 +15,11 @@ const extendUserConfiguration = (
   userConfigurationPath
 ) => {
   // This way extends will be the property at the top.
-  delete userConfiguration.extends
-  let newUserConfiguration = {
+  let newUserConfiguration = userConfiguration
+  delete newUserConfiguration.extends
+  newUserConfiguration = {
     extends: defaultConfigurationPath,
-    ...userConfiguration,
+    ...newUserConfiguration,
   }
 
   newUserConfiguration = JSON.stringify(newUserConfiguration)
