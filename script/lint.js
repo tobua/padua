@@ -14,7 +14,6 @@ export default async () => {
   )
 
   log('linting files..')
-  // https://eslint.org/docs/developer-guide/nodejs-api
   const linter = new ESLint({
     fix: true,
     extensions: ['.js', '.ts', '.jsx', '.tsx'],

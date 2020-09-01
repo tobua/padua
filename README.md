@@ -25,7 +25,7 @@ Upon installation the following scripts along with the necessary configuration h
     "build": "padua build",
     "test": "padua test",
     "lint": "padua lint",
-    "publish": "padua publish"
+    "release": "padua release"
   }
 }
 ```

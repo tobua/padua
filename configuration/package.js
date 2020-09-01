@@ -10,7 +10,7 @@ export default {
     build: 'padua build',
     lint: 'padua lint',
     test: 'padua test',
-    publish: 'padua publish',
+    release: 'padua release',
     update: 'padua update',
   },
   prettier: 'padua/configuration/.prettierrc.json',
