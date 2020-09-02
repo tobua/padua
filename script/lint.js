@@ -12,15 +12,13 @@ export default async () => {
     `prettier --write '**/*.{ts,tsx,js,jsx}' --config ${configurationPath}/.prettierrc.json --ignore-path ${configurationPath}/.prettierignore`,
     { stdio: 'inherit' }
   )
+  console.log('')
 
   log('linting files..')
   const linter = new ESLint({
     fix: true,
     extensions: ['.js', '.ts', '.jsx', '.tsx'],
   })
-
-  // --print-config
-
   const results = await linter.lintFiles('.')
   await ESLint.outputFixes(results)
   const formatter = await linter.loadFormatter('stylish')
