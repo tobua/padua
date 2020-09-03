@@ -6,7 +6,7 @@ export default {
     node: '>= 13.2.0',
   },
   scripts: {
-    watch: 'padua watch',
+    start: 'padua watch',
     build: 'padua build',
     lint: 'padua lint',
     test: 'padua test',

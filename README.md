@@ -21,11 +21,12 @@ Upon installation the following scripts along with the necessary configuration h
 ```json
 {
   "scripts": {
-    "watch": "padua watch",
+    "start": "padua watch",
     "build": "padua build",
     "test": "padua test",
     "lint": "padua lint",
-    "release": "padua release"
+    "release": "padua release",
+    "update": "padua update"
   }
 }
 ```
