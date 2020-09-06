@@ -16,20 +16,31 @@ npm i --save-dev padua
 
 ## Usage
 
-Upon installation the following scripts along with the necessary configuration have already been added to your `package.json` unless they already existed.
+Upon installation a start and test script along with the necessary configuration have already been added to your `package.json` unless they already existed.
 
-```json
-{
-  "scripts": {
-    "start": "padua watch",
-    "build": "padua build",
-    "test": "padua test",
-    "lint": "padua lint",
-    "release": "padua release",
-    "update": "padua update"
-  }
-}
-```
+### `npm start`
+
+Builds the plugin in watch mode.
+
+### `npm test`
+
+Run tests if there are any.
+
+### `npx papua build`
+
+Builds the plugin minified for distribution including types.
+
+### `npx papua lint`
+
+Lints the code and prints errors.
+
+### `npx papua release`
+
+Creates a new release version with `standard-version`, pushes the git tag for the new version and publishes the plugin to npm.
+
+### `npx papua update`
+
+Checks if there are updates to any dependencies and automatically updates them.
 
 ## Features
 

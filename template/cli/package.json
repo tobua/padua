@@ -7,6 +7,6 @@
     "cli"
   ],
   "devDependencies": {
-    "padua": "^0.0.4"
+    "padua": "^0.0.9"
   }
 }

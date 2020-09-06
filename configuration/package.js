@@ -7,11 +7,7 @@ export default {
   },
   scripts: {
     start: 'padua watch',
-    build: 'padua build',
-    lint: 'padua lint',
     test: 'padua test',
-    release: 'padua release',
-    update: 'padua update',
   },
   prettier: 'padua/configuration/.prettierrc.json',
   eslintConfig: {

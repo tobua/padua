@@ -12,6 +12,8 @@ const customRules = {
   'max-classes-per-file': 0,
   // Allow spreading props.
   'react/jsx-props-no-spreading': 0,
+  // Props defined with TS which will not be linted.
+  'react/require-default-props': 0,
 }
 
 const customSettings = {
