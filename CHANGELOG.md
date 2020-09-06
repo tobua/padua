@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/tobua/padua/compare/v0.0.8...v0.0.9) (2020-09-06)
+
+
+### Bug Fixes
+
+* **configuration:** include test files, lint log & exclude template ([6350054](https://github.com/tobua/padua/commit/635005485d0c54728dba80afe1394919e43b46ea))
+
 ### [0.0.8](https://github.com/tobua/padua/compare/v0.0.7...v0.0.8) (2020-09-01)
 
 
