@@ -1,7 +1,7 @@
-import log from 'logua'
 import { execSync } from 'child_process'
 import standardVersion from 'standard-version'
 import branchName from 'current-git-branch'
+import { log } from '../utility/log.js'
 
 export default async () => {
   const branch = branchName()

@@ -5,8 +5,8 @@ import esbuild from 'esbuild'
 import chokidar from 'chokidar'
 import rimraf from 'rimraf'
 import formatPackageJson from 'pakag'
-import log from 'logua'
 import { getOptions } from '../utility/options.js'
+import { log } from '../utility/log.js'
 
 // Extend user configuration with default configuration.
 const extendUserConfiguration = (

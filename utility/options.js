@@ -1,6 +1,6 @@
 import { existsSync, writeFileSync, readFileSync } from 'fs'
 import { join } from 'path'
-import log from 'logua'
+import { log } from './log.js'
 
 const commonEntries = ['index', 'src/index']
 const extensions = [
