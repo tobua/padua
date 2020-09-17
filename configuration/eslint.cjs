@@ -8,12 +8,15 @@ const customRules = {
   'react/jsx-filename-extension': 0,
   // No line required between mobx observable properties.
   'lines-between-class-members': 0,
+  '@typescript-eslint/lines-between-class-members': 0,
   // Multiple mobx classes per file, especially for lists.
   'max-classes-per-file': 0,
   // Allow spreading props.
   'react/jsx-props-no-spreading': 0,
   // Props defined with TS which will not be linted.
   'react/require-default-props': 0,
+  // Often there is only the index available, would make plugin API more complex otherwise.
+  'react/no-array-index-key': 0,
 }
 
 const customSettings = {
