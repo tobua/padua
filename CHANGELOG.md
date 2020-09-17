@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.10](https://github.com/tobua/padua/compare/v0.0.9...v0.0.10) (2020-09-17)
+
+
+### Bug Fixes
+
+* **configuration:** some more eslint rules and tsconfig improvements ([b7958d6](https://github.com/tobua/padua/commit/b7958d67e2e39cdd48b1dd8a336224192553248d))
+
 ### [0.0.9](https://github.com/tobua/padua/compare/v0.0.8...v0.0.9) (2020-09-06)
 
 
