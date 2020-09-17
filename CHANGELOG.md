@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.11](https://github.com/tobua/padua/compare/v0.0.10...v0.0.11) (2020-09-17)
+
+
+### Bug Fixes
+
+* **log:** missed some logua use cases before ([fb2dfb0](https://github.com/tobua/padua/commit/fb2dfb0222914c8e160429e46e51592c49d3b709))
+
 ### [0.0.10](https://github.com/tobua/padua/compare/v0.0.9...v0.0.10) (2020-09-17)
 
 
