@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 
-import log, { configure } from 'logua'
+import { log } from './utility/log.js'
 import * as scripts from './script/index.js'
-
-configure({ name: 'padua', color: 'green' })
 
 let script = process.argv.slice(2)[0]
 

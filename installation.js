@@ -1,11 +1,9 @@
 import { join } from 'path'
 import { readFileSync, writeFileSync } from 'fs'
 import objectAssignDeep from 'object-assign-deep'
-import log, { configure } from 'logua'
 import formatPackageJson from 'pakag'
+import { log } from './utility/log.js'
 import configuration from './configuration/package.js'
-
-configure({ name: 'padua', color: 'green' })
 
 // Skip postinstall on local install.
 // https://stackoverflow.com/a/53239387/3185545
