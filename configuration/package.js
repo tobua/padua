@@ -1,31 +1,57 @@
-export default {
-  main: 'dist/index.js',
-  source: 'index.ts',
-  types: 'dist/index.d.ts',
-  engines: {
-    node: '>= 13.2.0',
-  },
-  scripts: {
-    start: 'padua watch',
-    test: 'padua test',
-  },
-  prettier: 'padua/configuration/.prettierrc.json',
-  eslintConfig: {
-    extends: './node_modules/padua/configuration/eslint.cjs',
-  },
-  jest: {
-    transform: {
-      '^.+\\.tsx?$': 'ts-jest',
-      '^.+\\.jsx?$': [
+export default (options) => {
+  const pkg = {
+    engines: {
+      node: '>= 13.2.0',
+    },
+    prettier: 'padua/configuration/.prettierrc.json',
+    eslintConfig: {
+      extends: './node_modules/padua/configuration/eslint.cjs',
+    },
+    files: ['dist'],
+  }
+
+  if (options.test || !options.source) {
+    pkg.scripts = {}
+  }
+
+  if (options.test) {
+    pkg.scripts.test = 'padua test'
+    pkg.jest = {
+      transform: {},
+    }
+
+    if (options.typescript) {
+      pkg.jest.transform['^.+\\.tsx?$'] = 'ts-jest'
+      pkg.jest.globals = {
+        'ts-jest': {
+          tsConfig: './node_modules/padua/configuration/tsconfig.json',
+        },
+      }
+    } else {
+      pkg.jest.transform['^.+\\.jsx?$'] = [
         'babel-jest',
         { configFile: './node_modules/padua/configuration/.babelrc' },
-      ],
-    },
-    globals: {
-      'ts-jest': {
-        tsConfig: './node_modules/padua/configuration/tsconfig.json',
-      },
-    },
-  },
-  files: ['dist'],
+      ]
+    }
+  }
+
+  if (options.typescript) {
+    pkg.types = 'dist/index.d.ts'
+  } else if (options.source) {
+    pkg.types = './index.d.ts'
+  }
+
+  if (options.source) {
+    pkg.files = ['**/*.js']
+    pkg.main = './index.js'
+  } else {
+    pkg.scripts.start = 'padua watch'
+    pkg.main = 'dist/index.js'
+  }
+
+  if (options.entry) {
+    pkg.source = options.entry
+  }
+
+  return pkg
 }

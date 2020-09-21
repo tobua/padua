@@ -3,7 +3,8 @@ import { readFileSync, writeFileSync } from 'fs'
 import objectAssignDeep from 'object-assign-deep'
 import formatPackageJson from 'pakag'
 import { log } from './utility/log.js'
-import configuration from './configuration/package.js'
+import configuration from './configuration/package'
+import { getOptions } from './utility/options'
 
 // Skip postinstall on local install.
 // https://stackoverflow.com/a/53239387/3185545
@@ -18,7 +19,7 @@ let packageContents = readFileSync(packageJsonPath, 'utf8')
 packageContents = JSON.parse(packageContents)
 
 // Merge existing configuration with additional required attributes.
-objectAssignDeep(packageContents, configuration)
+objectAssignDeep(packageContents, configuration(getOptions()))
 
 packageContents = JSON.stringify(packageContents)
 

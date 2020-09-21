@@ -45,15 +45,28 @@ let loaded = false
 
 // Default options.
 const options = {
+  // No build step, directly publish source files.
+  source: false,
+  // Separate entry for CLI.
+  cli: false,
+  // Is project written in TypeScript.
   typescript: false,
+  // Does the project include React.
   react: false,
+  // Are there any tests.
   test: false,
+  // What's the name of the entry file (defaults: index.[jt]sx?).
   entry: null,
 }
 
 export const getOptions = () => {
   if (loaded) {
     return options
+  }
+
+  if (typeof packageContents.padua === 'object') {
+    // Include project specific overrides
+    Object.assign(options, packageContents.padua)
   }
 
   commonEntries.forEach((entry) =>
@@ -85,6 +98,7 @@ export const getOptions = () => {
     options.entry = entryFile
   }
 
+  // TODO Check if there are any test files present.
   if (existsSync(join(process.cwd(), 'test'))) {
     options.test = true
   }
