@@ -1,5 +1,5 @@
 import { log } from './utility/log.js'
-import { writeConfiguration } from './utility/configuration'
+import { writeConfiguration } from './utility/configuration.js'
 
 // Skip postinstall on local install.
 // https://stackoverflow.com/a/53239387/3185545

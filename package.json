@@ -48,7 +48,10 @@
   "eslintConfig": {
     "extends": "./configuration/eslint.cjs",
     "rules": {
-      "import/extensions": 0
+      "import/extensions": [
+        2,
+        "always"
+      ]
     }
   },
   "files": [

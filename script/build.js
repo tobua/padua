@@ -5,7 +5,7 @@ import chokidar from 'chokidar'
 import rimraf from 'rimraf'
 import { getOptions } from '../utility/options.js'
 import { log } from '../utility/log.js'
-import { writeConfiguration } from '../utility/configuration'
+import { writeConfiguration } from '../utility/configuration.js'
 
 const singleJavaScriptBuild = async (options, configurationPath) => {
   const buildOptions = {

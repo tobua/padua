@@ -1,4 +1,4 @@
-import { getOptions } from '../utility/options'
+import { getOptions } from '../utility/options.js'
 
 export const tsconfig = (tsconfigUserOverrides = {}) => {
   const options = getOptions()

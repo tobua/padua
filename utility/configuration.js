@@ -9,11 +9,11 @@ import {
 import { join } from 'path'
 import formatJson from 'pakag'
 import objectAssignDeep from 'object-assign-deep'
-import { tsconfig } from '../configuration/tsconfig'
-import { jsconfig } from '../configuration/jsconfig'
-import { packageJson } from '../configuration/package'
-import { log } from './log'
-import { getOptions } from './options'
+import { tsconfig } from '../configuration/tsconfig.js'
+import { jsconfig } from '../configuration/jsconfig.js'
+import { packageJson } from '../configuration/package.js'
+import { log } from './log.js'
+import { getOptions } from './options.js'
 
 const options = getOptions()
 

@@ -1,4 +1,4 @@
-import { getOptions } from '../utility/options'
+import { getOptions } from '../utility/options.js'
 
 export const packageJson = () => {
   const options = getOptions()
@@ -47,6 +47,10 @@ export const packageJson = () => {
   if (options.source) {
     pkg.files = ['**/*.js']
     pkg.main = `${options.entry}`
+    // Extensions required for node source code.
+    pkg.eslintConfig.rules = {
+      'import/extensions': [2, 'always'],
+    }
   } else {
     pkg.scripts.start = 'padua watch'
     pkg.main = `${options.output}/index.js`
