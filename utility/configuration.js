@@ -28,7 +28,12 @@ const getProjectBasePath = () => {
   return currentWorkingDirectory
 }
 
-const writePackageAndUserFile = (shouldRemove, filename, getConfiguration) => {
+const writePackageAndUserFile = (
+  shouldRemove,
+  filename,
+  getConfiguration,
+  userConfigOverrides
+) => {
   const userTSConfigPath = join(getProjectBasePath(), `./${filename}`)
   const packageTSConfigPath = join(
     getProjectBasePath(),
@@ -44,6 +49,8 @@ const writePackageAndUserFile = (shouldRemove, filename, getConfiguration) => {
   }
 
   const [userConfig, packageConfig] = getConfiguration(options)
+
+  Object.assign(userConfig, userConfigOverrides)
 
   // If package tsconfig can be written, adapt it and only extend user config.
   if (accessSync(packageTSConfigPath, constants.W_OK)) {
@@ -81,12 +88,22 @@ const writePackageAndUserFile = (shouldRemove, filename, getConfiguration) => {
   }
 }
 
-const writeTSConfig = () => {
-  writePackageAndUserFile(!options.typescript, 'tsconfig.json', tsconfig)
+const writeTSConfig = (tsConfigUserOverrides = {}) => {
+  writePackageAndUserFile(
+    !options.typescript,
+    'tsconfig.json',
+    tsconfig,
+    tsConfigUserOverrides
+  )
 }
 
-const writeJSConfig = () => {
-  writePackageAndUserFile(options.typescript, 'jsconfig.json', jsconfig)
+const writeJSConfig = (jsConfigUserOverrides = {}) => {
+  writePackageAndUserFile(
+    options.typescript,
+    'jsconfig.json',
+    jsconfig,
+    jsConfigUserOverrides
+  )
 }
 
 const writePackageJson = () => {
@@ -101,12 +118,16 @@ const writePackageJson = () => {
   // Format with prettier and sort before writing.
   writeFileSync(packageJsonPath, formatJson(JSON.stringify(packageContents)))
 
+  if (!packageContents.padua) {
+    packageContents.padua = {}
+  }
+
   return { packageContents }
 }
 
 export const writeConfiguration = () => {
   const { packageContents } = writePackageJson()
-  writeJSConfig(packageContents.jsconfig)
-  writeTSConfig(packageContents.tsconfig)
+  writeJSConfig(packageContents.padua.jsconfig)
+  writeTSConfig(packageContents.padua.tsconfig)
   return { packageContents }
 }
