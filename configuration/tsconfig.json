@@ -1,14 +1,3 @@
 {
-  "compilerOptions": {
-    "jsx": "react",
-    "esModuleInterop": true,
-    "outDir": "../../../dist",
-    "declaration": true,
-    "lib": ["DOM", "ES6"],
-    "experimentalDecorators": true,
-    "moduleResolution": "node"
-  },
-  "files": ["../../../index.ts"],
-  "include": ["../../../test"],
-  "exclude": ["../../../dist"]
+  "comment": "This file will be generated from ./tsconfig.js"
 }

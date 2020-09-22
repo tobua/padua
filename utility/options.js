@@ -47,6 +47,8 @@ let loaded = false
 const options = {
   // No build step, directly publish source files.
   source: false,
+  // Output directory for build files.
+  output: 'dist',
   // Separate entry for CLI.
   cli: false,
   // Is project written in TypeScript.

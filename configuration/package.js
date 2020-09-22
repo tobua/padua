@@ -1,4 +1,7 @@
-export default (options) => {
+import { getOptions } from '../utility/options'
+
+export const packageJson = () => {
+  const options = getOptions()
   const pkg = {
     engines: {
       node: '>= 13.2.0',
@@ -7,7 +10,7 @@ export default (options) => {
     eslintConfig: {
       extends: './node_modules/padua/configuration/eslint.cjs',
     },
-    files: ['dist'],
+    files: [options.output],
   }
 
   if (options.test || !options.source) {
@@ -36,17 +39,17 @@ export default (options) => {
   }
 
   if (options.typescript) {
-    pkg.types = 'dist/index.d.ts'
+    pkg.types = `${options.output}/index.d.ts`
   } else if (options.source) {
-    pkg.types = './index.d.ts'
+    pkg.types = 'index.d.ts'
   }
 
   if (options.source) {
     pkg.files = ['**/*.js']
-    pkg.main = './index.js'
+    pkg.main = `${options.entry}`
   } else {
     pkg.scripts.start = 'padua watch'
-    pkg.main = 'dist/index.js'
+    pkg.main = `${options.output}/index.js`
   }
 
   if (options.entry) {

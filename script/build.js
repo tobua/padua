@@ -1,72 +1,11 @@
 import { join } from 'path'
-import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { execSync } from 'child_process'
 import esbuild from 'esbuild'
 import chokidar from 'chokidar'
 import rimraf from 'rimraf'
-import formatPackageJson from 'pakag'
 import { getOptions } from '../utility/options.js'
 import { log } from '../utility/log.js'
-
-// Extend user configuration with default configuration.
-const extendUserConfiguration = (
-  userConfiguration,
-  defaultConfigurationPath,
-  userConfigurationPath
-) => {
-  // This way extends will be the property at the top.
-  let newUserConfiguration = userConfiguration
-  delete newUserConfiguration.extends
-  newUserConfiguration = {
-    extends: defaultConfigurationPath,
-    ...newUserConfiguration,
-  }
-
-  newUserConfiguration = JSON.stringify(newUserConfiguration)
-
-  newUserConfiguration = formatPackageJson(newUserConfiguration)
-
-  writeFileSync(userConfigurationPath, newUserConfiguration)
-}
-
-// Check if user configuration is available and extend if necessary.
-// Returns path to entry config.
-const verifyUserConfiguration = (userConfigurationPath) => {
-  let userConfiguration
-  let outDir = 'dist'
-  const defaultConfigurationPath = 'padua/configuration/tsconfig'
-
-  if (!existsSync(userConfigurationPath)) {
-    return [false, `./node_modules/${defaultConfigurationPath}.json`, outDir]
-  }
-
-  try {
-    userConfiguration = JSON.parse(readFileSync(userConfigurationPath, 'utf8'))
-  } catch (_) {
-    log(`Couldn't parse tsconfig in ${userConfigurationPath}`, 'error')
-    return [true]
-  }
-
-  if (
-    userConfiguration &&
-    userConfiguration.extends !== defaultConfigurationPath
-  ) {
-    extendUserConfiguration(
-      userConfiguration,
-      defaultConfigurationPath,
-      userConfigurationPath
-    )
-  }
-
-  if (
-    userConfiguration.compilerOptions &&
-    userConfiguration.compilerOptions.outDir
-  ) {
-    outDir = userConfiguration.compilerOptions.outDir
-  }
-
-  return [false, userConfigurationPath, outDir]
-}
+import { writeConfiguration } from '../utility/configuration'
 
 const singleJavaScriptBuild = async (options, configurationPath) => {
   const buildOptions = {
@@ -105,15 +44,7 @@ const singleJavaScriptBuild = async (options, configurationPath) => {
 }
 
 const typescript = (options, watch) => {
-  const userConfigurationPath = join(process.cwd(), 'tsconfig.json')
-
-  const [error, configurationPath, outDir] = verifyUserConfiguration(
-    userConfigurationPath
-  )
-
-  if (error) {
-    return
-  }
+  const configurationPath = join(process.cwd(), 'tsconfig.json')
 
   let command = `tsc --project ${configurationPath}`
 
@@ -131,7 +62,7 @@ const typescript = (options, watch) => {
   }
 
   // Cleanup dist folder.
-  rimraf.sync(join(process.cwd(), outDir))
+  rimraf.sync(join(process.cwd(), options.output))
 
   try {
     execSync(command, { stdio: 'inherit' })
@@ -203,6 +134,7 @@ const javascript = async (options, watch) => {
 }
 
 export default (watch) => {
+  writeConfiguration()
   const options = getOptions()
 
   if (options.typescript) {
