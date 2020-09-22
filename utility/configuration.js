@@ -48,9 +48,7 @@ const writePackageAndUserFile = (
     return
   }
 
-  const [userConfig, packageConfig] = getConfiguration(options)
-
-  Object.assign(userConfig, userConfigOverrides)
+  const [userConfig, packageConfig] = getConfiguration(userConfigOverrides)
 
   // If package tsconfig can be written, adapt it and only extend user config.
   if (accessSync(packageTSConfigPath, constants.W_OK)) {
