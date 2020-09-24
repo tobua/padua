@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://github.com/tobua/padua/compare/v0.0.11...v0.1.0) (2020-09-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* **configuration:** config is now always generated and should be ignored
+
+### Features
+
+* **configuration:** generate both jsconfig and tsconfig ([de4be61](https://github.com/tobua/padua/commit/de4be618261124e091310c602afce17a49f21ed9))
+* **package:** dynamically generate package contents from options ([fedb7d9](https://github.com/tobua/padua/commit/fedb7d93f18b44dfc443fc39647b016428e2027f))
+
+
+### Bug Fixes
+
+* **configuration:** add user config overrides ([b41c288](https://github.com/tobua/padua/commit/b41c2881965f36617fff27189c9a6909c353999b))
+* **configuration:** use existing functionality ([c98f124](https://github.com/tobua/padua/commit/c98f12496589e1b3e4fbec1a4cb0d47300dfb61c))
+* **configuration:** use try to check for file access ([006a654](https://github.com/tobua/padua/commit/006a654cf77e51f2a8abd8b529e15b37fe8ffc5f))
+* **lint:** import extensions actually required for node source code ([13a846a](https://github.com/tobua/padua/commit/13a846a0b54d7406040b1eb20f4a7d94674b51a0))
+
 ### [0.0.11](https://github.com/tobua/padua/compare/v0.0.10...v0.0.11) (2020-09-17)
 
 
