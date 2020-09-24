@@ -28,6 +28,53 @@ const getProjectBasePath = () => {
   return currentWorkingDirectory
 }
 
+const writeUserAndPackageConfig = (
+  filename,
+  userConfig,
+  packageConfig,
+  userTSConfigPath,
+  packageTSConfigPath
+) => {
+  try {
+    writeFileSync(
+      packageTSConfigPath,
+      formatJson(JSON.stringify(packageConfig), { sort: false })
+    )
+    writeFileSync(
+      userTSConfigPath,
+      formatJson(JSON.stringify(userConfig), { sort: false })
+    )
+  } catch (_) {
+    log(
+      `Couldn't write ${filename}, therefore this plugin might not work as expected`,
+      'warning'
+    )
+  }
+}
+
+const writeOnlyUserConfig = (
+  filename,
+  userConfig,
+  packageConfig,
+  userTSConfigPath
+) => {
+  try {
+    // eslint-disable-next-line no-param-reassign
+    delete userConfig.extends
+    // TODO remove ../../..
+    Object.assign(userConfig, packageConfig)
+    writeFileSync(
+      userTSConfigPath,
+      formatJson(JSON.stringify(userConfig), { sort: false })
+    )
+  } catch (_) {
+    log(
+      `Couldn't write ${filename}, therefore this plugin might not work as expected`,
+      'warning'
+    )
+  }
+}
+
 const writePackageAndUserFile = (
   shouldRemove,
   filename,
@@ -50,39 +97,23 @@ const writePackageAndUserFile = (
 
   const [userConfig, packageConfig] = getConfiguration(userConfigOverrides)
 
-  // If package tsconfig can be written, adapt it and only extend user config.
-  if (accessSync(packageTSConfigPath, constants.W_OK)) {
-    try {
-      writeFileSync(
-        packageTSConfigPath,
-        formatJson(JSON.stringify(packageConfig), { sort: false })
-      )
-      writeFileSync(
-        userTSConfigPath,
-        formatJson(JSON.stringify(userConfig), { sort: false })
-      )
-    } catch (_) {
-      log(
-        `Couldn't write ${filename}, therefore this plugin might not work as expected`,
-        'warning'
-      )
-    }
-  } else {
+  try {
+    // If package tsconfig can be written, adapt it and only extend user config.
+    accessSync(
+      packageTSConfigPath,
+      // eslint-disable-next-line no-bitwise
+      constants.F_OK | constants.R_OK | constants.W_OK
+    )
+    writeUserAndPackageConfig(
+      filename,
+      userConfig,
+      packageConfig,
+      userTSConfigPath,
+      packageTSConfigPath
+    )
+  } catch (_) {
     // Package config cannot be written, write full contents to user file.
-    try {
-      delete userConfig.extends
-      // TODO remove ../../..
-      Object.assign(userConfig, packageConfig)
-      writeFileSync(
-        userTSConfigPath,
-        formatJson(JSON.stringify(userConfig), { sort: false })
-      )
-    } catch (_) {
-      log(
-        `Couldn't write ${filename}, therefore this plugin might not work as expected`,
-        'warning'
-      )
-    }
+    writeOnlyUserConfig(filename, userConfig, packageConfig, userTSConfigPath)
   }
 }
 
