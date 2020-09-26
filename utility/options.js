@@ -1,5 +1,6 @@
 import { existsSync, writeFileSync, readFileSync } from 'fs'
 import { join } from 'path'
+import glob from 'fast-glob'
 import { log } from './log.js'
 import { getProjectBasePath } from './path.js'
 
@@ -32,6 +33,8 @@ const emptyFileTemplate = `
 // To enable/disable React adapt the ending .jsx .tsx (React) .js .ts (no React)
 // or install React as a dependency or better peerDependency.
 `
+
+console.log(process.cwd(), getProjectBasePath())
 
 let packageContents
 
@@ -104,8 +107,7 @@ export const getOptions = () => {
     options.entry = entryFile
   }
 
-  // TODO Check if there are any test files present.
-  if (existsSync(join(process.cwd(), 'test'))) {
+  if (existsSync(join(process.cwd(), 'test')) && glob.sync(['test/**.?s?'])) {
     options.test = true
   }
 

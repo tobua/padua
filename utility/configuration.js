@@ -9,6 +9,7 @@ import {
 import { join } from 'path'
 import formatJson from 'pakag'
 import objectAssignDeep from 'object-assign-deep'
+import deepForEach from 'deep-for-each'
 import { tsconfig } from '../configuration/tsconfig.js'
 import { jsconfig } from '../configuration/jsconfig.js'
 import { packageJson } from '../configuration/package.js'
@@ -42,6 +43,16 @@ const writeUserAndPackageConfig = (
   }
 }
 
+// remove ../../.. to place config in project root.
+const adaptConfigToRoot = (packageConfig) => {
+  deepForEach(packageConfig, (value, key, subject) => {
+    const baseFromPackagePath = '../../../'
+    if (value.includes(baseFromPackagePath)) {
+      subject[key] = value.replace(baseFromPackagePath, '')
+    }
+  })
+}
+
 const writeOnlyUserConfig = (
   filename,
   userConfig,
@@ -51,7 +62,7 @@ const writeOnlyUserConfig = (
   try {
     // eslint-disable-next-line no-param-reassign
     delete userConfig.extends
-    // TODO remove ../../..
+    adaptConfigToRoot(packageConfig)
     Object.assign(userConfig, packageConfig)
     writeFileSync(
       userTSConfigPath,

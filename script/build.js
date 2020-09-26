@@ -3,9 +3,7 @@ import { execSync } from 'child_process'
 import esbuild from 'esbuild'
 import chokidar from 'chokidar'
 import rimraf from 'rimraf'
-import { getOptions } from '../utility/options.js'
 import { log } from '../utility/log.js'
-import { writeConfiguration } from '../utility/configuration.js'
 
 const singleJavaScriptBuild = async (options, configurationPath) => {
   const buildOptions = {
@@ -133,10 +131,7 @@ const javascript = async (options, watch) => {
   return singleJavaScriptBuild(options)
 }
 
-export default (watch) => {
-  writeConfiguration()
-  const options = getOptions()
-
+export default (options, watch) => {
   if (options.source) {
     log(`Trying to build while in source mode`, 'error')
   }
