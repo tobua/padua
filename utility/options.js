@@ -34,8 +34,6 @@ const emptyFileTemplate = `
 // or install React as a dependency or better peerDependency.
 `
 
-console.log(process.cwd(), getProjectBasePath())
-
 let packageContents
 
 try {
@@ -82,7 +80,7 @@ export const getOptions = () => {
     extensions.forEach((extension) => {
       const entryFilePath = `${entry}.${extension.name}`
 
-      if (existsSync(join(process.cwd(), entryFilePath))) {
+      if (existsSync(join(getProjectBasePath(), entryFilePath))) {
         options.entry = entryFilePath
         options.typescript = extension.typescript
         options.react = extensions.react
@@ -100,14 +98,14 @@ export const getOptions = () => {
   if (!options.entry) {
     const entryFile = `index.${options.react ? 'jsx' : 'js'}`
 
-    writeFileSync(join(process.cwd(), entryFile), emptyFileTemplate)
+    writeFileSync(join(getProjectBasePath(), entryFile), emptyFileTemplate)
 
     log(`No entry file found, created one in ${entryFile}`)
 
     options.entry = entryFile
   }
 
-  if (existsSync(join(process.cwd(), 'test')) && glob.sync(['test/**.?s?'])) {
+  if (glob.sync(['test/**.test.?s*'], { cwd: getProjectBasePath() })) {
     options.test = true
   }
 

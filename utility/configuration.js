@@ -47,7 +47,7 @@ const writeUserAndPackageConfig = (
 const adaptConfigToRoot = (packageConfig) => {
   deepForEach(packageConfig, (value, key, subject) => {
     const baseFromPackagePath = '../../../'
-    if (value.includes(baseFromPackagePath)) {
+    if (typeof value === 'string' && value.includes(baseFromPackagePath)) {
       subject[key] = value.replace(baseFromPackagePath, '')
     }
   })
