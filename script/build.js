@@ -137,6 +137,10 @@ export default (watch) => {
   writeConfiguration()
   const options = getOptions()
 
+  if (options.source) {
+    log(`Trying to build while in source mode`, 'error')
+  }
+
   if (options.typescript) {
     return typescript(options, watch)
   }

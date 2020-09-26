@@ -14,19 +14,9 @@ import { jsconfig } from '../configuration/jsconfig.js'
 import { packageJson } from '../configuration/package.js'
 import { log } from './log.js'
 import { getOptions } from './options.js'
+import { getProjectBasePath } from './path.js'
 
 const options = getOptions()
-
-const getProjectBasePath = () => {
-  // CWD during postinstall is in package, otherwise in project.
-  const currentWorkingDirectory = process.cwd()
-
-  if (currentWorkingDirectory.includes('node_modules/padua')) {
-    return join(currentWorkingDirectory, '../..')
-  }
-
-  return currentWorkingDirectory
-}
 
 const writeUserAndPackageConfig = (
   filename,

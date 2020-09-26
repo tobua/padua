@@ -1,6 +1,7 @@
 import { existsSync, writeFileSync, readFileSync } from 'fs'
 import { join } from 'path'
 import { log } from './log.js'
+import { getProjectBasePath } from './path.js'
 
 const commonEntries = ['index', 'src/index']
 const extensions = [
@@ -35,7 +36,10 @@ const emptyFileTemplate = `
 let packageContents
 
 try {
-  packageContents = readFileSync(join(process.cwd(), 'package.json'), 'utf8')
+  packageContents = readFileSync(
+    join(getProjectBasePath(), 'package.json'),
+    'utf8'
+  )
   packageContents = JSON.parse(packageContents)
 } catch (error) {
   log('unable to load package.json', 'error')
