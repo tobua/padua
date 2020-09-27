@@ -2,13 +2,10 @@
   "name": "<%= name %>",
   "description": "<%= description %>",
   "version": "0.0.0",
-  "bin": "./cli/index.js",
-  "padua": {
-    "source": true
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
-  "files": [
-    "cli"
-  ],
   "devDependencies": {
     "padua": "^0.1.1"
   }
