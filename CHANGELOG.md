@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/tobua/padua/compare/v0.1.0...v0.1.1) (2020-09-27)
+
+
+### Bug Fixes
+
+* **configuration:** configure always and check if tests available ([b11d7d5](https://github.com/tobua/padua/commit/b11d7d501b89ae7bdab8fff7e26e7b240e28af80))
+* **install:** proper base path on postinstall configuration ([cdbede1](https://github.com/tobua/padua/commit/cdbede10a2befe920eadbc2fec646a38983f1e46))
+* **options:** always base CWD, fix test pattern and only check strings ([198e27c](https://github.com/tobua/padua/commit/198e27cb022c93bc15715667289ca105aef450d0))
+* **template:** update templates ([e713e08](https://github.com/tobua/padua/commit/e713e082ab7e30d3460c16a3d08b6eec6a127541))
+
 ## [0.1.0](https://github.com/tobua/padua/compare/v0.0.11...v0.1.0) (2020-09-24)
 
 
