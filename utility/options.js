@@ -105,7 +105,11 @@ export const getOptions = () => {
     options.entry = entryFile
   }
 
-  if (glob.sync(['test/**.test.?s*'], { cwd: getProjectBasePath() })) {
+  const testFiles = glob.sync(['test/**.test.?s*'], {
+    cwd: getProjectBasePath(),
+  })
+
+  if (testFiles.length > 0) {
     options.test = true
   }
 
