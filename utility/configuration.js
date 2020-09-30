@@ -10,9 +10,11 @@ import { join } from 'path'
 import formatJson from 'pakag'
 import objectAssignDeep from 'object-assign-deep'
 import deepForEach from 'deep-for-each'
+import parse from 'parse-gitignore'
 import { tsconfig } from '../configuration/tsconfig.js'
 import { jsconfig } from '../configuration/jsconfig.js'
 import { packageJson } from '../configuration/package.js'
+import { gitignore } from '../configuration/gitignore.js'
 import { log } from './log.js'
 import { getOptions } from './options.js'
 import { getProjectBasePath } from './path.js'
@@ -136,6 +138,19 @@ const writeJSConfig = (jsConfigUserOverrides = {}) => {
   )
 }
 
+export const writeGitIgnore = (gitIgnoreOverrides = []) => {
+  const gitIgnorePath = join(getProjectBasePath(), '.gitignore')
+  let entries = gitIgnoreOverrides
+
+  if (existsSync(gitIgnorePath)) {
+    entries = entries.concat(parse(readFileSync(gitIgnorePath, 'utf8')))
+  }
+
+  entries = entries.concat(gitignore)
+
+  console.log(entries)
+}
+
 const writePackageJson = () => {
   const packageJsonPath = join(getProjectBasePath(), './package.json')
 
@@ -159,5 +174,6 @@ export const writeConfiguration = () => {
   const { packageContents } = writePackageJson()
   writeJSConfig(packageContents.padua.jsconfig)
   writeTSConfig(packageContents.padua.tsconfig)
+  writeGitIgnore(packageContents.padua.gitignore)
   return { packageContents }
 }

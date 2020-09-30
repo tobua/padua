@@ -1,1 +1,1 @@
-export default ['node_modules', 'package-lock.json', 'dist']
+export const gitignore = ['node_modules', 'package-lock.json', 'dist']
