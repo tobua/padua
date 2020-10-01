@@ -148,7 +148,10 @@ export const writeGitIgnore = (gitIgnoreOverrides = []) => {
 
   entries = entries.concat(gitignore)
 
-  console.log(entries)
+  // Remove duplicates
+  entries = [...new Set(entries)]
+
+  writeFileSync(gitIgnorePath, entries.join('/n'))
 }
 
 const writePackageJson = () => {
