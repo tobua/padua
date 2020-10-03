@@ -1,14 +1,27 @@
-const { join } = require('path')
-// const { writeGitIgnore } = require('../utility/configuration.js')
+import { existsSync, readFileSync } from 'fs'
+import { join } from 'path'
+import rimraf from 'rimraf'
+import { writeGitIgnore } from '../utility/configuration.js'
 
 const CWD = process.cwd()
+const cwdSpy = jest.spyOn(process, 'cwd')
 
 test('Generates gitignore with default entries.', () => {
-  const spy = jest.spyOn(process, 'cwd')
-  spy.mockReturnValue(join(CWD, 'fixture/gitignore'))
+  const fixturePath = join(CWD, 'test/fixture/gitignore')
+  const gitignorePath = join(fixturePath, '.gitignore')
+  cwdSpy.mockReturnValue(fixturePath)
 
-  console.log('CWD', process.cwd())
+  rimraf.sync(gitignorePath)
 
-  // writeGitIgnore([])
-  expect(true).toEqual(true)
+  writeGitIgnore([])
+
+  expect(existsSync(gitignorePath)).toEqual(true)
+
+  const contents = readFileSync(gitignorePath, 'utf8')
+
+  expect(contents).toEqual(
+    ['node_modules', 'package-lock.json', 'dist', ''].join('\r\n')
+  )
+
+  rimraf.sync(gitignorePath)
 })

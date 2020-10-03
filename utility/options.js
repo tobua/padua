@@ -34,18 +34,6 @@ const emptyFileTemplate = `
 // or install React as a dependency or better peerDependency.
 `
 
-let packageContents
-
-try {
-  packageContents = readFileSync(
-    join(getProjectBasePath(), 'package.json'),
-    'utf8'
-  )
-  packageContents = JSON.parse(packageContents)
-} catch (error) {
-  log('unable to load package.json', 'error')
-}
-
 let loaded = false
 
 // Default options.
@@ -69,6 +57,18 @@ const options = {
 export const getOptions = () => {
   if (loaded) {
     return options
+  }
+
+  let packageContents
+
+  try {
+    packageContents = readFileSync(
+      join(getProjectBasePath(), 'package.json'),
+      'utf8'
+    )
+    packageContents = JSON.parse(packageContents)
+  } catch (error) {
+    log('unable to load package.json', 'error')
   }
 
   if (typeof packageContents.padua === 'object') {

@@ -1,23 +1,19 @@
-#!/usr/bin/env node
-
-import { log } from './utility/log.js'
 import * as scripts from './script/index.js'
 import { getOptions } from './utility/options.js'
 import { writeConfiguration } from './utility/configuration.js'
 
-let script = process.argv.slice(2)[0]
+const options = getOptions()
 
-if (['watch', 'build', 'test', 'lint', 'release', 'update'].includes(script)) {
-  const watch = script === 'watch'
+writeConfiguration()
 
-  if (watch) {
-    script = 'build'
-  }
+export const watch = () => scripts.build(options, true)
 
-  writeConfiguration()
-  const options = getOptions()
+export const build = () => scripts.build(options, false)
 
-  scripts[script](options, watch)
-} else {
-  log('Please provide a valid script', 'error')
-}
+export const test = () => scripts.test(options)
+
+export const lint = () => scripts.lint()
+
+export const release = () => scripts.release()
+
+export const update = () => scripts.update()

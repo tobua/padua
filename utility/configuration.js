@@ -19,8 +19,6 @@ import { log } from './log.js'
 import { getOptions } from './options.js'
 import { getProjectBasePath } from './path.js'
 
-const options = getOptions()
-
 const writeUserAndPackageConfig = (
   filename,
   userConfig,
@@ -122,7 +120,7 @@ const writePackageAndUserFile = (
 
 const writeTSConfig = (tsConfigUserOverrides = {}) => {
   writePackageAndUserFile(
-    !options.typescript,
+    !getOptions().typescript,
     'tsconfig.json',
     tsconfig,
     tsConfigUserOverrides
@@ -131,7 +129,7 @@ const writeTSConfig = (tsConfigUserOverrides = {}) => {
 
 const writeJSConfig = (jsConfigUserOverrides = {}) => {
   writePackageAndUserFile(
-    options.typescript,
+    getOptions().typescript,
     'jsconfig.json',
     jsconfig,
     jsConfigUserOverrides
@@ -148,10 +146,10 @@ export const writeGitIgnore = (gitIgnoreOverrides = []) => {
 
   entries = entries.concat(gitignore)
 
-  // Remove duplicates
-  entries = [...new Set(entries)]
+  // Remove duplicates, add empty line at the end
+  entries = [...new Set(entries), '']
 
-  writeFileSync(gitIgnorePath, entries.join('/n'))
+  writeFileSync(gitIgnorePath, entries.join('\r\n'))
 }
 
 const writePackageJson = () => {

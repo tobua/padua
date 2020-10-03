@@ -45,7 +45,10 @@ export const packageJson = () => {
   }
 
   if (options.source) {
-    pkg.files = ['**/*.js']
+    pkg.files = ['**/*.js', 'index.d.ts']
+    if (options.test) {
+      pkg.files.push('!test')
+    }
     pkg.main = `${options.entry}`
     // Extensions required for node source code.
     pkg.eslintConfig.rules = {

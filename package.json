@@ -1,15 +1,13 @@
 {
   "name": "padua",
-  "version": "0.1.1",
   "description": "Tool to configure, setup, build, test and publish npm plugins.",
+  "version": "0.1.1",
   "repository": "github:tobua/padua",
   "license": "MIT",
   "author": "Matthias Giger",
-  "bin": "./index.js",
-  "type": "module",
   "scripts": {
-    "release": "standard-version",
     "postinstall": "node ./installation.js",
+    "release": "standard-version",
     "test": "jest"
   },
   "dependencies": {
@@ -46,6 +44,18 @@
     "ts-jest": "^26.4.1",
     "typescript": "^4.0.3"
   },
+  "type": "module",
+  "main": "index.js",
+  "bin": "cli/index.js",
+  "source": "index.js",
+  "files": [
+    "configuration",
+    "script",
+    "utility",
+    "cli",
+    "*.d.ts",
+    "*.js"
+  ],
   "prettier": {
     "singleQuote": true,
     "semi": false
@@ -71,12 +81,12 @@
           "configFile": "./configuration/.babelrc"
         }
       ]
-    }
+    },
+    "transformIgnorePatterns": [
+      "node_modules/cint"
+    ]
   },
-  "files": [
-    "configuration",
-    "script",
-    "utility",
-    "*.js"
-  ]
+  "engines": {
+    "node": ">= 13.2.0"
+  }
 }
