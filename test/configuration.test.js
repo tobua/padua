@@ -20,7 +20,51 @@ test('Generates gitignore with default entries.', () => {
   const contents = readFileSync(gitignorePath, 'utf8')
 
   expect(contents).toEqual(
-    ['node_modules', 'package-lock.json', 'dist', ''].join('\r\n')
+    ['node_modules', 'package-lock.json', 'jsconfig.json', 'dist', ''].join(
+      '\r\n'
+    )
+  )
+
+  rimraf.sync(gitignorePath)
+})
+
+test('Generates proper gitignore for typescript.', () => {
+  const fixturePath = join(CWD, 'test/fixture/typescript')
+  const gitignorePath = join(fixturePath, '.gitignore')
+  cwdSpy.mockReturnValue(fixturePath)
+
+  rimraf.sync(gitignorePath)
+
+  writeGitIgnore([])
+
+  expect(existsSync(gitignorePath)).toEqual(true)
+
+  const contents = readFileSync(gitignorePath, 'utf8')
+
+  expect(contents).toEqual(
+    ['node_modules', 'package-lock.json', 'tsconfig.json', 'dist', ''].join(
+      '\r\n'
+    )
+  )
+
+  rimraf.sync(gitignorePath)
+})
+
+test('No output folder when source mode active.', () => {
+  const fixturePath = join(CWD, 'test/fixture/source')
+  const gitignorePath = join(fixturePath, '.gitignore')
+  cwdSpy.mockReturnValue(fixturePath)
+
+  rimraf.sync(gitignorePath)
+
+  writeGitIgnore([])
+
+  expect(existsSync(gitignorePath)).toEqual(true)
+
+  const contents = readFileSync(gitignorePath, 'utf8')
+
+  expect(contents).toEqual(
+    ['node_modules', 'package-lock.json', 'jsconfig.json', ''].join('\r\n')
   )
 
   rimraf.sync(gitignorePath)

@@ -55,7 +55,8 @@ const options = {
 }
 
 export const getOptions = () => {
-  if (loaded) {
+  // Always reload options in test mode.
+  if (loaded && typeof jest === 'undefined') {
     return options
   }
 

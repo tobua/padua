@@ -138,13 +138,13 @@ const writeJSConfig = (jsConfigUserOverrides = {}) => {
 
 export const writeGitIgnore = (gitIgnoreOverrides = []) => {
   const gitIgnorePath = join(getProjectBasePath(), '.gitignore')
-  let entries = gitIgnoreOverrides
+  let entries = []
 
   if (existsSync(gitIgnorePath)) {
     entries = entries.concat(parse(readFileSync(gitIgnorePath, 'utf8')))
   }
 
-  entries = entries.concat(gitignore)
+  entries = entries.concat(gitignore(gitIgnoreOverrides))
 
   // Remove duplicates, add empty line at the end
   entries = [...new Set(entries), '']
