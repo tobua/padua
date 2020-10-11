@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/tobua/padua/compare/v0.1.1...v0.1.2) (2020-10-11)
+
+
+### Features
+
+* **gitignore:** generate gitignore file with defaults ([77fec3c](https://github.com/tobua/padua/commit/77fec3ce0c8997620cabff3c0dd4dafd682fc379))
+
+
+### Bug Fixes
+
+* **gitignore:** remove duplicates from gitignore ([d5e1ab1](https://github.com/tobua/padua/commit/d5e1ab1f755c97b34b83ae1e7600bb1897bac966))
+* **mobx:** remove decorator configuration as MobX 6 was released ([a62ef02](https://github.com/tobua/padua/commit/a62ef023975ecf942fa65067a21050e0f8a06405))
+* **template:** ignore output directory and fix check for test files ([86cead7](https://github.com/tobua/padua/commit/86cead73b6371db8d1797829e50f35638e328e35))
+
 ### [0.1.1](https://github.com/tobua/padua/compare/v0.1.0...v0.1.1) (2020-09-27)
 
 
