@@ -48,6 +48,7 @@ const adaptConfigToRoot = (packageConfig) => {
   deepForEach(packageConfig, (value, key, subject) => {
     const baseFromPackagePath = '../../../'
     if (typeof value === 'string' && value.includes(baseFromPackagePath)) {
+      // eslint-disable-next-line no-param-reassign
       subject[key] = value.replace(baseFromPackagePath, '')
     }
   })
@@ -63,7 +64,7 @@ const writeOnlyUserConfig = (
     // eslint-disable-next-line no-param-reassign
     delete userConfig.extends
     adaptConfigToRoot(packageConfig)
-    Object.assign(userConfig, packageConfig)
+    objectAssignDeep(userConfig, packageConfig)
     writeFileSync(
       userTSConfigPath,
       formatJson(JSON.stringify(userConfig), { sort: false })

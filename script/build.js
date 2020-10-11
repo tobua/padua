@@ -11,10 +11,11 @@ const singleJavaScriptBuild = async (options, configurationPath) => {
     entryPoints: [options.entry],
     outdir: 'dist',
     minify: true,
-    bundle: true,
+    // Do not bundle dependencies, as installed through npm.
+    bundle: false,
     sourcemap: true,
     color: true,
-    target: 'es2015',
+    target: 'es6',
     platform: 'browser',
     format: 'cjs',
   }

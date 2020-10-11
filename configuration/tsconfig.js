@@ -13,7 +13,6 @@ export const tsconfig = (tsconfigUserOverrides = {}) => {
       outDir: '../../../dist',
       declaration: true,
       lib: ['DOM', 'ES6'],
-      experimentalDecorators: true,
       moduleResolution: 'node',
     },
     files: [`../../../${options.entry}`],
