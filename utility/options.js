@@ -114,6 +114,8 @@ export const getOptions = () => {
     options.test = true
   }
 
+  options.pkg = packageContents
+
   loaded = true
 
   return options

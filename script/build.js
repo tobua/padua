@@ -6,13 +6,17 @@ import rimraf from 'rimraf'
 import { log } from '../utility/log.js'
 
 const singleJavaScriptBuild = async (options, configurationPath) => {
+  // dependencies and peerDependencies are installed and better bundled by user to avoid duplication.
+  // Use devDependencies to ensure dependency results in distributed bundle.
+  const userDependencies = [].concat(Object.keys(options.pkg.dependencies || {})).concat(Object.keys(options.pkg.peerDependencies || {}))
+
   const buildOptions = {
     // entryPoints needs to be an array.
     entryPoints: [options.entry],
     outdir: 'dist',
     minify: true,
-    // Do not bundle dependencies, as installed through npm.
-    bundle: false,
+    bundle: true,
+    external: userDependencies,
     sourcemap: true,
     color: true,
     target: 'es6',
