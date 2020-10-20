@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/tobua/padua/compare/v0.1.2...v0.1.3) (2020-10-20)
+
+
+### Bug Fixes
+
+* **esbuild:** make sure only user installed node_modules external ([f2b2889](https://github.com/tobua/padua/commit/f2b2889c93cfca9af0e7d431b2c8ae68e1ee1a80))
+* **various:** package merge fixed and allow arguments for test command ([82fe174](https://github.com/tobua/padua/commit/82fe174bf421b529f42593376176b2cd15f22c1d))
+
 ### [0.1.2](https://github.com/tobua/padua/compare/v0.1.1...v0.1.2) (2020-10-11)
 
 
