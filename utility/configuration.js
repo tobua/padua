@@ -160,7 +160,9 @@ const writePackageJson = () => {
   packageContents = JSON.parse(packageContents)
 
   // Merge existing configuration with additional required attributes.
-  objectAssignDeep(packageContents, packageJson())
+  // Existing properties override generated configuration to allow
+  // the user to configure it their way.
+  objectAssignDeep(packageJson(), packageContents)
 
   // Format with prettier and sort before writing.
   writeFileSync(packageJsonPath, formatJson(JSON.stringify(packageContents)))

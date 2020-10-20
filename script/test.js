@@ -6,6 +6,9 @@ export default (options) => {
     log(`No tests found`, 'warning')
   }
 
+  const additionalArguments = process.argv.slice(3)
+
   log('running tests..')
-  execSync('jest', { stdio: 'inherit' })
+
+  execSync(`jest ${additionalArguments.join(' ')}`, { stdio: 'inherit' })
 }

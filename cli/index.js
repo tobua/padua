@@ -14,9 +14,7 @@ if (['watch', 'build', 'test', 'lint', 'release', 'update'].includes(script)) {
     script = 'build'
   }
 
-  if (script !== 'release') {
-    writeConfiguration()
-  }
+  writeConfiguration()
 
   const options = getOptions()
 

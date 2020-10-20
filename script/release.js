@@ -18,7 +18,7 @@ export default async () => {
     })
   } catch (error) {
     log(`standard-version failed with message: ${error.message}`, 'error')
-    process.exit()
+    process.exit(1)
   }
 
   if (!process.argv.includes('--no-push')) {

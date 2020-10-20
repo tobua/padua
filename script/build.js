@@ -123,7 +123,7 @@ const javascript = async (options, watch) => {
 
     process.on('SIGINT', () => {
       service.stop()
-      process.exit()
+      process.exit(0)
     })
 
     await rebuildJavaScript(service, options)
