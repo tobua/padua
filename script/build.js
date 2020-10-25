@@ -8,7 +8,9 @@ import { log } from '../utility/log.js'
 const singleJavaScriptBuild = async (options, configurationPath) => {
   // dependencies and peerDependencies are installed and better bundled by user to avoid duplication.
   // Use devDependencies to ensure dependency results in distributed bundle.
-  const userDependencies = [].concat(Object.keys(options.pkg.dependencies || {})).concat(Object.keys(options.pkg.peerDependencies || {}))
+  const userDependencies = []
+    .concat(Object.keys(options.pkg.dependencies || {}))
+    .concat(Object.keys(options.pkg.peerDependencies || {}))
 
   const buildOptions = {
     // entryPoints needs to be an array.
@@ -59,9 +61,9 @@ const typescript = (options, watch) => {
   }
 
   if (watch) {
-    log('watching..')
+    log('watching...')
   } else {
-    log('building..')
+    log('building...')
   }
 
   // Cleanup dist folder.
@@ -131,7 +133,7 @@ const javascript = async (options, watch) => {
     return log('watching..')
   }
 
-  log('building..')
+  log('building...')
 
   return singleJavaScriptBuild(options)
 }

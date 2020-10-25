@@ -56,6 +56,7 @@ export const packageJson = () => {
     }
   } else {
     pkg.scripts.start = 'padua watch'
+    pkg.scripts.build = 'padua build'
     pkg.main = `${options.output}/index.js`
   }
 

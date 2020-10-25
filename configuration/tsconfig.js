@@ -19,10 +19,6 @@ export const tsconfig = (tsconfigUserOverrides = {}) => {
     exclude: [`../../../${options.output}`],
   }
 
-  if (options.test) {
-    packageTSConfig.include = ['../../../test']
-  }
-
   if (options.react) {
     packageTSConfig.compilerOptions.jsx = 'react'
   }

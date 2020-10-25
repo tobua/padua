@@ -1,6 +1,3 @@
-const { existsSync } = require('fs')
-const { join } = require('path')
-
 const customRules = {
   // Use named exports to make it easier to find usages.
   'import/prefer-default-export': 0,
@@ -21,18 +18,6 @@ const customRules = {
 
 const customSettings = {
   'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
-}
-
-// Same as in utility/options.js (but cannot be imported as it's a ES module)
-const findTSConfig = () => {
-  const projectPath = join(process.cwd(), 'tsconfig.json')
-  const packagePath = './node_modules/padua/configuration/tsconfig.json'
-
-  if (existsSync(projectPath)) {
-    return projectPath
-  }
-
-  return packagePath
 }
 
 // CJS for backwards compatibility.
@@ -68,7 +53,9 @@ module.exports = {
       settings: customSettings,
       parser: '@typescript-eslint/parser',
       parserOptions: {
-        project: findTSConfig(),
+        // extends user configuration adding in /test folder so it can be linted, but
+        // will not be included in the build.
+        project: './node_modules/padua/configuration/tsconfig-eslint.json',
       },
     },
   ],

@@ -159,19 +159,24 @@ const writePackageJson = () => {
   let packageContents = readFileSync(packageJsonPath, 'utf8')
   packageContents = JSON.parse(packageContents)
 
+  const generatedPackageJson = packageJson()
+
   // Merge existing configuration with additional required attributes.
   // Existing properties override generated configuration to allow
   // the user to configure it their way.
-  objectAssignDeep(packageJson(), packageContents)
+  objectAssignDeep(generatedPackageJson, packageContents)
 
   // Format with prettier and sort before writing.
-  writeFileSync(packageJsonPath, formatJson(JSON.stringify(packageContents)))
+  writeFileSync(
+    packageJsonPath,
+    formatJson(JSON.stringify(generatedPackageJson))
+  )
 
-  if (!packageContents.padua) {
-    packageContents.padua = {}
+  if (!generatedPackageJson.padua) {
+    generatedPackageJson.padua = {}
   }
 
-  return { packageContents }
+  return { packageContents: generatedPackageJson }
 }
 
 export const writeConfiguration = () => {
