@@ -24,7 +24,7 @@ const customSettings = {
 module.exports = {
   extends: ['airbnb', 'prettier', 'prettier/react', 'prettier/babel'],
   rules: customRules,
-  ignorePatterns: ['dist', 'demo'],
+  ignorePatterns: ['dist', 'demo', 'index.d.ts'],
   env: {
     browser: true,
     node: true,
