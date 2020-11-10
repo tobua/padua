@@ -1,9 +1,14 @@
+import { readFileSync, statSync } from 'fs'
 import { join } from 'path'
+import glob from 'fast-glob'
+import gzipSize from 'gzip-size'
+import filesize from 'filesize'
 import { execSync } from 'child_process'
 import esbuild from 'esbuild'
 import chokidar from 'chokidar'
 import rimraf from 'rimraf'
 import { log } from '../utility/log.js'
+import { getProjectBasePath } from '../utility/path.js'
 
 const singleJavaScriptBuild = async (options, configurationPath) => {
   // dependencies and peerDependencies are installed and better bundled by user to avoid duplication.
@@ -45,7 +50,19 @@ const singleJavaScriptBuild = async (options, configurationPath) => {
     process.exit(1)
   }
 
-  log('done')
+  glob
+    .sync('**/*.js', {
+      cwd: 'dist',
+    })
+    .forEach((file) => {
+      const filePath = join(getProjectBasePath(), `dist/${file}`)
+      const fileStream = readFileSync(filePath)
+      console.log(
+        `${file}: ${filesize(statSync(filePath).size)} (${filesize(
+          gzipSize.sync(fileStream)
+        )} gzipped)`
+      )
+    })
 }
 
 const typescript = (options, watch) => {
