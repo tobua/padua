@@ -14,6 +14,7 @@ export const tsconfig = (tsconfigUserOverrides = {}) => {
       declaration: true,
       lib: ['DOM', 'ES6'],
       moduleResolution: 'node',
+      module: 'esnext',
     },
     files: [`../../../${options.entry}`],
     exclude: [`../../../${options.output}`],
