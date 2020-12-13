@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/tobua/padua/compare/v0.1.4...v0.1.5) (2020-12-13)
+
+
+### Features
+
+* **build:** list sizes of built assets ([9d08909](https://github.com/tobua/padua/commit/9d089096d3d74dad126c73a50d5efb2eef686329))
+
+
+### Bug Fixes
+
+* **lint:** disable linting for typescript declarations in JS source mode ([099b92a](https://github.com/tobua/padua/commit/099b92a5e760b363d4c75b8bc34e6066d0b85f2c))
+* **test:** change deprecated property for ts-jest ([2d96306](https://github.com/tobua/padua/commit/2d963069db3c93521b8efdd6ba9ef6aeea1c38b2))
+* **typescript:** preserve dynamic imports ([7f7a93a](https://github.com/tobua/padua/commit/7f7a93abbde132adb6858dc1aaeccbc4a0c16e1b))
+
 ### [0.1.4](https://github.com/tobua/padua/compare/v0.1.3...v0.1.4) (2020-10-26)
 
 
