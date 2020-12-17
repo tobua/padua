@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/tobua/padua/compare/v0.1.6...v0.2.0) (2020-12-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* **build:** built packages switch from CJS -> ESM
+
+### Features
+
+* **build:** switch to ES Modules and user configurable esbuild config ([9e1e38a](https://github.com/tobua/padua/commit/9e1e38a1b74bdd48ac5b2728dea357e5a1f28f92))
+
 ### [0.1.6](https://github.com/tobua/padua/compare/v0.1.5...v0.1.6) (2020-12-17)
 
 
