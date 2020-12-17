@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/tobua/padua/compare/v0.1.5...v0.1.6) (2020-12-17)
+
+
+### Features
+
+* **release:** detect first release and check owner ([3f90091](https://github.com/tobua/padua/commit/3f90091604048c7583b40096608ba54b0db3d3d9))
+
 ### [0.1.5](https://github.com/tobua/padua/compare/v0.1.4...v0.1.5) (2020-12-13)
 
 
