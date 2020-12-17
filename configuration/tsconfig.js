@@ -1,3 +1,4 @@
+import objectAssignDeep from 'object-assign-deep'
 import { getOptions } from '../utility/options.js'
 
 export const tsconfig = (tsconfigUserOverrides = {}) => {
@@ -24,7 +25,7 @@ export const tsconfig = (tsconfigUserOverrides = {}) => {
     packageTSConfig.compilerOptions.jsx = 'react'
   }
 
-  Object.assign(userTSConfig, tsconfigUserOverrides)
+  objectAssignDeep(userTSConfig, tsconfigUserOverrides)
 
   return [userTSConfig, packageTSConfig]
 }

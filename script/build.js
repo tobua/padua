@@ -9,35 +9,10 @@ import chokidar from 'chokidar'
 import rimraf from 'rimraf'
 import { log } from '../utility/log.js'
 import { getProjectBasePath } from '../utility/path.js'
+import { esbuildConfiguration } from '../configuration/esbuild.js'
 
-const singleJavaScriptBuild = async (options, configurationPath) => {
-  // dependencies and peerDependencies are installed and better bundled by user to avoid duplication.
-  // Use devDependencies to ensure dependency results in distributed bundle.
-  const userDependencies = []
-    .concat(Object.keys(options.pkg.dependencies || {}))
-    .concat(Object.keys(options.pkg.peerDependencies || {}))
-
-  const buildOptions = {
-    // entryPoints needs to be an array.
-    entryPoints: [options.entry],
-    outdir: 'dist',
-    minify: true,
-    bundle: true,
-    external: userDependencies,
-    sourcemap: true,
-    color: true,
-    target: 'es6',
-    platform: 'browser',
-    format: 'cjs',
-  }
-
-  if (options.react) {
-    buildOptions.loader = { '.jsx': 'jsx', '.tsx': 'tsx' }
-  }
-
-  if (configurationPath) {
-    buildOptions.tsconfig = configurationPath
-  }
+const singleJavaScriptBuild = async (configurationPath) => {
+  const buildOptions = esbuildConfiguration(configurationPath)
 
   try {
     const { warnings } = await esbuild.build(buildOptions)
@@ -93,7 +68,7 @@ const typescript = (options, watch) => {
   }
 
   if (!watch) {
-    singleJavaScriptBuild(options, configurationPath)
+    singleJavaScriptBuild(configurationPath)
   }
 }
 
@@ -152,7 +127,7 @@ const javascript = async (options, watch) => {
 
   log('building...')
 
-  return singleJavaScriptBuild(options)
+  return singleJavaScriptBuild()
 }
 
 export default (options, watch) => {

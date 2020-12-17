@@ -47,7 +47,7 @@ export default async () => {
 
   // TODO build, lint and test before publish
 
-  const isFirstRelease = firstRelease(options)
+  const isFirstRelease = await firstRelease(options)
 
   if (!isFirstRelease && !checkOwner(options)) {
     log(
