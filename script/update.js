@@ -4,6 +4,7 @@ import ncu from 'npm-check-updates'
 import { execSync } from 'child_process'
 import rimraf from 'rimraf'
 import { log } from '../utility/log.js'
+import { getProjectBasePath } from '../utility/path.js'
 
 export default async () => {
   log('checking for updates..')
@@ -31,7 +32,7 @@ export default async () => {
   // Cleanup before install.
   rimraf.sync('node_modules')
 
-  const packageLockFilePath = join(process.cwd(), 'package-lock.json')
+  const packageLockFilePath = join(getProjectBasePath(), 'package-lock.json')
 
   if (existsSync(packageLockFilePath)) {
     unlinkSync(packageLockFilePath)
@@ -39,5 +40,5 @@ export default async () => {
 
   execSync('npm install', { stdio: 'inherit' })
 
-  log('new dependencies installed')
+  return log('new dependencies installed')
 }
