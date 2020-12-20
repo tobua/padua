@@ -15,7 +15,7 @@ export const esbuildConfiguration = (configurationPath) => {
     // entryPoints needs to be an array.
     entryPoints: [options.entry],
     outdir: 'dist',
-    minify: true,
+    minify: false,
     bundle: true,
     external: userDependencies,
     sourcemap: true,
