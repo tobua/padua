@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/tobua/padua/compare/v0.2.0...v0.2.1) (2020-12-20)
+
+
+### Bug Fixes
+
+* **build:** webpack cannot bundle minified es module ([5a79e0e](https://github.com/tobua/padua/commit/5a79e0eabdbe28cad0b3eb8b7636efb19afffff2))
+
 ## [0.2.0](https://github.com/tobua/padua/compare/v0.1.6...v0.2.0) (2020-12-17)
 
 
