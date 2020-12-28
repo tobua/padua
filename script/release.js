@@ -4,6 +4,7 @@ import { execSync } from 'child_process'
 import standardVersion from 'standard-version'
 import branchName from 'current-git-branch'
 import pacote from 'pacote'
+import build from './build.js'
 import { log } from '../utility/log.js'
 import { getProjectBasePath } from '../utility/path.js'
 import { getOptions } from '../utility/options.js'
@@ -37,7 +38,7 @@ export default async () => {
   const branch = branchName()
   const options = getOptions()
 
-  if (branch !== 'master') {
+  if (branch !== 'main' && branch !== 'master') {
     log(`Releasing from ${branch} branch`, 'warning')
   }
 
@@ -45,7 +46,11 @@ export default async () => {
     log(`package.json requires a version for the package to release`, 'error')
   }
 
-  // TODO build, lint and test before publish
+  if (!options.source) {
+    await build(options)
+  }
+
+  // TODO lint and test before publish
 
   const isFirstRelease = await firstRelease(options)
 
