@@ -1,7 +1,7 @@
 {
   "name": "padua",
   "description": "Tool to configure, setup, build, test and publish npm plugins.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "repository": "github:tobua/padua",
   "license": "MIT",
   "author": "Matthias Giger",
