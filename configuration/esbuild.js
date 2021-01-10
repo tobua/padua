@@ -13,7 +13,7 @@ export const esbuildConfiguration = (configurationPath) => {
 
   const buildOptions = {
     // entryPoints needs to be an array.
-    entryPoints: [options.entry],
+    entryPoints: options.entry,
     outdir: 'dist',
     minify: false,
     bundle: true,

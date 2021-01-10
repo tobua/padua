@@ -2,9 +2,12 @@ import { existsSync, readFileSync } from 'fs'
 import { join } from 'path'
 import rimraf from 'rimraf'
 import { writeGitIgnore } from '../utility/configuration.js'
+import { refresh } from '../utility/helper.js'
 
 const CWD = process.cwd()
 const cwdSpy = jest.spyOn(process, 'cwd')
+
+beforeEach(() => refresh())
 
 test('Generates gitignore with default entries.', () => {
   const fixturePath = join(CWD, 'test/fixture/gitignore')

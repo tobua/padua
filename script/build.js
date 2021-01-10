@@ -72,25 +72,10 @@ const typescript = (options, watch) => {
   }
 }
 
-const rebuildJavaScript = async (service, options) => {
+const rebuildJavaScript = async (service, configurationPath) => {
+  const buildOptions = esbuildConfiguration(configurationPath)
+
   try {
-    const buildOptions = {
-      // entryPoints needs to be an array.
-      entryPoints: [options.entry],
-      outdir: 'dist',
-      minify: true,
-      bundle: true,
-      sourcemap: true,
-      color: true,
-      target: 'es2015',
-      platform: 'browser',
-      format: 'cjs',
-    }
-
-    if (options.react) {
-      buildOptions.loader = { '.jsx': 'jsx', '.tsx': 'tsx' }
-    }
-
     await service.build(buildOptions)
     log('built')
   } catch (error) {
@@ -98,7 +83,7 @@ const rebuildJavaScript = async (service, options) => {
   }
 }
 
-const javascript = async (options, watch) => {
+const javascript = async (watch) => {
   if (watch) {
     const service = await esbuild.startService()
 
@@ -108,7 +93,7 @@ const javascript = async (options, watch) => {
       ignoreInitial: true,
     })
 
-    const buildHandler = rebuildJavaScript.bind(null, service, options)
+    const buildHandler = rebuildJavaScript.bind(null, service)
 
     watcher
       .on('change', buildHandler)
@@ -120,7 +105,7 @@ const javascript = async (options, watch) => {
       process.exit(0)
     })
 
-    await rebuildJavaScript(service, options)
+    await rebuildJavaScript(service)
 
     return log('watching..')
   }
@@ -139,5 +124,5 @@ export default (options, watch) => {
     return typescript(options, watch)
   }
 
-  return javascript(options, watch)
+  return javascript(watch)
 }

@@ -3,30 +3,8 @@ import { join } from 'path'
 import glob from 'fast-glob'
 import { log } from './log.js'
 import { getProjectBasePath } from './path.js'
+import { cache } from './helper.js'
 
-const commonEntries = ['index', 'src/index']
-const extensions = [
-  {
-    name: 'js',
-    typescript: false,
-    react: false,
-  },
-  {
-    name: 'ts',
-    typescript: true,
-    react: false,
-  },
-  {
-    name: 'jsx',
-    typescript: false,
-    react: true,
-  },
-  {
-    name: 'tsx',
-    typescript: true,
-    react: true,
-  },
-]
 const emptyFileTemplate = `
 // This is the entry file for your plugin.
 // If you want to use TypeScript rename it to index.ts
@@ -34,33 +12,19 @@ const emptyFileTemplate = `
 // or install React as a dependency or better peerDependency.
 `
 
-let loaded = false
-
 // Default options.
-const options = {
-  // No build step, directly publish source files.
+const defaultOptions = {
   source: false,
-  // Output directory for build files.
   output: 'dist',
-  // Separate entry for CLI.
-  cli: false,
-  // Is project written in TypeScript.
   typescript: false,
-  // Does the project include React.
   react: false,
-  // Are there any tests.
   test: false,
-  // What's the name of the entry file (defaults: index.[jt]sx?).
-  entry: null,
+  entry: [],
 }
 
-export const getOptions = () => {
-  // Always reload options in test mode.
-  if (loaded && typeof jest === 'undefined') {
-    return options
-  }
-
+export const getOptions = cache(() => {
   let packageContents
+  const options = { ...defaultOptions, entry: [] }
 
   try {
     packageContents = readFileSync(
@@ -75,19 +39,31 @@ export const getOptions = () => {
   if (typeof packageContents.padua === 'object') {
     // Include project specific overrides
     Object.assign(options, packageContents.padua)
+
+    if (typeof options.entry === 'string') {
+      options.entry = [options.entry]
+    }
   }
 
-  commonEntries.forEach((entry) =>
-    extensions.forEach((extension) => {
-      const entryFilePath = `${entry}.${extension.name}`
+  ;['index', 'src/index'].forEach((entry) =>
+    ['js', 'ts', 'jsx', 'tsx'].forEach((extension) => {
+      const entryFilePath = `${entry}.${extension}`
 
       if (existsSync(join(getProjectBasePath(), entryFilePath))) {
-        options.entry = entryFilePath
-        options.typescript = extension.typescript
-        options.react = extensions.react
+        options.entry.push(entryFilePath)
       }
     })
   )
+
+  options.entry.forEach((entry) => {
+    if (/tsx?$/.test(entry)) {
+      options.typescript = true
+    }
+
+    if (/[tj]sx$/.test(entry)) {
+      options.react = true
+    }
+  })
 
   if (
     Object.keys(packageContents.dependencies || {}).includes('react') ||
@@ -116,7 +92,5 @@ export const getOptions = () => {
 
   options.pkg = packageContents
 
-  loaded = true
-
   return options
-}
+})
