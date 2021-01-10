@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.3](https://github.com/tobua/padua/compare/v0.2.2...v0.2.3) (2021-01-10)
+
+
+### Features
+
+* **options:** allow multiple entries & use shared config in watch mode ([865f4cd](https://github.com/tobua/padua/commit/865f4cdafd82384abd096417b5aa558ed3f1618b))
+
+
+### Bug Fixes
+
+* **test:** allow jsx tests and reference root tsconfig ([79f0ef0](https://github.com/tobua/padua/commit/79f0ef0c12b9d0ddce78ee652a1cc4c4050279e3))
+
 ### [0.2.2](https://github.com/tobua/padua/compare/v0.2.1...v0.2.2) (2020-12-28)
 
 
