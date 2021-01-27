@@ -61,7 +61,8 @@ export const packageJson = () => {
   }
 
   if (options.entry) {
-    pkg.source = options.entry
+    // eslint-disable-next-line prefer-destructuring
+    pkg.source = options.entry[0]
   }
 
   return pkg

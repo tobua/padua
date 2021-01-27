@@ -14,6 +14,8 @@ const customRules = {
   'react/require-default-props': 0,
   // Often there is only the index available, would make plugin API more complex otherwise.
   'react/no-array-index-key': 0,
+  // Allow assignment to function param properties, like parameter.innerHTML = ...
+  'no-param-reassign': [2, { props: false }],
 }
 
 const customSettings = {

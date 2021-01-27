@@ -1,6 +1,7 @@
 import { existsSync, writeFileSync, readFileSync } from 'fs'
 import { join } from 'path'
 import glob from 'fast-glob'
+import objectAssignDeep from 'object-assign-deep'
 import { log } from './log.js'
 import { getProjectBasePath } from './path.js'
 import { cache } from './helper.js'
@@ -38,7 +39,7 @@ export const getOptions = cache(() => {
 
   if (typeof packageContents.padua === 'object') {
     // Include project specific overrides
-    Object.assign(options, packageContents.padua)
+    objectAssignDeep(options, packageContents.padua)
 
     if (typeof options.entry === 'string') {
       options.entry = [options.entry]
