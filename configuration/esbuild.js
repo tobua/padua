@@ -23,6 +23,9 @@ export const esbuildConfiguration = (configurationPath) => {
     target: 'es6',
     platform: 'browser',
     format: 'esm',
+    define: {
+      'process.env.NODE_ENV': '"production"',
+    },
   }
 
   if (options.react) {
