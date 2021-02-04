@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.4](https://github.com/tobua/padua/compare/v0.2.3...v0.2.4) (2021-02-04)
+
+
+### Features
+
+* **esbuild:** define NODE_ENV for production builds ([d9a1a1c](https://github.com/tobua/padua/commit/d9a1a1c19c7bbb0c01d3ba6cd5adf90b02c4b649))
+
+
+### Bug Fixes
+
+* **eslint:** allow nested param reassign ([ddf3020](https://github.com/tobua/padua/commit/ddf3020a3ca70edab81f8cc6ee35a492f547a69f))
+
 ### [0.2.3](https://github.com/tobua/padua/compare/v0.2.2...v0.2.3) (2021-01-10)
 
 
