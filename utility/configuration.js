@@ -11,9 +11,14 @@ import formatJson from 'pakag'
 import objectAssignDeep from 'object-assign-deep'
 import deepForEach from 'deep-for-each'
 import parse from 'parse-gitignore'
+import unset from 'lodash.unset'
+import isCI from 'is-ci'
 import { tsconfig } from '../configuration/tsconfig.js'
 import { jsconfig } from '../configuration/jsconfig.js'
-import { packageJson } from '../configuration/package.js'
+import {
+  packageJson,
+  packagePropertiesToUpdate,
+} from '../configuration/package.js'
 import { gitignore } from '../configuration/gitignore.js'
 import { log } from './log.js'
 import { getOptions } from './options.js'
@@ -153,13 +158,23 @@ export const writeGitIgnore = (gitIgnoreOverrides = []) => {
   writeFileSync(gitIgnorePath, entries.join('\r\n'))
 }
 
-const writePackageJson = () => {
+export const removePropertiesToUpdate = (pkg) => {
+  // Don't make updates in CI to avoid surprises.
+  if (!isCI) {
+    packagePropertiesToUpdate.forEach((key) => unset(pkg, key))
+  }
+}
+
+export const writePackageJson = () => {
   const packageJsonPath = join(getProjectBasePath(), './package.json')
 
   let packageContents = readFileSync(packageJsonPath, 'utf8')
   packageContents = JSON.parse(packageContents)
 
   const generatedPackageJson = packageJson()
+
+  // Remove properties that should be kept up-to-date.
+  removePropertiesToUpdate(packageContents)
 
   // Merge existing configuration with additional required attributes.
   // Existing properties override generated configuration to allow

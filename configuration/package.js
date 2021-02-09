@@ -1,10 +1,20 @@
 import { getOptions } from '../utility/options.js'
 
+// Old package properties users might have that should be deleted or updated.
+export const packagePropertiesToUpdate = [
+  // Keep node version up-to-date.
+  'engines',
+  // Old property no longer used.
+  'jest.globals.ts-jest.tsConfig',
+  // Value updated.
+  'eslintConfig.rules.import/extensions',
+]
+
 export const packageJson = () => {
   const options = getOptions()
   const pkg = {
     engines: {
-      node: '>= 13.2.0',
+      node: '>= 14',
     },
     prettier: 'padua/configuration/.prettierrc.json',
     eslintConfig: {
@@ -52,7 +62,7 @@ export const packageJson = () => {
     pkg.main = `${options.entry}`
     // Extensions required for node source code.
     pkg.eslintConfig.rules = {
-      'import/extensions': [2, 'always'],
+      'import/extensions': [2, 'ignorePackages'],
     }
   } else {
     pkg.scripts.start = 'padua watch'

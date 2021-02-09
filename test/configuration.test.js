@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'fs'
 import { join } from 'path'
 import rimraf from 'rimraf'
-import { writeGitIgnore } from '../utility/configuration.js'
+import { writeGitIgnore, writePackageJson } from '../utility/configuration.js'
 import { refresh } from '../utility/helper.js'
 
 const CWD = process.cwd()
@@ -71,4 +71,20 @@ test('No output folder when source mode active.', () => {
   )
 
   rimraf.sync(gitignorePath)
+})
+
+test('Updates old package json properties.', () => {
+  const fixturePath = join(CWD, 'test/fixture/source')
+  const packageJsonPath = join(fixturePath, 'package.json')
+  cwdSpy.mockReturnValue(fixturePath)
+
+  let pkg = JSON.parse(readFileSync(packageJsonPath, 'utf8'))
+
+  expect(pkg.engines.node).toEqual('>= 13.2.0')
+
+  writePackageJson()
+
+  pkg = JSON.parse(readFileSync(packageJsonPath, 'utf8'))
+
+  expect(pkg.engines.node).toEqual('>= 14')
 })
