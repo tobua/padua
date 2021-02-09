@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.5](https://github.com/tobua/padua/compare/v0.2.4...v0.2.5) (2021-02-09)
+
+
+### Features
+
+* **package:** update outdated package properties ([6b382fc](https://github.com/tobua/padua/commit/6b382fc31ab9506f269de149669106c388ade781))
+
 ### [0.2.4](https://github.com/tobua/padua/compare/v0.2.3...v0.2.4) (2021-02-04)
 
 
