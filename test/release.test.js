@@ -1,11 +1,8 @@
-import { join } from 'path'
-import { checkOwner, firstRelease } from '../script/release.js'
 import { refresh } from '../utility/helper.js'
+import { environment, prepare } from './utility/prepare.js'
+import { checkOwner, firstRelease } from '../script/release.js'
 
-const CWD = process.cwd()
-const cwdSpy = jest.spyOn(process, 'cwd')
-
-beforeEach(() => refresh())
+const [fixturePath] = environment('release')
 
 test('Check if the package owner matches the logged in user.', () => {
   expect(checkOwner({ pkg: { name: 'padua' } })).toEqual(true)
@@ -13,9 +10,11 @@ test('Check if the package owner matches the logged in user.', () => {
 })
 
 test("Checks if the package isn't yet released.", async () => {
-  cwdSpy.mockReturnValue(join(CWD, 'test/fixture/released'))
+  prepare('released', fixturePath)
   expect(await firstRelease()).toEqual(false)
+
   refresh()
-  cwdSpy.mockReturnValue(join(CWD, 'test/fixture/unreleased'))
+
+  prepare('unreleased', fixturePath)
   expect(await firstRelease()).toEqual(true)
 })

@@ -1,15 +1,10 @@
-import { join } from 'path'
+import { environment, prepare } from './utility/prepare.js'
 import { getOptions } from '../utility/options.js'
-import { refresh } from '../utility/helper.js'
 
-const CWD = process.cwd()
-const cwdSpy = jest.spyOn(process, 'cwd')
-
-beforeEach(() => refresh())
+const [fixturePath] = environment('options')
 
 test('Additional entry plus default entries are added.', () => {
-  const fixturePath = join(CWD, 'test/fixture/entry')
-  cwdSpy.mockReturnValue(fixturePath)
+  prepare('entry', fixturePath)
 
   const options = getOptions()
 
@@ -20,8 +15,7 @@ test('Additional entry plus default entries are added.', () => {
 })
 
 test('TS and React options not set for JavaScript file.', () => {
-  const fixturePath = join(CWD, 'test/fixture/source')
-  cwdSpy.mockReturnValue(fixturePath)
+  prepare('source', fixturePath)
 
   const options = getOptions()
 

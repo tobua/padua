@@ -1,9 +1,0 @@
-{
-  "name": "source",
-  "padua": {
-    "source": true
-  },
-  "engines": {
-    "node": ">= 13.2.0"
-  }
-}
