@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import isCI from 'is-ci'
 import { log } from './utility/log.js'
 import * as scripts from './script/index.js'
 import { getOptions } from './utility/options.js'
@@ -17,7 +18,19 @@ if (['watch', 'build', 'test', 'lint', 'release', 'update'].includes(script)) {
 
   const options = getOptions()
 
-  scripts[script](options, watch)
+  try {
+    scripts[script](options, watch)
+  } catch (error) {
+    log(`script ${script} exited with an error`)
+
+    if (script !== 'test' && !isCI) {
+      console.log(error)
+    }
+
+    if (isCI) {
+      throw new Error(error)
+    }
+  }
 } else {
   log('Please provide a valid script', 'error')
 }
