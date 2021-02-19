@@ -21,11 +21,7 @@ export const esbuildConfiguration = (configurationPath) => {
     sourcemap: true,
     color: true,
     target: 'es6',
-    platform: 'browser',
-    format: 'esm',
-    define: {
-      'process.env.NODE_ENV': '"production"',
-    },
+    platform: 'neutral',
   }
 
   if (options.react) {
