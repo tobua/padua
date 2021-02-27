@@ -20,6 +20,7 @@ export const packageJson = () => {
     eslintConfig: {
       extends: './node_modules/padua/configuration/eslint.cjs',
     },
+    sideEffects: false,
     files: [options.output],
   }
 
