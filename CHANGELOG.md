@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.6](https://github.com/tobua/padua/compare/v0.2.5...v0.2.6) (2021-02-27)
+
+
+### Features
+
+* **script:** improve console output on error ([5b73d6f](https://github.com/tobua/padua/commit/5b73d6f33d9a0192ea9ccd550ee73addcc2a8f8a))
+
+
+### Bug Fixes
+
+* **esbuild:** NODE_ENV variable should be kept in code without warning ([c479620](https://github.com/tobua/padua/commit/c479620b659ee1b9d155d8da4cf004c9c99e2f74))
+
 ### [0.2.5](https://github.com/tobua/padua/compare/v0.2.4...v0.2.5) (2021-02-09)
 
 
