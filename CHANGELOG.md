@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/tobua/padua/compare/v0.2.6...v0.3.0) (2021-03-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* **watch:** watch script clean now optional with --clean flag
+
+### Bug Fixes
+
+* **watch:** make clean for watch script optional ([e1ab974](https://github.com/tobua/padua/commit/e1ab974e511b2ba9afc417c67c694b35c50352de))
+
 ### [0.2.6](https://github.com/tobua/padua/compare/v0.2.5...v0.2.6) (2021-02-27)
 
 
