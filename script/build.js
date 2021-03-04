@@ -58,8 +58,15 @@ const typescript = (options, watch) => {
     log('building...')
   }
 
+  const additionalArguments = process.argv.slice(2)
+
   // Cleanup dist folder.
-  rimraf.sync(join(process.cwd(), options.output))
+  if (
+    Array.isArray(additionalArguments) &&
+    additionalArguments.includes('--clean')
+  ) {
+    rimraf.sync(join(process.cwd(), options.output))
+  }
 
   try {
     execSync(command, { stdio: 'inherit' })

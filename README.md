@@ -20,7 +20,7 @@ Upon installation a start and test script along with the necessary configuration
 
 ### `npm start`
 
-Builds the plugin in watch mode.
+Builds the plugin in watch mode. Full command `npx padua watch [--clean]`.
 
 ### `npm test`
 
