@@ -4,12 +4,14 @@ import glob from 'fast-glob'
 import gzipSize from 'gzip-size'
 import filesize from 'filesize'
 import { execSync } from 'child_process'
-import { build, startService } from 'esbuild'
+import * as esbuild from 'esbuild'
 import chokidar from 'chokidar'
 import rimraf from 'rimraf'
 import { log } from '../utility/log.js'
 import { getProjectBasePath } from '../utility/path.js'
 import { esbuildConfiguration } from '../configuration/esbuild.js'
+
+const { build, startService } = esbuild
 
 const singleJavaScriptBuild = async (configurationPath) => {
   const buildOptions = esbuildConfiguration(configurationPath)

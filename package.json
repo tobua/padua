@@ -54,7 +54,7 @@
   "bin": "cli.js",
   "source": "index.js",
   "devDependencies": {
-    "jest-fixture": "^1.0.0"
+    "jest-fixture": "^1.0.1"
   },
   "files": [
     "configuration",
