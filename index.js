@@ -2,18 +2,24 @@ import * as scripts from './script/index.js'
 import { getOptions } from './utility/options.js'
 import { writeConfiguration } from './utility/configuration.js'
 
-const options = getOptions()
+const wrapper = (handler) => () => {
+  writeConfiguration()
+  handler()
+}
 
-writeConfiguration()
+const asyncWrapper = (handler) => async () => {
+  writeConfiguration()
+  await handler()
+}
 
-export const watch = () => scripts.build(options, true)
+export const watch = asyncWrapper(scripts.build.bind(null, getOptions(), true))
 
-export const build = () => scripts.build(options, false)
+export const build = asyncWrapper(scripts.build.bind(null, getOptions(), false))
 
-export const test = () => scripts.test(options)
+export const test = wrapper(scripts.test.bind(null, getOptions()))
 
-export const lint = () => scripts.lint()
+export const lint = asyncWrapper(scripts.lint)
 
-export const release = () => scripts.release()
+export const release = asyncWrapper(scripts.release)
 
-export const update = () => scripts.update()
+export const update = asyncWrapper(scripts.update)

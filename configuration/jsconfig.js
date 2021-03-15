@@ -1,7 +1,7 @@
-import objectAssignDeep from 'object-assign-deep'
+import merge from 'deepmerge'
 
 export const jsconfig = (jsconfigUserOverrides = {}) => {
-  const userJSConfig = {
+  let userJSConfig = {
     extends: 'padua/configuration/jsconfig',
   }
 
@@ -10,7 +10,7 @@ export const jsconfig = (jsconfigUserOverrides = {}) => {
     compilerOptions: {},
   }
 
-  objectAssignDeep(userJSConfig, jsconfigUserOverrides)
+  userJSConfig = merge(userJSConfig, jsconfigUserOverrides)
 
   return [userJSConfig, packageJSConfig]
 }

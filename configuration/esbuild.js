@@ -1,4 +1,4 @@
-import objectAssignDeep from 'object-assign-deep'
+import merge from 'deepmerge'
 import { getOptions } from '../utility/options.js'
 
 export const esbuildConfiguration = (configurationPath) => {
@@ -11,7 +11,7 @@ export const esbuildConfiguration = (configurationPath) => {
   const userESBuildConfiguration =
     typeof options.esbuild === 'object' ? options.esbuild : {}
 
-  const buildOptions = {
+  let buildOptions = {
     // entryPoints needs to be an array.
     entryPoints: options.entry,
     outdir: 'dist',
@@ -22,6 +22,7 @@ export const esbuildConfiguration = (configurationPath) => {
     color: true,
     target: 'es6',
     platform: 'neutral',
+    absWorkingDir: process.cwd(),
   }
 
   if (options.react) {
@@ -32,7 +33,7 @@ export const esbuildConfiguration = (configurationPath) => {
     buildOptions.tsconfig = configurationPath
   }
 
-  objectAssignDeep(buildOptions, userESBuildConfiguration)
+  buildOptions = merge(buildOptions, userESBuildConfiguration)
 
   return buildOptions
 }

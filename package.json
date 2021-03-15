@@ -20,6 +20,7 @@
     "chokidar": "^3.5.1",
     "current-git-branch": "^1.1.0",
     "deep-for-each": "^3.0.0",
+    "deepmerge": "^4.2.2",
     "esbuild": "^0.9.2",
     "eslint": "^7.22.0",
     "eslint-config-airbnb": "^18.2.1",
@@ -38,7 +39,6 @@
     "lodash.unset": "^4.5.2",
     "logua": "^2.1.4",
     "npm-check-updates": "^11.3.0",
-    "object-assign-deep": "^0.4.0",
     "pacote": "^11.3.0",
     "pakag": "^2.4.0",
     "parse-gitignore": "^1.0.1",
@@ -53,6 +53,9 @@
   "main": "index.js",
   "bin": "cli.js",
   "source": "index.js",
+  "devDependencies": {
+    "jest-fixture": "^1.0.0"
+  },
   "files": [
     "configuration",
     "script",

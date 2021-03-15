@@ -61,7 +61,7 @@ export const packageJson = () => {
     if (options.test) {
       pkg.files.push('!test')
     }
-    pkg.main = `${options.entry}`
+    pkg.main = `${options.entry[0]}`
     // Extensions required for node source code.
     pkg.eslintConfig.rules = {
       'import/extensions': [2, 'ignorePackages'],

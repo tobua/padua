@@ -4,7 +4,7 @@ import glob from 'fast-glob'
 import gzipSize from 'gzip-size'
 import filesize from 'filesize'
 import { execSync } from 'child_process'
-import esbuild from 'esbuild'
+import { build, startService } from 'esbuild'
 import chokidar from 'chokidar'
 import rimraf from 'rimraf'
 import { log } from '../utility/log.js'
@@ -15,7 +15,7 @@ const singleJavaScriptBuild = async (configurationPath) => {
   const buildOptions = esbuildConfiguration(configurationPath)
 
   try {
-    const { warnings } = await esbuild.build(buildOptions)
+    const { warnings } = await build(buildOptions)
 
     if (warnings.length) {
       log(warnings, 'warning')
@@ -92,7 +92,7 @@ const rebuildJavaScript = async (service, configurationPath) => {
 
 const javascript = async (watch) => {
   if (watch) {
-    const service = await esbuild.startService()
+    const service = await startService()
 
     const watcher = chokidar.watch('**/*.js', {
       ignored: [/node_modules/, 'dist', 'demo', 'test'],

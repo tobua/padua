@@ -1,9 +1,9 @@
-import objectAssignDeep from 'object-assign-deep'
+import merge from 'deepmerge'
 import { getOptions } from '../utility/options.js'
 
 export const tsconfig = (tsconfigUserOverrides = {}) => {
   const options = getOptions()
-  const userTSConfig = {
+  let userTSConfig = {
     extends: 'padua/configuration/tsconfig',
   }
 
@@ -17,7 +17,7 @@ export const tsconfig = (tsconfigUserOverrides = {}) => {
       moduleResolution: 'node',
       module: 'esnext',
     },
-    files: [`../../../${options.entry}`],
+    files: options.entry.map((entry) => `../../../${entry}`),
     exclude: [`../../../${options.output}`],
   }
 
@@ -25,7 +25,7 @@ export const tsconfig = (tsconfigUserOverrides = {}) => {
     packageTSConfig.compilerOptions.jsx = 'react'
   }
 
-  objectAssignDeep(userTSConfig, tsconfigUserOverrides)
+  userTSConfig = merge(userTSConfig, tsconfigUserOverrides)
 
   return [userTSConfig, packageTSConfig]
 }

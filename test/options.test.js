@@ -1,10 +1,17 @@
-import { environment, prepare } from './utility/prepare.js'
+import { environment, prepare, packageJson, file } from 'jest-fixture'
+import { refresh } from '../utility/helper.js'
 import { getOptions } from '../utility/options.js'
 
-const [fixturePath] = environment('options')
+environment('options')
+
+beforeEach(refresh)
 
 test('Additional entry plus default entries are added.', () => {
-  prepare('entry', fixturePath)
+  prepare([
+    packageJson('entry', { padua: { entry: 'hello.js' } }),
+    file('src/index.tsx', "console.log('what typescript?')"),
+    file('hello.js', "console.log('hello')"),
+  ])
 
   const options = getOptions()
 
@@ -15,7 +22,10 @@ test('Additional entry plus default entries are added.', () => {
 })
 
 test('TS and React options not set for JavaScript file.', () => {
-  prepare('source', fixturePath)
+  prepare([
+    packageJson('source', { padua: { source: true } }),
+    file('index.js', "console.log('source')"),
+  ])
 
   const options = getOptions()
 
@@ -23,4 +33,42 @@ test('TS and React options not set for JavaScript file.', () => {
   expect(options.typescript).toEqual(false)
   expect(options.react).toEqual(false)
   expect(options.entry).toEqual(['index.js'])
+})
+
+test('Multiple entries can be added.', () => {
+  prepare([
+    packageJson('entry', { padua: { entry: ['first.js', 'second.js'] } }),
+    file('first.js', ''),
+    file('second.js', ''),
+  ])
+
+  const options = getOptions()
+
+  expect(options.entry).toEqual(['first.js', 'second.js'])
+})
+
+test('Index entry is added automatically.', () => {
+  prepare([
+    packageJson('entry', { padua: { entry: ['first.js'] } }),
+    file('first.js', ''),
+    file('index.js', ''),
+  ])
+
+  const options = getOptions()
+
+  expect(options.entry).toEqual(['first.js', 'index.js'])
+})
+
+test('Duplicates will be removed.', () => {
+  prepare([
+    packageJson('entry', {
+      padua: { entry: ['first.js', 'index.js', './first.js'] },
+    }),
+    file('first.js', ''),
+    file('index.js', ''),
+  ])
+
+  const options = getOptions()
+
+  expect(options.entry).toEqual(['first.js', 'index.js'])
 })

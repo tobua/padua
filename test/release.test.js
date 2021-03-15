@@ -1,8 +1,10 @@
+import { environment, prepare, packageJson, file } from 'jest-fixture'
 import { refresh } from '../utility/helper.js'
-import { environment, prepare } from './utility/prepare.js'
 import { checkOwner, firstRelease } from '../script/release.js'
 
-const [fixturePath] = environment('release')
+environment('release')
+
+beforeEach(refresh)
 
 test('Check if the package owner matches the logged in user.', () => {
   expect(checkOwner({ pkg: { name: 'padua' } })).toEqual(true)
@@ -10,11 +12,19 @@ test('Check if the package owner matches the logged in user.', () => {
 })
 
 test("Checks if the package isn't yet released.", async () => {
-  prepare('released', fixturePath)
+  prepare([
+    packageJson('padua'),
+    file('index.js', "console.log('released')"),
+    file('CHANGELOG.md', '# Hello'),
+  ])
+
   expect(await firstRelease()).toEqual(false)
 
   refresh()
 
-  prepare('unreleased', fixturePath)
+  prepare([
+    packageJson('my-unreleased-package'),
+    file('index.js', "console.log('unreleased')"),
+  ])
   expect(await firstRelease()).toEqual(true)
 })

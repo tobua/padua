@@ -1,11 +1,16 @@
-import { readFile } from './utility/file.js'
-import { environment, prepare } from './utility/prepare.js'
+import { readFile, environment, prepare, file, packageJson } from 'jest-fixture'
+import { refresh } from '../utility/helper.js'
 import { writeGitIgnore, writePackageJson } from '../utility/configuration.js'
 
-const [fixturePath] = environment('configuration')
+environment('configuration')
+
+beforeEach(refresh)
 
 test('Generates gitignore with default entries.', () => {
-  prepare('gitignore', fixturePath)
+  prepare([
+    file('index.js', "console.log('gitignore')"),
+    packageJson('gitignore'),
+  ])
 
   writeGitIgnore([])
 
@@ -19,7 +24,10 @@ test('Generates gitignore with default entries.', () => {
 })
 
 test('Generates proper gitignore for typescript.', () => {
-  prepare('typescript', fixturePath)
+  prepare([
+    packageJson('typescript'),
+    file('index.ts', "console.log('typescript')"),
+  ])
 
   writeGitIgnore([])
 
@@ -33,7 +41,10 @@ test('Generates proper gitignore for typescript.', () => {
 })
 
 test('No output folder when source mode active.', () => {
-  prepare('source', fixturePath)
+  prepare([
+    packageJson('source', { padua: { source: true } }),
+    file('index.js', "console.log('source')"),
+  ])
 
   writeGitIgnore([])
 
@@ -45,7 +56,12 @@ test('No output folder when source mode active.', () => {
 })
 
 test('Updates old package json properties.', () => {
-  prepare('outdated', fixturePath)
+  prepare([
+    packageJson('outdated', {
+      engines: { hello: 'world', node: '>= 13.2.0' },
+    }),
+    file('index.ts', "console.log('outdated')"),
+  ])
 
   let pkg = readFile('package.json')
 

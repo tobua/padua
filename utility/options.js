@@ -1,10 +1,10 @@
 import { existsSync, writeFileSync, readFileSync } from 'fs'
 import { join } from 'path'
 import glob from 'fast-glob'
-import objectAssignDeep from 'object-assign-deep'
+import merge from 'deepmerge'
 import { log } from './log.js'
 import { getProjectBasePath } from './path.js'
-import { cache } from './helper.js'
+import { cache, removeDuplicatePaths } from './helper.js'
 
 const emptyFileTemplate = `
 // This is the entry file for your plugin.
@@ -25,7 +25,7 @@ const defaultOptions = {
 
 export const getOptions = cache(() => {
   let packageContents
-  const options = { ...defaultOptions, entry: [] }
+  let options = { ...defaultOptions, entry: [] }
 
   try {
     packageContents = readFileSync(
@@ -39,13 +39,17 @@ export const getOptions = cache(() => {
 
   if (typeof packageContents.padua === 'object') {
     // Include project specific overrides
-    objectAssignDeep(options, packageContents.padua)
+    options = merge(options, packageContents.padua)
 
     if (typeof options.entry === 'string') {
       options.entry = [options.entry]
     }
   }
 
+  // Remove non-existing files.
+  options.entry = options.entry.filter((filePath) =>
+    existsSync(join(getProjectBasePath(), filePath))
+  )
   ;['index', 'src/index'].forEach((entry) =>
     ['js', 'ts', 'jsx', 'tsx'].forEach((extension) => {
       const entryFilePath = `${entry}.${extension}`
@@ -55,6 +59,8 @@ export const getOptions = cache(() => {
       }
     })
   )
+
+  options.entry = removeDuplicatePaths(options.entry)
 
   options.entry.forEach((entry) => {
     if (/tsx?$/.test(entry)) {
@@ -73,14 +79,14 @@ export const getOptions = cache(() => {
     options.react = true
   }
 
-  if (!options.entry) {
+  if (!options.entry || options.entry.length === 0) {
     const entryFile = `index.${options.react ? 'jsx' : 'js'}`
 
     writeFileSync(join(getProjectBasePath(), entryFile), emptyFileTemplate)
 
     log(`No entry file found, created one in ${entryFile}`)
 
-    options.entry = entryFile
+    options.entry = [entryFile]
   }
 
   const testFiles = glob.sync(['test/**.test.?s*'], {

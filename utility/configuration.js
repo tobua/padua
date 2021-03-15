@@ -8,7 +8,7 @@ import {
 } from 'fs'
 import { join } from 'path'
 import formatJson from 'pakag'
-import objectAssignDeep from 'object-assign-deep'
+import merge from 'deepmerge'
 import deepForEach from 'deep-for-each'
 import parse from 'parse-gitignore'
 import unset from 'lodash.unset'
@@ -72,7 +72,8 @@ const writeOnlyUserConfig = (
     // eslint-disable-next-line no-param-reassign
     delete userConfig.extends
     adaptConfigToRoot(packageConfig)
-    objectAssignDeep(userConfig, packageConfig)
+    // eslint-disable-next-line no-param-reassign
+    userConfig = merge(userConfig, packageConfig)
     writeFileSync(
       userTSConfigPath,
       formatJson(JSON.stringify(userConfig), { sort: false })
@@ -174,7 +175,7 @@ export const writePackageJson = () => {
   let packageContents = readFileSync(packageJsonPath, 'utf8')
   packageContents = JSON.parse(packageContents)
 
-  const generatedPackageJson = packageJson()
+  let generatedPackageJson = packageJson()
 
   // Remove properties that should be kept up-to-date.
   removePropertiesToUpdate(packageContents)
@@ -182,7 +183,7 @@ export const writePackageJson = () => {
   // Merge existing configuration with additional required attributes.
   // Existing properties override generated configuration to allow
   // the user to configure it their way.
-  objectAssignDeep(generatedPackageJson, packageContents)
+  generatedPackageJson = merge(generatedPackageJson, packageContents)
 
   // Format with prettier and sort before writing.
   writeFileSync(
