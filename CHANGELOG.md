@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.2](https://github.com/tobua/padua/compare/v0.3.1...v0.3.2) (2021-03-15)
+
+
+### Bug Fixes
+
+* **build:** make sure imports work in test and node environment ([1828228](https://github.com/tobua/padua/commit/182822871e6f4344c2df093446005ec67139d710))
+
 ### [0.3.1](https://github.com/tobua/padua/compare/v0.3.0...v0.3.1) (2021-03-15)
 
 
