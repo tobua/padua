@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/tobua/padua/compare/v0.3.0...v0.3.1) (2021-03-15)
+
+
+### Bug Fixes
+
+* **build:** multiple entries fixed & jest-fixture integrated ([9398800](https://github.com/tobua/padua/commit/9398800859928b4644ec78e09606a71d5ff0fe13))
+* **various:** minor fixes, update and adapt eslint prettier config ([0a8d033](https://github.com/tobua/padua/commit/0a8d033c4e80a91c1ab83ba3ee4b26cd6da373ba))
+
 ## [0.3.0](https://github.com/tobua/padua/compare/v0.2.6...v0.3.0) (2021-03-04)
 
 
