@@ -16,6 +16,7 @@ export const packageJson = () => {
     engines: {
       node: '>= 14',
     },
+    type: 'module',
     prettier: 'padua/configuration/.prettierrc.json',
     eslintConfig: {
       extends: './node_modules/padua/configuration/eslint.cjs',

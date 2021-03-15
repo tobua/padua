@@ -56,6 +56,9 @@ const adaptConfigToRoot = (packageConfig) => {
       // eslint-disable-next-line no-param-reassign
       subject[key] = value.replace(baseFromPackagePath, '')
     }
+    if (value === '../../..') {
+      subject[key] = '.'
+    }
   })
 }
 

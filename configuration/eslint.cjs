@@ -24,7 +24,7 @@ const customSettings = {
 
 // CJS for backwards compatibility.
 module.exports = {
-  extends: ['airbnb', 'prettier', 'prettier/react', 'prettier/babel'],
+  extends: ['airbnb', 'prettier'],
   rules: customRules,
   ignorePatterns: ['dist', 'demo', 'index.d.ts'],
   env: {
@@ -45,12 +45,7 @@ module.exports = {
     {
       // TypeScript
       files: ['**/*.ts', '**/*.tsx'],
-      extends: [
-        'airbnb-typescript',
-        'prettier',
-        'prettier/react',
-        'prettier/@typescript-eslint',
-      ],
+      extends: ['airbnb-typescript', 'prettier'],
       rules: customRules,
       settings: customSettings,
       parser: '@typescript-eslint/parser',
