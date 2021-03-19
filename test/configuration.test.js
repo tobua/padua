@@ -73,3 +73,29 @@ test('Updates old package json properties.', () => {
 
   expect(pkg.engines.node).toEqual('>= 14')
 })
+
+test('Does not override configuration changes made by user after initial installation.', () => {
+  prepare([
+    packageJson('update', {
+      license: 'UNLICENSED',
+      sideEffects: true,
+      scripts: {
+        start: 'my-own-script',
+      },
+      prettier: 'padua/configuration/.prettierrc.json',
+      eslintConfig: {
+        extends: './node_modules/padua/configuration/eslint.cjs',
+      },
+    }),
+    file('index.js', ''),
+  ])
+
+  writePackageJson()
+
+  const pkg = readFile('package.json')
+
+  expect(pkg.license).toBe('UNLICENSED')
+  expect(pkg.sideEffects).toBe(true)
+  expect(pkg.scripts.start).toBe('my-own-script')
+  expect(pkg.type).toBe(undefined)
+})

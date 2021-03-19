@@ -11,18 +11,17 @@ import formatJson from 'pakag'
 import merge from 'deepmerge'
 import deepForEach from 'deep-for-each'
 import parse from 'parse-gitignore'
-import unset from 'lodash.unset'
+import get from 'lodash.get'
+import set from 'lodash.set'
 import isCI from 'is-ci'
 import { tsconfig } from '../configuration/tsconfig.js'
 import { jsconfig } from '../configuration/jsconfig.js'
-import {
-  packageJson,
-  packagePropertiesToUpdate,
-} from '../configuration/package.js'
+import { packageJson } from '../configuration/package.js'
 import { gitignore } from '../configuration/gitignore.js'
 import { log } from './log.js'
 import { getOptions } from './options.js'
 import { getProjectBasePath } from './path.js'
+import { readPackageJsonFile, writePackageJsonFile } from './file.js'
 
 const writeUserAndPackageConfig = (
   filename,
@@ -162,40 +161,59 @@ export const writeGitIgnore = (gitIgnoreOverrides = []) => {
   writeFileSync(gitIgnorePath, entries.join('\r\n'))
 }
 
-export const removePropertiesToUpdate = (pkg) => {
-  // Don't make updates in CI to avoid surprises.
-  if (!isCI) {
-    packagePropertiesToUpdate.forEach((key) => unset(pkg, key))
+const resetIgnoredProperties = (pkg) => {
+  if (!(typeof pkg.padua === 'object')) {
+    return
   }
+
+  const ignoreProperties = pkg.padua.ignorePkgProperties
+
+  if (!Array.isArray(ignoreProperties) || ignoreProperties.length < 1) {
+    return
+  }
+
+  const initialPkg = readPackageJsonFile()
+
+  ignoreProperties.forEach((property) => {
+    const initialValue = get(initialPkg, property)
+    const currentValue = get(pkg, property)
+
+    // No change was made, or path non-existant.
+    if (!currentValue) {
+      return
+    }
+
+    set(pkg, property, initialValue)
+  })
 }
 
 export const writePackageJson = () => {
-  const packageJsonPath = join(getProjectBasePath(), './package.json')
+  let contents = readPackageJsonFile()
+  const isInitial = packageJson.isInitial(contents)
 
-  let packageContents = readFileSync(packageJsonPath, 'utf8')
-  packageContents = JSON.parse(packageContents)
-
-  let generatedPackageJson = packageJson()
-
-  // Remove properties that should be kept up-to-date.
-  removePropertiesToUpdate(packageContents)
-
-  // Merge existing configuration with additional required attributes.
-  // Existing properties override generated configuration to allow
-  // the user to configure it their way.
-  generatedPackageJson = merge(generatedPackageJson, packageContents)
-
-  // Format with prettier and sort before writing.
-  writeFileSync(
-    packageJsonPath,
-    formatJson(JSON.stringify(generatedPackageJson))
-  )
-
-  if (!generatedPackageJson.padua) {
-    generatedPackageJson.padua = {}
+  if (isInitial) {
+    // Merge existing configuration with initial default properties.
+    contents = merge(packageJson.initial(), contents)
   }
 
-  return { packageContents: generatedPackageJson }
+  // Certain properties should be kept up-to-date.
+  // Don't make updates in CI to avoid surprises.
+  if (!isCI) {
+    packageJson.update(contents)
+  }
+
+  // Add properties subject to change based on files present in the project.
+  packageJson.switchable(contents)
+
+  resetIgnoredProperties(contents)
+
+  writePackageJsonFile(contents)
+
+  if (!contents.padua) {
+    contents.padua = {}
+  }
+
+  return { packageContents: contents }
 }
 
 export const writeConfiguration = () => {

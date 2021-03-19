@@ -7,14 +7,14 @@ const { ESLint } = eslint
 const configurationPath = './node_modules/padua/configuration'
 
 export default async () => {
-  log('formatting files..')
+  log('formatting files...')
   execSync(
     `prettier --write '**/*.{ts,tsx,js,jsx}' --config ${configurationPath}/.prettierrc.json --ignore-path ${configurationPath}/.prettierignore`,
     { stdio: 'inherit' }
   )
   console.log('')
 
-  log('linting files..')
+  log('linting files...')
   const linter = new ESLint({
     fix: true,
     extensions: ['.js', '.ts', '.jsx', '.tsx'],
@@ -24,6 +24,8 @@ export default async () => {
   const formatter = await linter.loadFormatter('stylish')
   const resultText = formatter.format(results)
 
-  // eslint-disable-next-line no-console
-  console.log(resultText)
+  if (resultText) {
+    // eslint-disable-next-line no-console
+    console.log(resultText)
+  }
 }
