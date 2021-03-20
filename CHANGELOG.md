@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.4](https://github.com/tobua/padua/compare/v0.3.3...v0.3.4) (2021-03-20)
+
+
+### Bug Fixes
+
+* **configuration:** more stages when writing package.json ([ca9c4a6](https://github.com/tobua/padua/commit/ca9c4a63b582074c76153298b179ba9dff3a47b6))
+
 ### [0.3.3](https://github.com/tobua/padua/compare/v0.3.2...v0.3.3) (2021-03-16)
 
 ### [0.3.2](https://github.com/tobua/padua/compare/v0.3.1...v0.3.2) (2021-03-15)
