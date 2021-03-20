@@ -56,7 +56,7 @@ const initial = () => {
     }
 
     if (options.test) {
-      pkg.files.push('!test')
+      pkg.files.push(`!${options.test}`)
     }
   }
 
@@ -83,6 +83,8 @@ const switchable = (pkg) => {
     existsSync(join(getProjectBasePath(), 'index.d.ts'))
   ) {
     pkg.types = 'index.d.ts'
+  } else if (pkg.types && !existsSync(join(getProjectBasePath(), pkg.types))) {
+    delete pkg.types
   }
 
   if (options.source) {
@@ -159,8 +161,7 @@ export const update = (pkg) => {
 
   // Value updated.
   if (get(pkg, 'eslintConfig.rules.import/extensions')) {
-    pkg.eslintConfig.rules['import/extensions'] =
-      init.eslintConfig.rules['import/extensions']
+    pkg.eslintConfig.rules['import/extensions'] = [2, 'ignorePackages']
   }
 }
 

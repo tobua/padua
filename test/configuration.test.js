@@ -1,4 +1,13 @@
-import { readFile, environment, prepare, file, packageJson } from 'jest-fixture'
+import { unlinkSync } from 'fs'
+import { join } from 'path'
+import {
+  readFile,
+  environment,
+  prepare,
+  file,
+  packageJson,
+  writeFile,
+} from 'jest-fixture'
 import { refresh } from '../utility/helper.js'
 import { writeGitIgnore, writePackageJson } from '../utility/configuration.js'
 
@@ -98,4 +107,153 @@ test('Does not override configuration changes made by user after initial install
   expect(pkg.sideEffects).toBe(true)
   expect(pkg.scripts.start).toBe('my-own-script')
   expect(pkg.type).toBe(undefined)
+})
+
+test('eslintConfig extended when switching to source mode.', () => {
+  prepare([
+    packageJson('source', {
+      padua: {
+        source: true,
+      },
+      type: 'classic',
+      prettier: 'padua/configuration/.prettierrc.json',
+      eslintConfig: {
+        extends: './node_modules/padua/configuration/eslint.cjs',
+      },
+    }),
+    file('index.js', ''),
+  ])
+
+  writePackageJson()
+
+  const pkg = readFile('package.json')
+
+  expect(pkg.eslintConfig.rules).toBeDefined()
+  expect(pkg.type).toBe('classic')
+})
+
+test('Type definitions will be added in source mode as soon as available.', () => {
+  prepare([
+    packageJson('source', {
+      padua: {
+        source: true,
+      },
+      prettier: 'padua/configuration/.prettierrc.json',
+      eslintConfig: {
+        extends: './node_modules/padua/configuration/eslint.cjs',
+      },
+    }),
+    file('index.js', ''),
+  ])
+
+  writePackageJson()
+
+  let pkg = readFile('package.json')
+
+  expect(pkg.types).not.toBeDefined()
+
+  writeFile('index.d.ts', '')
+
+  writePackageJson()
+
+  pkg = readFile('package.json')
+
+  expect(pkg.types).toBe('index.d.ts')
+
+  unlinkSync(join(process.cwd(), 'index.d.ts'))
+
+  writePackageJson()
+
+  pkg = readFile('package.json')
+
+  expect(pkg.types).not.toBeDefined()
+})
+
+test('Source entry will not be added again if removed by user.', () => {
+  prepare([
+    packageJson('source', {
+      padua: {
+        source: true,
+      },
+    }),
+    file('index.js', ''),
+  ])
+
+  writePackageJson()
+
+  let pkg = readFile('package.json')
+
+  expect(pkg.source).toBeDefined()
+
+  delete pkg.source
+
+  writeFile('package.json', pkg)
+
+  writePackageJson()
+
+  pkg = readFile('package.json')
+
+  expect(pkg.source).not.toBeDefined()
+})
+
+test('Files array is only changed initially.', () => {
+  prepare([
+    packageJson('source', {
+      padua: {
+        source: true,
+        test: 'spec',
+      },
+    }),
+    file('index.js', ''),
+    file('spec/basic.test.js'),
+  ])
+
+  writePackageJson()
+
+  let pkg = readFile('package.json')
+
+  expect(pkg.files).toEqual(['**/*.js', '!spec'])
+
+  pkg.files = ['1', '2', '3']
+
+  writeFile('package.json', pkg)
+
+  writePackageJson()
+
+  pkg = readFile('package.json')
+
+  expect(pkg.files).toEqual(['1', '2', '3'])
+})
+
+test('Test configuration static after initial write.', () => {
+  prepare([
+    packageJson('source', {
+      padua: {
+        source: true,
+      },
+    }),
+    file('index.js', ''),
+    file('test/basic.test.js'),
+  ])
+
+  writePackageJson()
+
+  let pkg = readFile('package.json')
+
+  expect(pkg.jest).toBeDefined()
+  expect(pkg.jest.transform['^.+\\.jsx?$'].length).toBe(2)
+
+  pkg.jest.modulePathIgnorePatterns = ['test/fixture']
+  pkg.jest.transformIgnorePatterns = ['node_modules/cint']
+
+  writeFile('package.json', pkg)
+
+  writePackageJson()
+
+  pkg = readFile('package.json')
+
+  expect(pkg.jest).toBeDefined()
+  expect(pkg.jest.transform['^.+\\.jsx?$'].length).toBe(2)
+  expect(pkg.jest.modulePathIgnorePatterns).toBeDefined()
+  expect(pkg.jest.transformIgnorePatterns).toBeDefined()
 })
