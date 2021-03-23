@@ -4,7 +4,7 @@ import glob from 'fast-glob'
 import merge from 'deepmerge'
 import { log } from './log.js'
 import { getProjectBasePath } from './path.js'
-import { cache, removeDuplicatePaths } from './helper.js'
+import { cache, removeDuplicatePaths, resolveGlobEntries } from './helper.js'
 
 const emptyFileTemplate = `
 // This is the entry file for your plugin.
@@ -45,6 +45,8 @@ export const getOptions = cache(() => {
       options.entry = [options.entry]
     }
   }
+
+  options.entry = resolveGlobEntries(options.entry)
 
   // Remove non-existing files.
   options.entry = options.entry.filter((filePath) =>

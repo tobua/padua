@@ -72,3 +72,53 @@ test('Duplicates will be removed.', () => {
 
   expect(options.entry).toEqual(['first.js', 'index.js'])
 })
+
+test('Entries can contain globs from root with file extension.', () => {
+  prepare([
+    packageJson('entry', { padua: { entry: ['*.js'] } }),
+    file('index.js', ''),
+    file('something.js', ''),
+    file('whaaat.ts', ''),
+  ])
+
+  const options = getOptions()
+
+  expect(options.entry).toEqual(['index.js', 'something.js'])
+})
+
+test('Entries can contain globs.', () => {
+  prepare([
+    packageJson('entry', { padua: { entry: ['theme/*'] } }),
+    file('index.js', ''),
+    file('theme/first.js', ''),
+    file('theme/second.js', ''),
+    file('theme/third-fourth.js', ''),
+    file('theme/nested/missing.js', ''),
+  ])
+
+  const options = getOptions()
+
+  expect(options.entry).toEqual([
+    'theme/first.js',
+    'theme/second.js',
+    'theme/third-fourth.js',
+    'index.js',
+  ])
+})
+
+test('Nested globs are possible.', () => {
+  prepare([
+    packageJson('entry', { padua: { entry: ['theme/**/*.js'] } }),
+    file('theme/first.js', ''),
+    file('theme/nested/second.js', ''),
+    file('theme/nested/deeper/third-fourth.js', ''),
+  ])
+
+  const options = getOptions()
+
+  expect(options.entry).toEqual([
+    'theme/first.js',
+    'theme/nested/second.js',
+    'theme/nested/deeper/third-fourth.js',
+  ])
+})

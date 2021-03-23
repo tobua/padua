@@ -77,6 +77,7 @@ a `padua` property to your `package.json` with the following options available:
     // Name of the entry files, automatically adds [src/]?index.[jt]sx? files if available.
     "entry": "another.tsx",
     "entry": ["another.js", "several.jsx"],
+    "entry": "theme/*.ts",
     // package.json properties to be left untouched during configuration.
     "ignorePkgProperties": ["engines", "eslintConfig.rules"]
   }

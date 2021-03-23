@@ -1,4 +1,5 @@
 import { join } from 'path'
+import glob from 'fast-glob'
 import { getProjectBasePath } from './path.js'
 
 const results = new Map()
@@ -38,12 +39,34 @@ export const removeDuplicatePaths = (relativePaths) => {
   })
 
   // Remove biggest indices first, as otherwise indices change.
-  indicesToRemove.reverse()
-
-  indicesToRemove.forEach((index) => {
+  indicesToRemove.reverse().forEach((index) => {
     // Remove duplicate path in-place from relativePaths.
     relativePaths.splice(index, 1)
   })
 
   return relativePaths
+}
+
+export const resolveGlobEntries = (inputs) => {
+  let newEntries = []
+  const indicesToRemove = []
+
+  inputs.forEach((entry, index) => {
+    // Resolve glob entries.
+    if (entry.includes('*')) {
+      const entries = glob.sync([entry], {
+        cwd: getProjectBasePath(),
+      })
+
+      // Add new entries.
+      newEntries = newEntries.concat(entries)
+      // Remove glob entry.
+      indicesToRemove.push(index)
+    }
+  })
+
+  // Reverse, so that globs can be removed inline.
+  indicesToRemove.reverse().forEach((index) => inputs.splice(index, 1))
+
+  return inputs.concat(newEntries)
 }
