@@ -18,6 +18,8 @@ export const build = asyncWrapper(scripts.build.bind(null, getOptions(), false))
 
 export const test = wrapper(scripts.test.bind(null, getOptions()))
 
+export const cypress = wrapper(scripts.cypress.bind(null))
+
 export const lint = asyncWrapper(scripts.lint)
 
 export const release = asyncWrapper(scripts.release)

@@ -43,6 +43,14 @@ module.exports = {
       },
     },
     {
+      // Cypress Integration Tests
+      files: ['cypress/**/*.spec.js', 'cypress/**/*.spec.ts'],
+      plugins: ['cypress'],
+      env: {
+        'cypress/globals': true,
+      },
+    },
+    {
       // TypeScript
       files: ['**/*.ts', '**/*.tsx'],
       extends: ['airbnb-typescript', 'prettier'],
