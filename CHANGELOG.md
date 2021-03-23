@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.5](https://github.com/tobua/padua/compare/v0.3.4...v0.3.5) (2021-03-23)
+
+
+### Features
+
+* **options:** allow and parse glob entries ([32b3ddf](https://github.com/tobua/padua/commit/32b3ddf8502dba43292e84a2f7dc295151e3dde0))
+* **script:** add cypress script and configuration ([cf65c80](https://github.com/tobua/padua/commit/cf65c800262928d15c90b800792944749e260baa))
+
 ### [0.3.4](https://github.com/tobua/padua/compare/v0.3.3...v0.3.4) (2021-03-20)
 
 
