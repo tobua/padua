@@ -36,7 +36,13 @@ Lints the code and prints errors.
 
 ### `npx papua release`
 
-Creates a new release version with `standard-version`, pushes the git tag for the new version and publishes the plugin to npm.
+- Build if necessary
+- Checks if owner logged in
+- Automatically detects first release
+- Bumps version otherwise
+- Creates a release tag and changelog
+- Pushes tag to git
+- Runs `npm publish`
 
 ### `npx papua update`
 
@@ -60,7 +66,7 @@ The goal of this package is to allow you to create npm plugins just having to fo
 Everything is **zero-configuration** but the configurations can easily be extended. To do that add
 a `padua` property to your `package.json` with the following options available:
 
-```json
+```js
 {
   "name": "my-plugin",
   "padua": {
@@ -79,35 +85,29 @@ a `padua` property to your `package.json` with the following options available:
     "entry": ["another.js", "several.jsx"],
     "entry": "theme/*.ts",
     // package.json properties to be left untouched during configuration.
-    "ignorePkgProperties": ["engines", "eslintConfig.rules"]
-  }
+    "ignorePkgProperties": ["engines", "eslintConfig.rules"],
+    // Additional tsconfig properties that will be added to the extended tsconfig.json.
+    "tsconfig": {
+      "compilerOptions": {
+        "types": [
+          "@types/jest"
+        ]
+      }
+    },
+    // Additional configuration passed to esbuild.
+    "esbuild": {
+      "external": [
+        "naven"
+      ]
+    }
+  },
+  "eslintConfig": {
+    // Added automatically upon installation.
+    "extends": "./node_modules/padua/configuration/eslint.cjs"
+    // Override ESLint default here.
+    "rules": {
+      "no-console": 0
+    }
+  },
 }
 ```
-
-### TypeScript
-
-Create and edit a `tsconfig.json` in the root of your project. When you run a build with `padua build` your configuration is detected and will be extended with the padua-defaults automatically.
-
-//
-
-### ESLint
-
-## Commands
-
-### Publish
-
-Bumps version according to commits, generates changelog, commits release, pushes commit and tag and releases to npm. The plugin will detect if the package hasn't been released yet and not bump
-the version in this case.
-
-## Built with padua
-
-- epic-react
-- stylesnames
-- pakag
-
-## Future
-
-- Use https://github.com/jeremyben/tsc-prog to bundle d.ts.
-- or use compiler API: https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API
-- User tsconfig.json for ts-jest.
-- Common template which will be added to every template.
