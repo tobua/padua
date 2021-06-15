@@ -48,6 +48,12 @@ const initial = () => {
     pkg.scripts = {}
   }
 
+  if (options.stylelint) {
+    pkg.stylelint = {
+      extends: 'padua/configuration/stylelint.cjs',
+    }
+  }
+
   if (options.source) {
     pkg.files = ['**/*.js']
 
@@ -116,6 +122,10 @@ const switchable = (pkg) => {
     if (!pkg.main) {
       pkg.main = `${options.output}/index.js`
     }
+  }
+
+  if (pkg.stylelint && !options.stylelint) {
+    delete pkg.stylelint
   }
 
   if (options.test) {

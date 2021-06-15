@@ -257,3 +257,66 @@ test('Test configuration static after initial write.', () => {
   expect(pkg.jest.modulePathIgnorePatterns).toBeDefined()
   expect(pkg.jest.transformIgnorePatterns).toBeDefined()
 })
+
+test('Stylelint configuration is added if dependency present and can be removed.', () => {
+  prepare([
+    packageJson('stylelint', {
+      dependencies: {
+        '@emotion/react': '11.4.0',
+        react: '17.0.1',
+      },
+    }),
+    file('index.js', ''),
+  ])
+
+  writePackageJson()
+
+  let pkg = readFile('package.json')
+
+  expect(pkg.stylelint).toBeDefined()
+  expect(pkg.stylelint.extends).toBeDefined()
+
+  pkg.dependencies = {}
+
+  writeFile('package.json', pkg)
+
+  refresh()
+
+  writePackageJson()
+
+  pkg = readFile('package.json')
+
+  expect(pkg.stylelint).not.toBeDefined()
+})
+
+test('Stylelint works with several popular packages and can be overriden.', () => {
+  prepare([
+    packageJson('stylelint-override', {
+      dependencies: {
+        'styled-components': '11.4.0',
+      },
+    }),
+    file('index.js', ''),
+  ])
+
+  writePackageJson()
+
+  let pkg = readFile('package.json')
+
+  expect(pkg.stylelint).toBeDefined()
+  expect(pkg.stylelint.extends).toBeDefined()
+
+  pkg.padua = {
+    stylelint: false,
+  }
+
+  writeFile('package.json', pkg)
+
+  refresh()
+
+  writePackageJson()
+
+  pkg = readFile('package.json')
+
+  expect(pkg.stylelint).not.toBeDefined()
+})

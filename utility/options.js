@@ -4,7 +4,12 @@ import glob from 'fast-glob'
 import merge from 'deepmerge'
 import { log } from './log.js'
 import { getProjectBasePath } from './path.js'
-import { cache, removeDuplicatePaths, resolveGlobEntries } from './helper.js'
+import {
+  cache,
+  removeDuplicatePaths,
+  resolveGlobEntries,
+  hasDependency,
+} from './helper.js'
 
 const emptyFileTemplate = `
 // This is the entry file for your plugin.
@@ -74,11 +79,20 @@ export const getOptions = cache(() => {
     }
   })
 
-  if (
-    Object.keys(packageContents.dependencies || {}).includes('react') ||
-    Object.keys(packageContents.peerDependencies || {}).includes('react')
-  ) {
+  if (hasDependency(packageContents, 'react')) {
     options.react = true
+  }
+
+  if (
+    // Don't enable if overriden.
+    options.stylelint !== false &&
+    // Don't check if already enabled.
+    !options.stylelint &&
+    (hasDependency(packageContents, '@emotion/react') ||
+      hasDependency(packageContents, 'styled-components') ||
+      hasDependency(packageContents, 'jss'))
+  ) {
+    options.stylelint = true
   }
 
   if (!options.entry || options.entry.length === 0) {

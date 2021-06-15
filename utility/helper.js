@@ -70,3 +70,9 @@ export const resolveGlobEntries = (inputs) => {
 
   return inputs.concat(newEntries)
 }
+
+// Is the specified dependency found in either the dependencies, devDependencies or peerDependencies.
+export const hasDependency = (pkg, depdendency) =>
+  Object.keys(pkg.dependencies || {}).includes(depdendency) ||
+  Object.keys(pkg.peerDependencies || {}).includes(depdendency) ||
+  Object.keys(pkg.devDependencies || {}).includes(depdendency)

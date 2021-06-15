@@ -99,7 +99,10 @@ a `padua` property to your `package.json` with the following options available:
       "external": [
         "naven"
       ]
-    }
+    },
+    // Add stylelint configuration, default false.
+    // true if @emotion/react, styled-components or jss installed.
+    "stylelint": true
   },
   "eslintConfig": {
     // Added automatically upon installation.

@@ -19,6 +19,7 @@ test('Additional entry plus default entries are added.', () => {
   expect(options.typescript).toEqual(true)
   expect(options.react).toEqual(true)
   expect(options.entry).toEqual(['hello.js', 'src/index.tsx'])
+  expect(options.stylelint).toEqual(undefined)
 })
 
 test('TS and React options not set for JavaScript file.', () => {
@@ -121,4 +122,15 @@ test('Nested globs are possible.', () => {
     'theme/nested/second.js',
     'theme/nested/deeper/third-fourth.js',
   ])
+})
+
+test('Stylelint can be turned on.', () => {
+  prepare([
+    packageJson('stylelint', { padua: { stylelint: true } }),
+    file('first.js', ''),
+  ])
+
+  const options = getOptions()
+
+  expect(options.stylelint).toEqual(true)
 })
