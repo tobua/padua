@@ -31,7 +31,24 @@ module.exports = {
     browser: true,
     node: true,
   },
-  parser: 'babel-eslint',
+  parser: '@babel/eslint-parser',
+  parserOptions: {
+    requireConfigFile: false,
+    // Inline babel configuration as configFile options wouldn't allow sharing between
+    // local development and published package (only works for either).
+    babelOptions: {
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            targets: {
+              node: 'current',
+            },
+          },
+        ],
+      ],
+    },
+  },
   settings: customSettings,
   overrides: [
     {
