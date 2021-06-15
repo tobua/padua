@@ -198,7 +198,7 @@ export const writePackageJson = () => {
 
   // Certain properties should be kept up-to-date.
   // Don't make updates in CI to avoid surprises.
-  if (!isCI) {
+  if (!isCI || typeof jest !== 'undefined') {
     packageJson.update(contents)
   }
 
