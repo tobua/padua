@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.7](https://github.com/tobua/padua/compare/v0.3.6...v0.3.7) (2021-06-15)
+
+
+### Features
+
+* **lint:** add optional stylelint configuration ([bf4c8a6](https://github.com/tobua/padua/commit/bf4c8a6ed1dff0b77f15a261aea3e0b76aecba82))
+
+
+### Bug Fixes
+
+* **lint:** replace deprecated babel-eslint ([b5e858c](https://github.com/tobua/padua/commit/b5e858c9a3064caf3a57e722a49d5e76f0d88a14))
+
 ### [0.3.6](https://github.com/tobua/padua/compare/v0.3.5...v0.3.6) (2021-05-28)
 
 ### [0.3.5](https://github.com/tobua/padua/compare/v0.3.4...v0.3.5) (2021-03-23)
