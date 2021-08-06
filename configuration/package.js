@@ -126,6 +126,10 @@ const switchable = (pkg) => {
 
   if (pkg.stylelint && !options.stylelint) {
     delete pkg.stylelint
+  } else if (options.stylelint) {
+    pkg.stylelint = {
+      extends: 'padua/configuration/stylelint.cjs',
+    }
   }
 
   if (options.test) {

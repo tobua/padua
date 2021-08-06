@@ -13,7 +13,8 @@ export const tsconfig = (tsconfigUserOverrides = {}) => {
       esModuleInterop: true,
       outDir: '../../../dist',
       declaration: true,
-      lib: ['DOM', 'ES6'],
+      // Types for newest ES library, typescript won't add polyfills.
+      lib: ['DOM', 'ESNext'],
       moduleResolution: 'node',
       module: 'esnext',
     },
