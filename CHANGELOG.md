@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.8](https://github.com/tobua/padua/compare/v0.3.7...v0.3.8) (2021-08-06)
+
+
+### Bug Fixes
+
+* **configuration:** stylelint property switchable and all ESNext features ([6a5dc39](https://github.com/tobua/padua/commit/6a5dc39fdbe467eb93352ce29a7409dbe9f63b81))
+
 ### [0.3.7](https://github.com/tobua/padua/compare/v0.3.6...v0.3.7) (2021-06-15)
 
 
