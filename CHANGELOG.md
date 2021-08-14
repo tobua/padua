@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.9](https://github.com/tobua/padua/compare/v0.3.8...v0.3.9) (2021-08-14)
+
+
+### Features
+
+* **release:** validate package fields before release and exports field ([e724ab4](https://github.com/tobua/padua/commit/e724ab4a5547335618fa5e5dc5d75881687eff11))
+
 ### [0.3.8](https://github.com/tobua/padua/compare/v0.3.7...v0.3.8) (2021-08-06)
 
 
