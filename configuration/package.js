@@ -98,6 +98,12 @@ const switchable = (pkg) => {
       pkg.main = `${options.entry[0]}`
     }
 
+    if (!pkg.exports) {
+      pkg.exports = {
+        default: pkg.main,
+      }
+    }
+
     // Extensions required for node source code.
     set(pkg, 'eslintConfig.rules.import/extensions', [2, 'ignorePackages'])
 
@@ -121,6 +127,11 @@ const switchable = (pkg) => {
     }
     if (!pkg.main) {
       pkg.main = `${options.output}/index.js`
+    }
+    if (!pkg.exports) {
+      pkg.exports = {
+        default: pkg.main,
+      }
     }
   }
 

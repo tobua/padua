@@ -34,6 +34,45 @@ export const firstRelease = async (options = getOptions()) => {
   return !hasChangelog && !isReleased
 }
 
+const failMissingPackageField = (field, type = 'error') => {
+  log(
+    `package.json ${
+      type === 'error' ? 'requires' : 'should have'
+    } a ${field} for the package to release`,
+    type
+  )
+}
+
+export const validatePackage = (options) => {
+  if (!options.pkg.version) {
+    failMissingPackageField('version')
+  }
+
+  if (!options.pkg.license) {
+    failMissingPackageField('license')
+  }
+
+  if (!options.pkg.author) {
+    failMissingPackageField('author')
+  }
+
+  if (!options.pkg.keywords) {
+    failMissingPackageField('keywords', 'warning')
+  }
+
+  if (!options.pkg.files) {
+    failMissingPackageField('files', 'warning')
+  }
+
+  if (!options.pkg.main && !options.pkg.exports) {
+    failMissingPackageField('main or exports')
+  }
+
+  if (!options.pkg.exports) {
+    failMissingPackageField('exports', 'warning')
+  }
+}
+
 export default async () => {
   const branch = branchName()
   const options = getOptions()
@@ -42,15 +81,11 @@ export default async () => {
     log(`Releasing from ${branch} branch`, 'warning')
   }
 
-  if (!options.pkg.version) {
-    log(`package.json requires a version for the package to release`, 'error')
-  }
+  validatePackage(options)
 
   if (!options.source) {
     await build(options)
   }
-
-  // TODO lint and test before publish
 
   const isFirstRelease = await firstRelease(options)
 
