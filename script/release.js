@@ -111,7 +111,7 @@ export default async () => {
   }
 
   if (!process.argv.includes('--no-publish')) {
-    execSync('npm publish', { stdout: 'inherit' })
+    execSync('npm publish', { stdio: 'inherit' })
     log('package published to npm')
   }
 }
