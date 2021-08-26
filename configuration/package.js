@@ -100,7 +100,7 @@ const switchable = (pkg) => {
 
     if (!pkg.exports) {
       pkg.exports = {
-        default: pkg.main,
+        default: `./${pkg.main}`,
       }
     }
 
@@ -130,7 +130,7 @@ const switchable = (pkg) => {
     }
     if (!pkg.exports) {
       pkg.exports = {
-        default: pkg.main,
+        default: `./${pkg.main}`,
       }
     }
   }
