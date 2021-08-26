@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.10](https://github.com/tobua/padua/compare/v0.3.9...v0.3.10) (2021-08-26)
+
+
+### Bug Fixes
+
+* **release:** make sure npm publish is interactive for 2FA prompt ([91113be](https://github.com/tobua/padua/commit/91113bec2c555c2f622b531a9152a98b1e45d9af))
+
 ### [0.3.9](https://github.com/tobua/padua/compare/v0.3.8...v0.3.9) (2021-08-14)
 
 
