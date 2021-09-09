@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.11](https://github.com/tobua/padua/compare/v0.3.10...v0.3.11) (2021-09-09)
+
+
+### Features
+
+* **watch:** update and migrate to new esbuild API ([e46f545](https://github.com/tobua/padua/commit/e46f5456f2f54e40984a31db2ef89b985a63be21))
+
 ### [0.3.10](https://github.com/tobua/padua/compare/v0.3.9...v0.3.10) (2021-08-26)
 
 
