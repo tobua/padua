@@ -4,32 +4,17 @@ import glob from 'fast-glob'
 import gzipSize from 'gzip-size'
 import filesize from 'filesize'
 import { execSync } from 'child_process'
-import * as esbuild from 'esbuild'
-import chokidar from 'chokidar'
+import { build } from 'esbuild'
 import rimraf from 'rimraf'
 import { log } from '../utility/log.js'
 import { getProjectBasePath } from '../utility/path.js'
 import { esbuildConfiguration } from '../configuration/esbuild.js'
 
-const { build, startService } = esbuild
-
-const singleJavaScriptBuild = async (configurationPath) => {
-  const buildOptions = esbuildConfiguration(configurationPath)
-
-  try {
-    const { warnings } = await build(buildOptions)
-
-    if (warnings.length) {
-      log(warnings, 'warning')
-    }
-  } catch (error) {
-    log(error, 'error')
-    process.exit(1)
-  }
-
+// Print stats for generated assets.
+const printDistStats = (options) =>
   glob
     .sync('**/*.js', {
-      cwd: 'dist',
+      cwd: options.output,
     })
     .forEach((file) => {
       const filePath = join(getProjectBasePath(), `dist/${file}`)
@@ -40,12 +25,51 @@ const singleJavaScriptBuild = async (configurationPath) => {
         )} gzipped)`
       )
     })
+
+const javaScriptBuild = async (options, watch, tsconfigPath) => {
+  if (watch) {
+    // eslint-disable-next-line no-param-reassign
+    watch = {
+      onRebuild: (error) => {
+        if (error) {
+          log(error, 'error')
+        } else {
+          log('rebuilding...')
+          printDistStats(options)
+        }
+      },
+    }
+  }
+
+  const buildOptions = esbuildConfiguration(watch, tsconfigPath)
+
+  try {
+    const { errors, warnings } = await build(buildOptions)
+
+    if (errors.length) {
+      errors.forEach((error) => {
+        log(error, 'error')
+        process.exit(1)
+      })
+    }
+
+    if (warnings.length) {
+      warnings.forEach((warning) => {
+        log(warning, 'warning')
+      })
+    }
+  } catch (error) {
+    log(error, 'error')
+    process.exit(1)
+  }
+
+  printDistStats(options)
 }
 
 const typescript = (options, watch) => {
-  const configurationPath = join(process.cwd(), 'tsconfig.json')
+  const tsconfigPath = join(process.cwd(), 'tsconfig.json')
 
-  let command = `tsc --project ${configurationPath}`
+  let command = `tsc --project ${tsconfigPath}`
 
   if (watch) {
     command += ' --watch'
@@ -77,51 +101,8 @@ const typescript = (options, watch) => {
   }
 
   if (!watch) {
-    singleJavaScriptBuild(configurationPath)
+    javaScriptBuild(options, false, tsconfigPath)
   }
-}
-
-const rebuildJavaScript = async (service, configurationPath) => {
-  const buildOptions = esbuildConfiguration(configurationPath)
-
-  try {
-    await service.build(buildOptions)
-    log('built')
-  } catch (error) {
-    log(error, 'error')
-  }
-}
-
-const javascript = async (watch) => {
-  if (watch) {
-    const service = await startService()
-
-    const watcher = chokidar.watch('**/*.js', {
-      ignored: [/node_modules/, 'dist', 'demo', 'test'],
-      // Ignore files that have just been built.
-      ignoreInitial: true,
-    })
-
-    const buildHandler = rebuildJavaScript.bind(null, service)
-
-    watcher
-      .on('change', buildHandler)
-      .on('add', buildHandler)
-      .on('unlink', buildHandler)
-
-    process.on('SIGINT', () => {
-      service.stop()
-      process.exit(0)
-    })
-
-    await rebuildJavaScript(service)
-
-    return log('watching..')
-  }
-
-  log('building...')
-
-  return singleJavaScriptBuild()
 }
 
 export default (options, watch) => {
@@ -133,5 +114,6 @@ export default (options, watch) => {
     return typescript(options, watch)
   }
 
-  return javascript(watch)
+  log(watch ? 'watching...' : 'building...')
+  return javaScriptBuild(options, watch)
 }
