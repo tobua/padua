@@ -26,15 +26,15 @@ Builds the plugin in watch mode. Full command `npx padua watch [--clean]`.
 
 Run tests if there are any.
 
-### `npx papua build`
+### `npx padua build`
 
 Builds the plugin minified for distribution including types.
 
-### `npx papua lint`
+### `npx padua lint`
 
 Lints the code and prints errors.
 
-### `npx papua release`
+### `npx padua release`
 
 - Build if necessary
 - Checks if owner logged in
@@ -44,7 +44,7 @@ Lints the code and prints errors.
 - Pushes tag to git
 - Runs `npm publish`
 
-### `npx papua update`
+### `npx padua update`
 
 Checks if there are updates to any dependencies and automatically updates them.
 

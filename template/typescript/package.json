@@ -3,6 +3,6 @@
   "description": "<%= description %>",
   "version": "0.0.0",
   "devDependencies": {
-    "padua": "^0.1.1"
+    "padua": "^0.3.11"
   }
 }
