@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.13](https://github.com/tobua/padua/compare/v0.3.12...v0.3.13) (2021-10-05)
+
+
+### Features
+
+* **release:** release as version check & clean before build ([3bf9341](https://github.com/tobua/padua/commit/3bf9341909a9b65544a7b7d7422cf1f46444b570))
+
 ### [0.3.12](https://github.com/tobua/padua/compare/v0.3.11...v0.3.12) (2021-09-11)
 
 ### [0.3.11](https://github.com/tobua/padua/compare/v0.3.10...v0.3.11) (2021-09-09)
