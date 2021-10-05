@@ -43,6 +43,20 @@ const failMissingPackageField = (field, type = 'error') => {
   )
 }
 
+// Release with yet unreleased version specified in package.json.
+export const releaseAs = async (options = getOptions()) => {
+  try {
+    const manifest = await pacote.manifest(options.pkg.name)
+
+    if (options.pkg.version !== manifest.version) {
+      return options.pkg.version
+    }
+  } catch (error) {
+    return
+  }
+  return
+}
+
 export const validatePackage = (options) => {
   if (!options.pkg.version) {
     failMissingPackageField('version')
@@ -99,6 +113,7 @@ export default async () => {
   try {
     await standardVersion({
       firstRelease: isFirstRelease,
+      releaseAs: await releaseAs(options),
     })
   } catch (error) {
     log(`standard-version failed with message: ${error.message}`, 'error')

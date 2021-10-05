@@ -43,6 +43,7 @@ Lints the code and prints errors.
 - Creates a release tag and changelog
 - Pushes tag to git
 - Runs `npm publish`
+- Released as version in `package.json` if yet unreleased
 
 ### `npx padua update`
 

@@ -1,8 +1,13 @@
 import isCI from 'is-ci'
+import pacote from 'pacote'
 import { environment, prepare, packageJson, file } from 'jest-fixture'
 import { refresh } from '../utility/helper.js'
-import { getOptions } from '../utility/options.js'
-import { checkOwner, firstRelease, validatePackage } from '../script/release.js'
+import {
+  checkOwner,
+  firstRelease,
+  validatePackage,
+  releaseAs,
+} from '../script/release.js'
 
 environment('release')
 
@@ -79,4 +84,28 @@ test('Validates package properties before release.', () => {
   })
 
   expect(mockExit.mock.calls.length).toBe(6)
+})
+
+test('Released as version specified in package.json if not yet released.', async () => {
+  const manifest = await pacote.manifest('debug')
+
+  let version = await releaseAs({
+    pkg: {
+      // Current release version for debug.
+      version: manifest.version,
+      name: 'debug',
+    },
+  })
+
+  expect(version).toBeUndefined()
+
+  version = await releaseAs({
+    pkg: {
+      // Not yet released.
+      version: '123.0.0',
+      name: 'debug',
+    },
+  })
+
+  expect(version).toBe('123.0.0')
 })

@@ -86,10 +86,10 @@ const typescript = (options, watch) => {
 
   const additionalArguments = process.argv.slice(2)
 
-  // Cleanup dist folder.
+  // Cleanup dist folder, always to ensure esbuild will bundle the files.
   if (
     Array.isArray(additionalArguments) &&
-    additionalArguments.includes('--clean')
+    !additionalArguments.includes('--no-clean')
   ) {
     rimraf.sync(join(process.cwd(), options.output))
   }
