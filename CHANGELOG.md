@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.14](https://github.com/tobua/padua/compare/v0.3.13...v0.3.14) (2021-10-07)
+
+
+### Features
+
+* **configuration:** change prettier printWidth to 100 characters ([65df5a9](https://github.com/tobua/padua/commit/65df5a944a5531b71629895fad0fb1d462a65817))
+
 ### [0.3.13](https://github.com/tobua/padua/compare/v0.3.12...v0.3.13) (2021-10-05)
 
 
