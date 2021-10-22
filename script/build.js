@@ -91,7 +91,7 @@ const typescript = (options, watch) => {
     Array.isArray(additionalArguments) &&
     !additionalArguments.includes('--no-clean')
   ) {
-    rimraf.sync(join(process.cwd(), options.output))
+    rimraf.sync(join(process.cwd(), options.output, '/*'))
   }
 
   try {
