@@ -9,10 +9,7 @@ import { getProjectBasePath } from '../utility/path.js'
 // Looks at the package contents to determine whether padua has already been setup
 // with the initial() properties below.
 const isInitial = (contents) => {
-  if (
-    typeof contents.prettier === 'string' &&
-    contents.prettier.includes('padua')
-  ) {
+  if (typeof contents.prettier === 'string' && contents.prettier.includes('padua')) {
     return false
   }
 
@@ -84,10 +81,7 @@ const switchable = (pkg) => {
 
   if (options.typescript) {
     pkg.types = `${options.output}/index.d.ts`
-  } else if (
-    options.source &&
-    existsSync(join(getProjectBasePath(), 'index.d.ts'))
-  ) {
+  } else if (options.source && existsSync(join(getProjectBasePath(), 'index.d.ts'))) {
     pkg.types = 'index.d.ts'
   } else if (pkg.types && !existsSync(join(getProjectBasePath(), pkg.types))) {
     delete pkg.types
@@ -98,7 +92,7 @@ const switchable = (pkg) => {
       pkg.main = `${options.entry[0]}`
     }
 
-    if (!pkg.exports) {
+    if (!pkg.exports && !pkg.bin) {
       pkg.exports = {
         default: `./${pkg.main}`,
       }
@@ -107,17 +101,11 @@ const switchable = (pkg) => {
     // Extensions required for node source code.
     set(pkg, 'eslintConfig.rules.import/extensions', [2, 'ignorePackages'])
 
-    if (
-      typeof get(pkg, 'scripts.start') === 'string' &&
-      pkg.scripts.start.includes('padua')
-    ) {
+    if (typeof get(pkg, 'scripts.start') === 'string' && pkg.scripts.start.includes('padua')) {
       delete pkg.scripts.start
     }
 
-    if (
-      typeof get(pkg, 'scripts.build') === 'string' &&
-      pkg.scripts.build.includes('padua')
-    ) {
+    if (typeof get(pkg, 'scripts.build') === 'string' && pkg.scripts.build.includes('padua')) {
       delete pkg.scripts.build
     }
   } else {

@@ -52,9 +52,9 @@ export const releaseAs = async (options = getOptions()) => {
       return options.pkg.version
     }
   } catch (error) {
-    return
+    return null
   }
-  return
+  return null
 }
 
 export const validatePackage = (options) => {
@@ -78,7 +78,7 @@ export const validatePackage = (options) => {
     failMissingPackageField('files', 'warning')
   }
 
-  if (!options.pkg.main && !options.pkg.exports) {
+  if (!options.pkg.main && !options.pkg.exports && !options.pkg.bin) {
     failMissingPackageField('main or exports')
   }
 

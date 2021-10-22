@@ -8,8 +8,7 @@ export const esbuildConfiguration = (watch = false, tsconfigPath) => {
   const userDependencies = []
     .concat(Object.keys(options.pkg.dependencies || {}))
     .concat(Object.keys(options.pkg.peerDependencies || {}))
-  const userESBuildConfiguration =
-    typeof options.esbuild === 'object' ? options.esbuild : {}
+  const userESBuildConfiguration = typeof options.esbuild === 'object' ? options.esbuild : {}
 
   let buildOptions = {
     // entryPoints needs to be an array.
