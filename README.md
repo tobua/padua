@@ -36,6 +36,8 @@ Lints the code and prints errors.
 
 ### `npx padua release`
 
+> 📦 **Much simpler**: Check out [release-npm-action](https://github.com/tobua/release-npm-action) to automate releasing to npm.
+
 - Build if necessary
 - Checks if owner logged in
 - Automatically detects first release

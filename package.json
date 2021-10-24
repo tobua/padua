@@ -7,7 +7,6 @@
   "author": "Matthias Giger",
   "scripts": {
     "postinstall": "node ./installation.js",
-    "release": "standard-version",
     "test": "jest"
   },
   "dependencies": {
