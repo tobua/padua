@@ -103,7 +103,10 @@ a `padua` property to your `package.json` with the following options available:
     },
     // Add stylelint configuration, default false.
     // true if @emotion/react, styled-components or jss installed.
-    "stylelint": true
+    "stylelint": true,
+    // Folders to ignore by lint and/or test tools, "output" folder always ignored.
+    // String => ignore for lint & test, disable ignore for tools with `test: false` or `lint: false`.
+    "ignore": ['demo', { name: 'index.d.ts', test: false }, { name: 'test/fixture', lint: false }]
   },
   "eslintConfig": {
     // Added automatically upon installation.

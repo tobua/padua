@@ -52,9 +52,9 @@ export const releaseAs = async (options = getOptions()) => {
       return options.pkg.version
     }
   } catch (error) {
-    return null
+    return undefined
   }
-  return null
+  return undefined
 }
 
 export const validatePackage = (options) => {

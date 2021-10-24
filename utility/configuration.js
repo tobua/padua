@@ -145,6 +145,113 @@ const writeJSConfig = (jsConfigUserOverrides = {}) => {
   )
 }
 
+const replaceIgnoresFor = (property, filePath, values) => {
+  let eslintConfigurationContents = readFileSync(filePath, 'utf-8')
+
+  const regex = new RegExp(`(${property}: \\[[^\\]]*\\],)`, 'gm')
+  const match = eslintConfigurationContents.match(regex)
+
+  if (match && Array.isArray(match) && match.length > 0) {
+    eslintConfigurationContents = eslintConfigurationContents.replace(
+      match[0],
+      `ignorePatterns: [${values.join(', ')}],`
+    )
+    writeFileSync(filePath, eslintConfigurationContents)
+  }
+}
+
+export const writeIgnore = (ignores) => {
+  if (!ignores || (typeof ignores !== 'string' && !Array.isArray(ignores))) {
+    // eslint-disable-next-line no-param-reassign
+    ignores = []
+  }
+
+  if (typeof ignores === 'string') {
+    // eslint-disable-next-line no-param-reassign
+    ignores = [ignores]
+  }
+
+  const ignoreValues = {
+    lint: [getOptions().output, 'node_modules'],
+    test: [],
+  }
+
+  ignores.forEach((ignoreValue) => {
+    if (typeof ignoreValue === 'string') {
+      // eslint-disable-next-line no-param-reassign
+      ignoreValue = {
+        name: ignoreValue,
+        lint: true,
+        test: true,
+        git: false,
+      }
+    }
+
+    if (ignoreValue.lint === undefined || ignoreValue.lint) {
+      ignoreValues.lint.push(ignoreValue.name)
+    }
+
+    if (ignoreValue.test === undefined || ignoreValue.test) {
+      ignoreValues.test.push(ignoreValue.name)
+    }
+  })
+
+  // Write ignores.
+  const prettierIgnorePath = join(
+    getProjectBasePath(),
+    `./node_modules/padua/configuration/.prettierignore`
+  )
+  const eslintConfigurationPath = join(
+    getProjectBasePath(),
+    `./node_modules/padua/configuration/eslint.cjs`
+  )
+  const stylelintConfigurationPath = join(
+    getProjectBasePath(),
+    `./node_modules/padua/configuration/stylelint.cjs`
+  )
+
+  if (!existsSync(prettierIgnorePath)) {
+    return
+  }
+
+  // Prettier
+  writeFileSync(prettierIgnorePath, ignoreValues.lint.join('\n'))
+
+  // ESLint
+  replaceIgnoresFor(
+    'ignorePatterns',
+    eslintConfigurationPath,
+    ignoreValues.lint
+  )
+
+  // StyleLint
+  replaceIgnoresFor(
+    'ignoreFiles',
+    stylelintConfigurationPath,
+    ignoreValues.lint
+  )
+
+  // Jest
+  const packageJsonContents = readPackageJsonFile()
+
+  if (ignoreValues.test.length && packageJsonContents.jest) {
+    // TODO default ['/node_modules/'] also required? or always added?
+    if (Array.isArray(packageJsonContents.jest.testPathIgnorePatterns)) {
+      packageJsonContents.jest.testPathIgnorePatterns =
+        packageJsonContents.jest.testPathIgnorePatterns.filter(
+          (pattern) => !ignoreValues.test.includes(pattern)
+        )
+      packageJsonContents.jest.testPathIgnorePatterns = [
+        ...packageJsonContents.jest.testPathIgnorePatterns,
+        ...ignoreValues.test,
+      ]
+    } else {
+      packageJsonContents.jest.testPathIgnorePatterns = ignoreValues.test
+    }
+    writePackageJsonFile(packageJsonContents)
+  }
+}
+
 export const writeGitIgnore = (gitIgnoreOverrides = []) => {
   const gitIgnorePath = join(getProjectBasePath(), '.gitignore')
   let entries = []
@@ -221,5 +328,6 @@ export const writeConfiguration = () => {
   writeJSConfig(packageContents.padua.jsconfig)
   writeTSConfig(packageContents.padua.tsconfig)
   writeGitIgnore(packageContents.padua.gitignore)
+  writeIgnore(packageContents.padua.ignore)
   return { packageContents }
 }

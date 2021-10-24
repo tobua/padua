@@ -20,8 +20,8 @@
     "current-git-branch": "^1.1.0",
     "deep-for-each": "^3.0.0",
     "deepmerge": "^4.2.2",
-    "esbuild": "^0.13.8",
-    "eslint": "^8.0.1",
+    "esbuild": "^0.13.9",
+    "eslint": "^8.1.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-typescript": "^14.0.1",
     "eslint-config-prettier": "^8.3.0",
@@ -58,7 +58,7 @@
   "bin": "cli.js",
   "source": "index.js",
   "devDependencies": {
-    "jest-fixture": "^2.0.0"
+    "jest-fixture": "^3.0.0"
   },
   "files": [
     "configuration",
