@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/tobua/padua/raw/master/logo.png" alt="padua" height="300">
+  <img src="https://github.com/tobua/padua/raw/main/logo.png" alt="padua" height="300">
 </p>
 
 # padua
@@ -107,7 +107,7 @@ a `padua` property to your `package.json` with the following options available:
     // true if @emotion/react, styled-components or jss installed.
     "stylelint": true,
     // Folders to ignore by lint and/or test tools, "output" folder always ignored.
-    // String => ignore for lint & test, disable ignore for tools with `test: false` or `lint: false`.
+    // String => ignore for lint & test, disable either with `test: false` or `lint: false`.
     "ignore": ['demo', { name: 'index.d.ts', test: false }, { name: 'test/fixture', lint: false }]
   },
   "eslintConfig": {
