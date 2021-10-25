@@ -382,8 +382,12 @@ test('Ignores are written to all configuration files.', () => {
   ]
 
   expect(prettierContents).toEqual(lintFiles.join('\n'))
-  expect(eslintContents).toContain(lintFiles.join(', '))
-  expect(stylelintContents).toContain(lintFiles.join(', '))
+  expect(eslintContents).toContain(
+    lintFiles.map((item) => `'${item}'`).join(', ')
+  )
+  expect(stylelintContents).toContain(
+    lintFiles.map((item) => `'${item}'`).join(', ')
+  )
 
   let packageJsonContents = readFile('package.json')
 
@@ -406,8 +410,12 @@ test('Ignores are written to all configuration files.', () => {
   stylelintContents = files[2].contents
 
   expect(prettierContents).toEqual(lintFiles.join('\n'))
-  expect(eslintContents).toContain(lintFiles.join(', '))
-  expect(stylelintContents).toContain(lintFiles.join(', '))
+  expect(eslintContents).toContain(
+    lintFiles.map((item) => `'${item}'`).join(', ')
+  )
+  expect(stylelintContents).toContain(
+    lintFiles.map((item) => `'${item}'`).join(', ')
+  )
 
   packageJsonContents = readFile('package.json')
 
@@ -432,8 +440,12 @@ test('Ignores are written to all configuration files.', () => {
   stylelintContents = files[2].contents
 
   expect(prettierContents).toEqual(lintFiles.join('\n'))
-  expect(eslintContents).toContain(lintFiles.join(', '))
-  expect(stylelintContents).toContain(lintFiles.join(', '))
+  expect(eslintContents).toContain(
+    lintFiles.map((item) => `'${item}'`).join(', ')
+  )
+  expect(stylelintContents).toContain(
+    lintFiles.map((item) => `'${item}'`).join(', ')
+  )
 
   packageJsonContents = readFile('package.json')
 
@@ -488,8 +500,12 @@ test('Proper ignores added when values are empty.', () => {
   const lintFiles = ['public/dist', 'node_modules']
 
   expect(prettierContents).toEqual(lintFiles.join('\n'))
-  expect(eslintContents).toContain(lintFiles.join(', '))
-  expect(stylelintContents).toContain(lintFiles.join(', '))
+  expect(eslintContents).toContain(
+    lintFiles.map((item) => `'${item}'`).join(', ')
+  )
+  expect(stylelintContents).toContain(
+    lintFiles.map((item) => `'${item}'`).join(', ')
+  )
 
   const packageJsonContents = readFile('package.json')
 
@@ -546,8 +562,12 @@ test('Ignores work with all possible configurations.', () => {
   const lintFiles = ['dist', 'node_modules', ignores[1].name, ignores[3].name]
 
   expect(prettierContents).toEqual(lintFiles.join('\n'))
-  expect(eslintContents).toContain(lintFiles.join(', '))
-  expect(stylelintContents).toContain(lintFiles.join(', '))
+  expect(eslintContents).toContain(
+    lintFiles.map((item) => `'${item}'`).join(', ')
+  )
+  expect(stylelintContents).toContain(
+    lintFiles.map((item) => `'${item}'`).join(', ')
+  )
 
   const packageJsonContents = readFile('package.json')
 

@@ -146,17 +146,17 @@ const writeJSConfig = (jsConfigUserOverrides = {}) => {
 }
 
 const replaceIgnoresFor = (property, filePath, values) => {
-  let eslintConfigurationContents = readFileSync(filePath, 'utf-8')
+  let configurationContents = readFileSync(filePath, 'utf-8')
 
   const regex = new RegExp(`(${property}: \\[[^\\]]*\\],)`, 'gm')
-  const match = eslintConfigurationContents.match(regex)
+  const match = configurationContents.match(regex)
 
   if (match && Array.isArray(match) && match.length > 0) {
-    eslintConfigurationContents = eslintConfigurationContents.replace(
+    configurationContents = configurationContents.replace(
       match[0],
-      `ignorePatterns: [${values.join(', ')}],`
+      `${property}: [${values.map((value) => `'${value}'`).join(', ')}],`
     )
-    writeFileSync(filePath, eslintConfigurationContents)
+    writeFileSync(filePath, configurationContents)
   }
 }
 
