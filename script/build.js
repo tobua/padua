@@ -3,7 +3,7 @@ import { join } from 'path'
 import glob from 'fast-glob'
 import gzipSize from 'gzip-size'
 import filesize from 'filesize'
-import { execSync } from 'child_process'
+import { exec, execSync } from 'child_process'
 import { build } from 'esbuild'
 import rimraf from 'rimraf'
 import { log } from '../utility/log.js'
@@ -66,25 +66,31 @@ const javaScriptBuild = async (options, watch, tsconfigPath) => {
   printDistStats(options)
 }
 
-const typescript = (options, watch) => {
-  const tsconfigPath = join(process.cwd(), 'tsconfig.json')
-
-  let command = `tsc --project ${tsconfigPath}`
+const emitTypeScriptDeclarations = (tsconfigPath, watch) => {
+  let command = `tsc --project ${tsconfigPath} --emitDeclarationOnly`
+  let script = execSync
 
   if (watch) {
     command += ' --watch'
-  } else {
-    // JS will be built with esbuild.
-    command += ' --emitDeclarationOnly'
+    script = exec
   }
 
-  if (watch) {
-    log('watching...')
-  } else {
-    log('building...')
+  try {
+    script(command, { stdio: 'inherit' })
+  } catch (_error) {
+    log(_error, 'error')
   }
+}
+
+export default (options, watch) => {
+  if (options.source) {
+    log(`Trying to build while in source mode`, 'error')
+  }
+
+  log(watch ? 'watching...' : 'building...')
 
   const additionalArguments = process.argv.slice(2)
+  let tsconfigPath
 
   // Cleanup dist folder, always to ensure esbuild will bundle the files.
   if (
@@ -94,26 +100,11 @@ const typescript = (options, watch) => {
     rimraf.sync(join(process.cwd(), options.output, '/*'))
   }
 
-  try {
-    execSync(command, { stdio: 'inherit' })
-  } catch (_error) {
-    log(_error, 'error')
-  }
-
-  if (!watch) {
-    javaScriptBuild(options, false, tsconfigPath)
-  }
-}
-
-export default (options, watch) => {
-  if (options.source) {
-    log(`Trying to build while in source mode`, 'error')
-  }
-
+  // TODO run both in parallel.
   if (options.typescript) {
-    return typescript(options, watch)
+    tsconfigPath = join(process.cwd(), 'tsconfig.json')
+    emitTypeScriptDeclarations(tsconfigPath, watch)
   }
 
-  log(watch ? 'watching...' : 'building...')
-  return javaScriptBuild(options, watch)
+  return javaScriptBuild(options, watch, tsconfigPath)
 }
