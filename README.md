@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/tobua/padua/raw/main/logo.png" alt="padua" height="300">
+  <img src="https://github.com/tobua/padua/raw/main/logo.png" alt="padua" height="250">
 </p>
 
 # padua
@@ -13,6 +13,14 @@ First setup a new project with `npm init` or by manually creating a `package.jso
 ```
 npm i --save-dev padua
 ```
+
+Alternatively, you can start with various templates:
+
+```
+npm init now padua ./my-plugin [template]
+```
+
+Replace `[template]` with one of the following available templates: default, node, react, typescript or cli.
 
 ## Usage
 
@@ -62,7 +70,7 @@ The goal of this package is to allow you to create npm plugins just having to fo
 - Standard-Versioning
 - Polyfills
 - Automatic Updates
-- Built with esbuild and tsc
+- Builds with esbuild and tsc
 
 ## Configuration
 

@@ -1,7 +1,7 @@
 import { readFileSync, statSync } from 'fs'
 import { join } from 'path'
 import glob from 'fast-glob'
-import gzipSize from 'gzip-size'
+import { gzipSizeSync } from 'gzip-size'
 import filesize from 'filesize'
 import { exec, execSync } from 'child_process'
 import { build } from 'esbuild'
@@ -21,7 +21,7 @@ const printDistStats = (options) =>
       const fileStream = readFileSync(filePath)
       console.log(
         `${file}: ${filesize(statSync(filePath).size)} (${filesize(
-          gzipSize.sync(fileStream)
+          gzipSizeSync(fileStream)
         )} gzipped)`
       )
     })
