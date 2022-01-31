@@ -3,7 +3,8 @@ import { join } from 'path'
 import glob from 'fast-glob'
 import { gzipSizeSync } from 'gzip-size'
 import filesize from 'filesize'
-import { exec, execSync } from 'child_process'
+import { execSync, spawn } from 'child_process'
+import stripAnsi from 'strip-ansi'
 import { build } from 'esbuild'
 import rimraf from 'rimraf'
 import { log } from '../utility/log.js'
@@ -11,29 +12,32 @@ import { getProjectBasePath } from '../utility/path.js'
 import { esbuildConfiguration } from '../configuration/esbuild.js'
 
 // Print stats for generated assets.
-const printDistStats = (options) =>
-  glob
-    .sync('**/*.js', {
-      cwd: options.output,
-    })
-    .forEach((file) => {
-      const filePath = join(getProjectBasePath(), `dist/${file}`)
-      const fileStream = readFileSync(filePath)
-      console.log(
-        `${file}: ${filesize(statSync(filePath).size)} (${filesize(
-          gzipSizeSync(fileStream)
-        )} gzipped)`
-      )
-    })
+const printDistStats = (options) => {
+  const files = glob.sync('**/*.js', { cwd: options.output })
+  files.forEach((file) => {
+    const filePath = join(getProjectBasePath(), `dist/${file}`)
+    const fileStream = readFileSync(filePath)
+    console.log(
+      `${file}: ${filesize(statSync(filePath).size)} (${filesize(
+        gzipSizeSync(fileStream)
+      )} gzipped)`
+    )
+  })
+  if (files.length) {
+    console.log('')
+  }
+}
 
 const javaScriptBuild = async (options, watch, tsconfigPath) => {
   if (watch) {
     // eslint-disable-next-line no-param-reassign
     watch = {
       onRebuild: (error) => {
-        if (error) {
-          log(error, 'error')
-        } else {
+        // Error is ignored as it's already printed to the console.
+        if (!error) {
+          if (options.typescript) {
+            console.log('')
+          }
           log('rebuilding...')
           printDistStats(options)
         }
@@ -43,23 +47,11 @@ const javaScriptBuild = async (options, watch, tsconfigPath) => {
 
   const buildOptions = esbuildConfiguration(watch, tsconfigPath)
 
+  // Will print errors and warnings to the console.
   try {
-    const { errors, warnings } = await build(buildOptions)
-
-    if (errors.length) {
-      errors.forEach((error) => {
-        log(error, 'error')
-        process.exit(1)
-      })
-    }
-
-    if (warnings.length) {
-      warnings.forEach((warning) => {
-        log(warning, 'warning')
-      })
-    }
+    await build(buildOptions)
   } catch (error) {
-    log(error, 'error')
+    // Won't keep watching if initial build fails.
     process.exit(1)
   }
 
@@ -67,18 +59,27 @@ const javaScriptBuild = async (options, watch, tsconfigPath) => {
 }
 
 const emitTypeScriptDeclarations = (tsconfigPath, watch) => {
-  let command = `tsc --project ${tsconfigPath} --emitDeclarationOnly`
-  let script = execSync
-
   if (watch) {
-    command += ' --watch'
-    script = exec
-  }
-
-  try {
-    script(command, { stdio: 'inherit' })
-  } catch (_error) {
-    log(_error, 'error')
+    const { stdout, stderr } = spawn('tsc', [
+      '--project',
+      tsconfigPath,
+      '--emitDeclarationOnly',
+      '--watch',
+    ])
+    const removeNewLines = /(\r\n|\n|\r)/gm
+    stdout.on('data', (data) =>
+      console.log(stripAnsi(data.toString().replace(removeNewLines, '')))
+    )
+    stderr.on('data', (data) => console.log(stripAnsi(data.toString())))
+  } else {
+    try {
+      execSync(`tsc --project ${tsconfigPath} --emitDeclarationOnly`, {
+        stdio: 'inherit',
+      })
+      log('TypeScript check fine')
+    } catch (error) {
+      // Error already printed.
+    }
   }
 }
 
@@ -100,7 +101,6 @@ export default (options, watch) => {
     rimraf.sync(join(process.cwd(), options.output, '/*'))
   }
 
-  // TODO run both in parallel.
   if (options.typescript) {
     tsconfigPath = join(process.cwd(), 'tsconfig.json')
     emitTypeScriptDeclarations(tsconfigPath, watch)
