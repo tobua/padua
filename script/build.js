@@ -1,5 +1,6 @@
 import { readFileSync, statSync } from 'fs'
 import { join } from 'path'
+import { performance } from 'perf_hooks'
 import glob from 'fast-glob'
 import { gzipSizeSync } from 'gzip-size'
 import filesize from 'filesize'
@@ -73,10 +74,19 @@ const emitTypeScriptDeclarations = (tsconfigPath, watch) => {
     stderr.on('data', (data) => console.log(stripAnsi(data.toString())))
   } else {
     try {
-      execSync(`tsc --project ${tsconfigPath} --emitDeclarationOnly`, {
-        stdio: 'inherit',
-      })
-      log('TypeScript check fine')
+      const timeBefore = performance.now()
+      execSync(
+        `tsc --project ${tsconfigPath} --emitDeclarationOnly --diagnostics`,
+        {
+          stdio: 'inherit',
+        }
+      )
+      const timeAfter = performance.now()
+      log(
+        `TypeScript check fine (in ${Math.round(
+          (timeAfter - timeBefore) / 1000
+        )}s)`
+      )
     } catch (error) {
       // Error already printed.
     }
