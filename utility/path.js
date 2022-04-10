@@ -4,7 +4,7 @@ export const getProjectBasePath = () => {
   // CWD during postinstall is in package, otherwise in project.
   const currentWorkingDirectory = process.cwd()
 
-  if (currentWorkingDirectory.includes('node_modules/padua')) {
+  if (currentWorkingDirectory.includes('node_modules/padua') || currentWorkingDirectory.includes('node_modules\\padua')) {
     return join(currentWorkingDirectory, '../..')
   }
 
