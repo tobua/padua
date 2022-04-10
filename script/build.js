@@ -63,10 +63,13 @@ const emitTypeScriptDeclarations = (tsconfigPath, watch) => {
   if (watch) {
     const { stdout, stderr } = spawn('tsc', [
       '--project',
-      tsconfigPath,
+      `"${tsconfigPath}"`,
       '--emitDeclarationOnly',
       '--watch',
-    ])
+    ], {
+      cwd: process.cwd(),
+      shell: true
+    })
     const removeNewLines = /(\r\n|\n|\r)/gm
     stdout.on('data', (data) =>
       console.log(stripAnsi(data.toString().replace(removeNewLines, '')))
@@ -76,7 +79,7 @@ const emitTypeScriptDeclarations = (tsconfigPath, watch) => {
     try {
       const timeBefore = performance.now()
       execSync(
-        `tsc --project ${tsconfigPath} --emitDeclarationOnly --diagnostics`,
+        `tsc --project "${tsconfigPath}" --emitDeclarationOnly`,
         {
           stdio: 'inherit',
         }
