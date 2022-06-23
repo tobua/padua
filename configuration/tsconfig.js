@@ -4,7 +4,7 @@ import { getOptions } from '../utility/options.js'
 export const tsconfig = (tsconfigUserOverrides = {}) => {
   const options = getOptions()
   let userTSConfig = {
-    extends: 'padua/configuration/tsconfig',
+    extends: 'padua/configuration/tsconfig.json',
   }
 
   // The local tsconfig in this package will be written and the user config is extending it.
