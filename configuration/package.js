@@ -79,11 +79,11 @@ const switchable = (pkg) => {
     pkg.scripts = {}
   }
 
-  if (options.typescript) {
+  if (options.typescript && !pkg.types) {
     pkg.types = `${options.output}/index.d.ts`
   } else if (options.source && existsSync(join(getProjectBasePath(), 'index.d.ts'))) {
     pkg.types = 'index.d.ts'
-  } else if (pkg.types && !existsSync(join(getProjectBasePath(), pkg.types))) {
+  } else if (options.source && pkg.types && !existsSync(join(getProjectBasePath(), pkg.types))) {
     delete pkg.types
   }
 
