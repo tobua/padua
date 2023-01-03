@@ -85,7 +85,7 @@ test('Updates old package json properties.', () => {
 
   pkg = readFile('package.json')
 
-  expect(pkg.engines.node).toEqual('>= 14')
+  expect(pkg.engines.node).toEqual('>= 16')
 })
 
 test('Does not override configuration changes made by user after initial installation.', () => {
