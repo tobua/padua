@@ -11,6 +11,7 @@ export const tsconfig = (tsconfigUserOverrides = {}) => {
   const packageTSConfig = {
     compilerOptions: {
       esModuleInterop: true,
+      skipLibCheck: true,
       outDir: '../../../dist',
       declaration: true,
       // Types for newest ES library, typescript won't add polyfills.

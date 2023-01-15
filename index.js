@@ -9,7 +9,7 @@ const wrapper = (handler) => () => {
 
 const asyncWrapper = (handler) => async () => {
   writeConfiguration()
-  await handler()
+  return handler()
 }
 
 export const watch = asyncWrapper(scripts.build.bind(null, getOptions(), true))

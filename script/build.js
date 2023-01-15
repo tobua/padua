@@ -6,7 +6,7 @@ import { gzipSizeSync } from 'gzip-size'
 import { filesize } from 'filesize'
 import { execSync, spawn } from 'child_process'
 import stripAnsi from 'strip-ansi'
-import { build } from 'esbuild'
+import esbuild from 'esbuild'
 import rimraf from 'rimraf'
 import { log } from '../utility/log.js'
 import { getProjectBasePath } from '../utility/path.js'
@@ -14,7 +14,9 @@ import { esbuildConfiguration } from '../configuration/esbuild.js'
 
 // Print stats for generated assets.
 const printDistStats = (options) => {
-  const files = glob.sync('**/*.js', { cwd: options.output })
+  const files = glob.sync('**/*.js', {
+    cwd: join(process.cwd(), options.output),
+  })
   files.forEach((file) => {
     const filePath = join(getProjectBasePath(), `dist/${file}`)
     const fileStream = readFileSync(filePath)
@@ -30,46 +32,59 @@ const printDistStats = (options) => {
 }
 
 const javaScriptBuild = async (options, watch, tsconfigPath) => {
-  if (watch) {
-    // eslint-disable-next-line no-param-reassign
-    watch = {
-      onRebuild: (error) => {
+  // Print stats after build.
+  const onEndPlugin = {
+    name: 'on-end-plugin',
+    setup(build) {
+      build.onEnd((result) => {
+        const hasErrors = result.errors.length
+
         // Error is ignored as it's already printed to the console.
-        if (!error) {
+        if (!hasErrors) {
           if (options.typescript) {
             console.log('')
           }
-          log('rebuilding...')
+          // result.outputFiles is empty, therefore reading manually.
           printDistStats(options)
         }
-      },
-    }
+      })
+    },
   }
 
-  const buildOptions = esbuildConfiguration(watch, tsconfigPath)
+  const buildOptions = esbuildConfiguration(tsconfigPath)
+  let context
 
   // Will print errors and warnings to the console.
   try {
-    await build(buildOptions)
+    context = await esbuild.context({ ...buildOptions, plugins: [onEndPlugin] })
+    // First build has to be triggered manually.
+    await context.rebuild()
   } catch (error) {
     // Won't keep watching if initial build fails.
     process.exit(1)
   }
 
-  printDistStats(options)
+  if (watch) {
+    context.watch()
+  }
+
+  if (!watch) {
+    await context.dispose()
+  }
+
+  return () => context.dispose()
 }
 
 const emitTypeScriptDeclarations = (tsconfigPath, watch) => {
   if (watch) {
-    const { stdout, stderr } = spawn('tsc', [
-      '--project',
-      `"${tsconfigPath}"`,
-      '--emitDeclarationOnly',
-      '--watch',
-    ], {
-      cwd: process.cwd(),
-      shell: true
-    })
+    const { stdout, stderr } = spawn(
+      'tsc',
+      ['--project', `"${tsconfigPath}"`, '--emitDeclarationOnly', '--watch'],
+      {
+        cwd: process.cwd(),
+        shell: true,
+      }
+    )
     const removeNewLines = /(\r\n|\n|\r)/gm
     stdout.on('data', (data) =>
       console.log(stripAnsi(data.toString().replace(removeNewLines, '')))
@@ -78,12 +93,9 @@ const emitTypeScriptDeclarations = (tsconfigPath, watch) => {
   } else {
     try {
       const timeBefore = performance.now()
-      execSync(
-        `tsc --project "${tsconfigPath}" --emitDeclarationOnly`,
-        {
-          stdio: 'inherit',
-        }
-      )
+      execSync(`tsc --project "${tsconfigPath}" --emitDeclarationOnly`, {
+        stdio: 'inherit',
+      })
       const timeAfter = performance.now()
       log(
         `TypeScript check fine (in ${Math.round(

@@ -1,7 +1,7 @@
 import merge from 'deepmerge'
 import { getOptions } from '../utility/options.js'
 
-export const esbuildConfiguration = (watch = false, tsconfigPath) => {
+export const esbuildConfiguration = (tsconfigPath) => {
   const options = getOptions()
   // dependencies and peerDependencies are installed and better bundled by user to avoid duplication.
   // Use devDependencies to ensure dependency results in distributed bundle.
@@ -22,7 +22,6 @@ export const esbuildConfiguration = (watch = false, tsconfigPath) => {
     target: 'es6',
     platform: 'neutral',
     absWorkingDir: process.cwd(),
-    watch,
   }
 
   if (options.react) {
