@@ -54,5 +54,5 @@ export const getWorkspacePaths = async () => {
     return result
   }
 
-  return ['.']
+  return [basePath]
 }
