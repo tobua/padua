@@ -1,11 +1,4 @@
-import {
-  accessSync,
-  existsSync,
-  constants,
-  readFileSync,
-  writeFileSync,
-  unlinkSync,
-} from 'fs'
+import { accessSync, existsSync, constants, readFileSync, writeFileSync, unlinkSync } from 'fs'
 import { join } from 'path'
 import formatJson from 'pakag'
 import merge from 'deepmerge'
@@ -31,19 +24,10 @@ const writeUserAndPackageConfig = (
   packageTSConfigPath
 ) => {
   try {
-    writeFileSync(
-      packageTSConfigPath,
-      formatJson(JSON.stringify(packageConfig), { sort: false })
-    )
-    writeFileSync(
-      userTSConfigPath,
-      formatJson(JSON.stringify(userConfig), { sort: false })
-    )
+    writeFileSync(packageTSConfigPath, formatJson(JSON.stringify(packageConfig), { sort: false }))
+    writeFileSync(userTSConfigPath, formatJson(JSON.stringify(userConfig), { sort: false }))
   } catch (_) {
-    log(
-      `Couldn't write ${filename}, therefore this plugin might not work as expected`,
-      'warning'
-    )
+    log(`Couldn't write ${filename}, therefore this plugin might not work as expected`, 'warning')
   }
 }
 
@@ -61,36 +45,20 @@ const adaptConfigToRoot = (packageConfig) => {
   })
 }
 
-const writeOnlyUserConfig = (
-  filename,
-  userConfig,
-  packageConfig,
-  userTSConfigPath
-) => {
+const writeOnlyUserConfig = (filename, userConfig, packageConfig, userTSConfigPath) => {
   try {
     // eslint-disable-next-line no-param-reassign
     delete userConfig.extends
     adaptConfigToRoot(packageConfig)
     // eslint-disable-next-line no-param-reassign
     userConfig = merge(userConfig, packageConfig)
-    writeFileSync(
-      userTSConfigPath,
-      formatJson(JSON.stringify(userConfig), { sort: false })
-    )
+    writeFileSync(userTSConfigPath, formatJson(JSON.stringify(userConfig), { sort: false }))
   } catch (_) {
-    log(
-      `Couldn't write ${filename}, therefore this plugin might not work as expected`,
-      'warning'
-    )
+    log(`Couldn't write ${filename}, therefore this plugin might not work as expected`, 'warning')
   }
 }
 
-const writePackageAndUserFile = (
-  shouldRemove,
-  filename,
-  getConfiguration,
-  userConfigOverrides
-) => {
+const writePackageAndUserFile = (shouldRemove, filename, getConfiguration, userConfigOverrides) => {
   const userTSConfigPath = join(getProjectBasePath(), `./${filename}`)
   const packageTSConfigPath = join(
     getProjectBasePath(),
@@ -137,12 +105,7 @@ const writeTSConfig = (tsConfigUserOverrides = {}) => {
 }
 
 const writeJSConfig = (jsConfigUserOverrides = {}) => {
-  writePackageAndUserFile(
-    getOptions().typescript,
-    'jsconfig.json',
-    jsconfig,
-    jsConfigUserOverrides
-  )
+  writePackageAndUserFile(getOptions().typescript, 'jsconfig.json', jsconfig, jsConfigUserOverrides)
 }
 
 const replaceIgnoresFor = (property, filePath, values) => {
@@ -218,18 +181,10 @@ export const writeIgnore = (ignores) => {
   writeFileSync(prettierIgnorePath, ignoreValues.lint.join('\n'))
 
   // ESLint
-  replaceIgnoresFor(
-    'ignorePatterns',
-    eslintConfigurationPath,
-    ignoreValues.lint
-  )
+  replaceIgnoresFor('ignorePatterns', eslintConfigurationPath, ignoreValues.lint)
 
   // StyleLint
-  replaceIgnoresFor(
-    'ignoreFiles',
-    stylelintConfigurationPath,
-    ignoreValues.lint
-  )
+  replaceIgnoresFor('ignoreFiles', stylelintConfigurationPath, ignoreValues.lint)
 
   // Jest
   const packageJsonContents = readPackageJsonFile()

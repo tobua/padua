@@ -1,20 +1,20 @@
-import { join, relative } from 'path'
+import { join } from 'path'
 import { readFileSync } from 'fs'
 import mapWorkspaces from '@npmcli/map-workspaces'
 
-let currentWorkspace = '.'
+let currentWorkspace = null
 
 export const setWorkspace = (workspacePath) => {
   currentWorkspace = workspacePath
 }
 
 export const resetWorkspace = () => {
-  currentWorkspace = '.'
+  currentWorkspace = null
 }
 
 export const getProjectBasePath = () => {
   // CWD during postinstall is in package, otherwise in project.
-  const currentWorkingDirectory = join(process.cwd(), currentWorkspace)
+  const currentWorkingDirectory = currentWorkspace || process.cwd()
 
   if (
     currentWorkingDirectory.includes('node_modules/padua') ||
@@ -27,7 +27,7 @@ export const getProjectBasePath = () => {
 }
 
 export const getWorkspacePaths = async () => {
-  const basePath = getProjectBasePath()
+  const basePath = process.env.INIT_CWD || getProjectBasePath()
   const pkg = JSON.parse(readFileSync(join(basePath, 'package.json'), 'utf-8'))
 
   if (pkg && Array.isArray(pkg.workspaces)) {
@@ -47,7 +47,7 @@ export const getWorkspacePaths = async () => {
       const match = list.includes('padua')
 
       if (match) {
-        result.push(relative(basePath, workspacePath))
+        result.push(workspacePath)
       }
     })
 
