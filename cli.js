@@ -7,11 +7,7 @@ import { writeConfiguration } from './utility/configuration.js'
 
 let script = process.argv.slice(2)[0]
 
-if (
-  ['watch', 'build', 'test', 'cypress', 'lint', 'release', 'update'].includes(
-    script
-  )
-) {
+if (['watch', 'build', 'test', 'cypress', 'lint', 'release', 'update'].includes(script)) {
   const watch = script === 'watch'
 
   if (watch) {
