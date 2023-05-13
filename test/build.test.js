@@ -155,7 +155,7 @@ test('Watches for changes.', async () => {
 
   writeFile('index.js', `console.log('CHANGED')`)
 
-  await wait(0.1)
+  await wait(0.5)
 
   contents = contentsForFilesMatching('**/*.js', dist)
 
