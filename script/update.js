@@ -1,8 +1,7 @@
-import { existsSync, unlinkSync } from 'fs'
+import { existsSync, unlinkSync, rmSync } from 'fs'
 import { join } from 'path'
 import ncu from 'npm-check-updates'
 import { execSync } from 'child_process'
-import rimraf from 'rimraf'
 import { log } from '../utility/log.js'
 import { getProjectBasePath } from '../utility/path.js'
 
@@ -30,7 +29,9 @@ export default async () => {
   log('reinstalling dependencies after upgrade...')
 
   // Cleanup before install.
-  rimraf.sync('node_modules')
+  if (existsSync(join(process.cwd(), 'node_modules'))) {
+    rmSync(join(process.cwd(), 'node_modules'), { recursive: true })
+  }
 
   const packageLockFilePath = join(getProjectBasePath(), 'package-lock.json')
 

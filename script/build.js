@@ -1,4 +1,4 @@
-import { readFileSync, statSync } from 'fs'
+import { readFileSync, statSync, rmSync, existsSync } from 'fs'
 import { join } from 'path'
 import { performance } from 'perf_hooks'
 import glob from 'fast-glob'
@@ -7,7 +7,6 @@ import { filesize } from 'filesize'
 import { execSync, spawn } from 'child_process'
 import stripAnsi from 'strip-ansi'
 import esbuild from 'esbuild'
-import rimraf from 'rimraf'
 import { log } from '../utility/log.js'
 import { getProjectBasePath } from '../utility/path.js'
 import { esbuildConfiguration } from '../configuration/esbuild.js'
@@ -121,9 +120,10 @@ export default (options, watch) => {
   // Cleanup dist folder, always to ensure esbuild will bundle the files.
   if (
     Array.isArray(additionalArguments) &&
-    !additionalArguments.includes('--no-clean')
+    !additionalArguments.includes('--no-clean') &&
+    existsSync(join(process.cwd(), options.output))
   ) {
-    rimraf.sync(join(process.cwd(), options.output, '/*'))
+    rmSync(join(process.cwd(), options.output), { recursive: true })
   }
 
   if (options.typescript) {
