@@ -5,6 +5,7 @@ import set from 'lodash.set'
 import unset from 'lodash.unset'
 import { getOptions } from '../utility/options.js'
 import { getProjectBasePath } from '../utility/path.js'
+import { hasDependency } from '../utility/helper.js'
 
 // Looks at the package contents to determine whether padua has already been setup
 // with the initial() properties below.
@@ -131,7 +132,7 @@ const switchable = (pkg) => {
     }
   }
 
-  if (options.test) {
+  if (options.test && !hasDependency(pkg, 'vitest')) {
     if (!pkg.scripts.test) {
       pkg.scripts.test = 'padua test'
     }

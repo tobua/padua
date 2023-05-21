@@ -10,47 +10,33 @@ import {
   contentsForFilesMatching,
 } from 'jest-fixture'
 import { refresh } from '../utility/helper.js'
-import {
-  writeGitIgnore,
-  writePackageJson,
-  writeIgnore,
-} from '../utility/configuration.js'
+import { writeGitIgnore, writePackageJson, writeIgnore } from '../utility/configuration.js'
 
 environment('configuration')
 
 beforeEach(refresh)
 
 test('Generates gitignore with default entries.', () => {
-  prepare([
-    file('index.js', "console.log('gitignore')"),
-    packageJson('gitignore'),
-  ])
+  prepare([file('index.js', "console.log('gitignore')"), packageJson('gitignore')])
 
   writeGitIgnore([])
 
   const contents = readFile('.gitignore')
 
   expect(contents).toEqual(
-    ['node_modules', 'package-lock.json', 'jsconfig.json', 'dist', ''].join(
-      '\r\n'
-    )
+    ['node_modules', 'package-lock.json', 'jsconfig.json', 'dist', ''].join('\r\n')
   )
 })
 
 test('Generates proper gitignore for typescript.', () => {
-  prepare([
-    packageJson('typescript'),
-    file('index.ts', "console.log('typescript')"),
-  ])
+  prepare([packageJson('typescript'), file('index.ts', "console.log('typescript')")])
 
   writeGitIgnore([])
 
   const contents = readFile('.gitignore')
 
   expect(contents).toEqual(
-    ['node_modules', 'package-lock.json', 'tsconfig.json', 'dist', ''].join(
-      '\r\n'
-    )
+    ['node_modules', 'package-lock.json', 'tsconfig.json', 'dist', ''].join('\r\n')
   )
 })
 
@@ -64,9 +50,7 @@ test('No output folder when source mode active.', () => {
 
   const contents = readFile('.gitignore')
 
-  expect(contents).toEqual(
-    ['node_modules', 'package-lock.json', 'jsconfig.json', ''].join('\r\n')
-  )
+  expect(contents).toEqual(['node_modules', 'package-lock.json', 'jsconfig.json', ''].join('\r\n'))
 })
 
 test('Updates old package json properties.', () => {
@@ -263,6 +247,24 @@ test('Test configuration static after initial write.', () => {
   expect(pkg.jest.transformIgnorePatterns).toBeDefined()
 })
 
+test('No jest configuration added if vitest installed.', () => {
+  prepare([
+    packageJson('source', {
+      dependencies: {
+        vitest: 'latest',
+      },
+    }),
+    file('index.ts', ''),
+    file('test/basic.test.ts'),
+  ])
+
+  writePackageJson()
+
+  const pkg = readFile('package.json')
+
+  expect(pkg.jest).not.toBeDefined()
+})
+
 test('Stylelint configuration is added if dependency present and can be removed.', () => {
   prepare([
     packageJson('stylelint', {
@@ -359,11 +361,7 @@ test('Ignores are written to all configuration files.', () => {
   writePackageJson()
   writeIgnore(ignores)
 
-  const configurationFolder = join(
-    dist,
-    '..',
-    'node_modules/padua/configuration'
-  )
+  const configurationFolder = join(dist, '..', 'node_modules/padua/configuration')
 
   let files = contentsForFilesMatching('*', configurationFolder)
 
@@ -373,21 +371,11 @@ test('Ignores are written to all configuration files.', () => {
   let eslintContents = files[1].contents
   let stylelintContents = files[2].contents
 
-  let lintFiles = [
-    'dist',
-    'node_modules',
-    ignores[0],
-    ignores[1],
-    ignores[2].name,
-  ]
+  let lintFiles = ['dist', 'node_modules', ignores[0], ignores[1], ignores[2].name]
 
   expect(prettierContents).toEqual(lintFiles.join('\n'))
-  expect(eslintContents).toContain(
-    lintFiles.map((item) => `'${item}'`).join(', ')
-  )
-  expect(stylelintContents).toContain(
-    lintFiles.map((item) => `'${item}'`).join(', ')
-  )
+  expect(eslintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
+  expect(stylelintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
 
   let packageJsonContents = readFile('package.json')
 
@@ -410,12 +398,8 @@ test('Ignores are written to all configuration files.', () => {
   stylelintContents = files[2].contents
 
   expect(prettierContents).toEqual(lintFiles.join('\n'))
-  expect(eslintContents).toContain(
-    lintFiles.map((item) => `'${item}'`).join(', ')
-  )
-  expect(stylelintContents).toContain(
-    lintFiles.map((item) => `'${item}'`).join(', ')
-  )
+  expect(eslintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
+  expect(stylelintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
 
   packageJsonContents = readFile('package.json')
 
@@ -440,12 +424,8 @@ test('Ignores are written to all configuration files.', () => {
   stylelintContents = files[2].contents
 
   expect(prettierContents).toEqual(lintFiles.join('\n'))
-  expect(eslintContents).toContain(
-    lintFiles.map((item) => `'${item}'`).join(', ')
-  )
-  expect(stylelintContents).toContain(
-    lintFiles.map((item) => `'${item}'`).join(', ')
-  )
+  expect(eslintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
+  expect(stylelintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
 
   packageJsonContents = readFile('package.json')
 
@@ -483,11 +463,7 @@ test('Proper ignores added when values are empty.', () => {
   writePackageJson()
   writeIgnore(undefined)
 
-  const configurationFolder = join(
-    dist,
-    '..',
-    'node_modules/padua/configuration'
-  )
+  const configurationFolder = join(dist, '..', 'node_modules/padua/configuration')
 
   const files = contentsForFilesMatching('*', configurationFolder)
 
@@ -500,12 +476,8 @@ test('Proper ignores added when values are empty.', () => {
   const lintFiles = ['public/dist', 'node_modules']
 
   expect(prettierContents).toEqual(lintFiles.join('\n'))
-  expect(eslintContents).toContain(
-    lintFiles.map((item) => `'${item}'`).join(', ')
-  )
-  expect(stylelintContents).toContain(
-    lintFiles.map((item) => `'${item}'`).join(', ')
-  )
+  expect(eslintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
+  expect(stylelintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
 
   const packageJsonContents = readFile('package.json')
 
@@ -545,11 +517,7 @@ test('Ignores work with all possible configurations.', () => {
   writePackageJson()
   writeIgnore(ignores)
 
-  const configurationFolder = join(
-    dist,
-    '..',
-    'node_modules/padua/configuration'
-  )
+  const configurationFolder = join(dist, '..', 'node_modules/padua/configuration')
 
   const files = contentsForFilesMatching('*', configurationFolder)
 
@@ -562,12 +530,8 @@ test('Ignores work with all possible configurations.', () => {
   const lintFiles = ['dist', 'node_modules', ignores[1].name, ignores[3].name]
 
   expect(prettierContents).toEqual(lintFiles.join('\n'))
-  expect(eslintContents).toContain(
-    lintFiles.map((item) => `'${item}'`).join(', ')
-  )
-  expect(stylelintContents).toContain(
-    lintFiles.map((item) => `'${item}'`).join(', ')
-  )
+  expect(eslintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
+  expect(stylelintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
 
   const packageJsonContents = readFile('package.json')
 

@@ -4,12 +4,7 @@ import glob from 'fast-glob'
 import merge from 'deepmerge'
 import { log } from './log.js'
 import { getProjectBasePath } from './path.js'
-import {
-  cache,
-  removeDuplicatePaths,
-  resolveGlobEntries,
-  hasDependency,
-} from './helper.js'
+import { cache, removeDuplicatePaths, resolveGlobEntries, hasDependency } from './helper.js'
 
 const emptyFileTemplate = `
 // This is the entry file for your plugin.
@@ -33,10 +28,7 @@ export const getOptions = cache(() => {
   let options = { ...defaultOptions, entry: [] }
 
   try {
-    packageContents = readFileSync(
-      join(getProjectBasePath(), 'package.json'),
-      'utf8'
-    )
+    packageContents = readFileSync(join(getProjectBasePath(), 'package.json'), 'utf8')
     packageContents = JSON.parse(packageContents)
   } catch (error) {
     log('unable to load package.json', 'error')
