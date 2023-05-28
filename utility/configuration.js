@@ -50,9 +50,10 @@ const writeOnlyUserConfig = (filename, userConfig, packageConfig, userTSConfigPa
     // eslint-disable-next-line no-param-reassign
     delete userConfig.extends
     adaptConfigToRoot(packageConfig)
-    // eslint-disable-next-line no-param-reassign
-    userConfig = merge(userConfig, packageConfig)
-    writeFileSync(userTSConfigPath, formatJson(JSON.stringify(userConfig), { sort: false }))
+    writeFileSync(
+      userTSConfigPath,
+      formatJson(JSON.stringify(merge(packageConfig, userConfig)), { sort: false })
+    )
   } catch (_) {
     log(`Couldn't write ${filename}, therefore this plugin might not work as expected`, 'warning')
   }

@@ -1,13 +1,9 @@
+import { execSync } from 'child_process'
 import isCI from 'is-ci'
 import pacote from 'pacote'
 import { environment, prepare, packageJson, file } from 'jest-fixture'
 import { refresh } from '../utility/helper.js'
-import {
-  checkOwner,
-  firstRelease,
-  validatePackage,
-  releaseAs,
-} from '../script/release.js'
+import { checkOwner, firstRelease, validatePackage, releaseAs } from '../script/release.js'
 
 environment('release')
 
@@ -15,10 +11,20 @@ beforeEach(refresh)
 
 const mockExit = jest.spyOn(process, 'exit').mockImplementation(() => {})
 
+const userLoggedIn = () => {
+  try {
+    execSync('npm whoami')
+  } catch (error) {
+    return false
+  }
+
+  return true
+}
+
 test('Check if the package owner matches the logged in user.', () => {
-  if (!isCI) {
-    expect(checkOwner({ pkg: { name: 'padua' } })).toEqual(true)
-    expect(checkOwner({ pkg: { name: 'react' } })).toEqual(false)
+  if (!isCI && userLoggedIn()) {
+    expect(checkOwner({ pkg: { name: 'padua' } })).toBe(true)
+    expect(checkOwner({ pkg: { name: 'react' } })).toBe(false)
   }
 })
 
@@ -33,10 +39,7 @@ test("Checks if the package isn't yet released.", async () => {
 
   refresh()
 
-  prepare([
-    packageJson('my-unreleased-package'),
-    file('index.js', "console.log('unreleased')"),
-  ])
+  prepare([packageJson('my-unreleased-package'), file('index.js', "console.log('unreleased')")])
   expect(await firstRelease()).toEqual(true)
 })
 

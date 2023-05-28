@@ -10,7 +10,12 @@ import {
   contentsForFilesMatching,
 } from 'jest-fixture'
 import { refresh } from '../utility/helper.js'
-import { writeGitIgnore, writePackageJson, writeIgnore } from '../utility/configuration.js'
+import {
+  writeGitIgnore,
+  writePackageJson,
+  writeIgnore,
+  writeConfiguration,
+} from '../utility/configuration.js'
 
 environment('configuration')
 
@@ -539,4 +544,27 @@ test('Ignores work with all possible configurations.', () => {
     ignores[2].name,
     ignores[3].name,
   ])
+})
+
+test('TSConfig can be extended.', () => {
+  prepare([
+    packageJson('configuration-user-extend', {
+      padua: {
+        tsconfig: {
+          compilerOptions: {
+            module: 'something',
+            moduleResolution: 'nodenext',
+          },
+        },
+      },
+    }),
+    file('index.ts', "console.log('typescript')"),
+  ])
+
+  writeConfiguration()
+
+  const contents = readFile('tsconfig.json')
+
+  expect(contents.compilerOptions.moduleResolution).toBe('nodenext')
+  expect(contents.compilerOptions.module).toBe('something')
 })

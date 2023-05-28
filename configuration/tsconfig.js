@@ -13,10 +13,11 @@ export const tsconfig = (tsconfigUserOverrides = {}) => {
       esModuleInterop: true,
       skipLibCheck: true,
       outDir: '../../../dist',
+      rootDir: '../../..',
       declaration: true,
       // Types for newest ES library, typescript won't add polyfills.
       lib: ['DOM', 'ESNext'],
-      moduleResolution: 'node',
+      moduleResolution: 'node', // Use NodeNext for ES Module compatibility (also requires .js extensions).
       module: 'esnext',
     },
     files: options.entry.map((entry) => `../../../${entry}`),
