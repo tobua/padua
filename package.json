@@ -11,17 +11,18 @@
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.21.8",
-    "@babel/preset-env": "^7.22.2",
+    "@babel/preset-env": "^7.22.4",
+    "@manypkg/find-root": "^2.1.0",
     "@npmcli/map-workspaces": "^3.0.4",
-    "@types/jest": "^29.5.1",
-    "@typescript-eslint/eslint-plugin": "^5.59.7",
-    "@typescript-eslint/parser": "^5.59.7",
+    "@types/jest": "^29.5.2",
+    "@typescript-eslint/eslint-plugin": "^5.59.9",
+    "@typescript-eslint/parser": "^5.59.9",
     "babel-jest": "^29.5.0",
     "current-git-branch": "^1.1.0",
     "deep-for-each": "^3.0.0",
     "deepmerge": "^4.3.1",
     "esbuild": "^0.17.19",
-    "eslint": "^8.41.0",
+    "eslint": "^8.42.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.8.0",
@@ -42,16 +43,16 @@
     "logua": "^2.2.0",
     "npm-check-updates": "^16.10.12",
     "pacote": "^15.2.0",
-    "pakag": "^2.8.0",
+    "pakag": "^2.9.0",
     "parse-gitignore": "^2.0.0",
     "prettier": "^2.8.8",
     "skip-local-postinstall": "^2.0.4",
     "standard-version": "^9.5.0",
-    "strip-ansi": "^7.0.1",
-    "stylelint": "^15.6.2",
+    "strip-ansi": "^7.1.0",
+    "stylelint": "^15.7.0",
     "stylelint-config-recommended": "^12.0.0",
     "ts-jest": "^29.1.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.1.3"
   },
   "type": "module",
   "main": "index.js",
@@ -106,6 +107,9 @@
     "transformIgnorePatterns": [
       "/node_modules/(?!jest-fixture|logua|pakag|gzip-size|strip-ansi|ansi-regex|sort-package-json|detect-indent|detect-newline|is-plain-obj|sort-object-keys).*/"
     ]
+  },
+  "publishConfig": {
+    "provenance": true
   },
   "engines": {
     "node": ">= 16"

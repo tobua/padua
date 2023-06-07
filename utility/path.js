@@ -1,6 +1,7 @@
 import { join } from 'path'
 import { readFileSync } from 'fs'
 import mapWorkspaces from '@npmcli/map-workspaces'
+import { findRootSync } from '@manypkg/find-root'
 
 let currentWorkspace = null
 
@@ -27,7 +28,7 @@ export const getProjectBasePath = () => {
 }
 
 export const getWorkspacePaths = async () => {
-  const basePath = process.env.INIT_CWD || getProjectBasePath()
+  const basePath = findRootSync(process.env.INIT_CWD || getProjectBasePath()).rootDir
   const pkg = JSON.parse(readFileSync(join(basePath, 'package.json'), 'utf-8'))
 
   if (pkg && Array.isArray(pkg.workspaces)) {
