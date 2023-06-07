@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write # npm provenance
+      contents: write # Create GitHub release and tag
     steps:
       - uses: actions/checkout@v3
       - name: 🗄️ Configure Cache
