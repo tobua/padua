@@ -17,7 +17,8 @@ export const tsconfig = (tsconfigUserOverrides = {}) => {
       declaration: true,
       // Types for newest ES library, typescript won't add polyfills.
       lib: ['DOM', 'ESNext'],
-      moduleResolution: 'node', // Use NodeNext for ES Module compatibility (also requires .js extensions).
+      target: 'esnext',
+      moduleResolution: 'bundler', // Full ES Module compatibility (requires TypeScript > 5).
       module: 'esnext',
     },
     files: options.entry.map((entry) => `../../../${entry}`),

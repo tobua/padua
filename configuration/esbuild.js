@@ -19,7 +19,7 @@ export const esbuildConfiguration = (tsconfigPath) => {
     external: userDependencies,
     sourcemap: true,
     color: true,
-    target: 'es6',
+    target: 'es2020', // Browser support ± equal to CSS Grid.
     platform: 'neutral',
     absWorkingDir: process.cwd(),
   }
