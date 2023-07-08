@@ -45,6 +45,82 @@ test('Generates proper gitignore for typescript.', () => {
   )
 })
 
+test('Generates ignore files with default entries in plugin folder.', () => {
+  prepare([packageJson('ignore-entries'), file('index.js', '')])
+  const prettierIgnorePath = 'node_modules/padua/configuration/.prettierignore'
+  const eslintPath = 'node_modules/padua/configuration/eslint.cjs'
+  const stylelintPath = 'node_modules/padua/configuration/stylelint.cjs'
+
+  writeFile(prettierIgnorePath, readFile('../../../configuration/.prettierignore'))
+  writeFile(eslintPath, readFile('../../../configuration/eslint.cjs'))
+  writeFile(stylelintPath, readFile('../../../configuration/stylelint.cjs'))
+
+  writeConfiguration()
+
+  const contentsPrettier = readFile(prettierIgnorePath)
+  const contentsEslint = readFile(eslintPath)
+  const contentsStylelint = readFile(stylelintPath)
+
+  expect(contentsPrettier).toEqual(['dist', 'node_modules'].join('\r\n'))
+  expect(contentsEslint).toContain("ignorePatterns: ['dist', 'node_modules'],")
+  expect(contentsStylelint).toContain("['dist', 'node_modules']")
+})
+
+test('Generates ignore files with customized entries in plugin folder.', () => {
+  prepare([
+    packageJson('ignore-entries', { padua: { ignore: ['test/fixture'] } }),
+    file('index.js', ''),
+  ])
+  const prettierIgnorePath = 'node_modules/padua/configuration/.prettierignore'
+  const eslintPath = 'node_modules/padua/configuration/eslint.cjs'
+  const stylelintPath = 'node_modules/padua/configuration/stylelint.cjs'
+
+  writeFile(prettierIgnorePath, readFile('../../../configuration/.prettierignore'))
+  writeFile(eslintPath, readFile('../../../configuration/eslint.cjs'))
+  writeFile(stylelintPath, readFile('../../../configuration/stylelint.cjs'))
+
+  writeConfiguration()
+
+  const contentsPrettier = readFile(prettierIgnorePath)
+  const contentsEslint = readFile(eslintPath)
+  const contentsStylelint = readFile(stylelintPath)
+
+  expect(contentsPrettier).toEqual(['dist', 'node_modules', 'test/fixture'].join('\r\n'))
+  expect(contentsEslint).toContain("ignorePatterns: ['dist', 'node_modules', 'test/fixture'],")
+  expect(contentsStylelint).toContain("['dist', 'node_modules', 'test/fixture']")
+})
+
+test('Generates ignore files with deeply customized entries in plugin folder.', () => {
+  prepare([
+    packageJson('ignore-entries', {
+      padua: {
+        ignore: [
+          { name: 'test/fixture', lint: true, test: false },
+          { name: 'missing', lint: false, test: true },
+        ],
+      },
+    }),
+    file('index.js', ''),
+  ])
+  const prettierIgnorePath = 'node_modules/padua/configuration/.prettierignore'
+  const eslintPath = 'node_modules/padua/configuration/eslint.cjs'
+  const stylelintPath = 'node_modules/padua/configuration/stylelint.cjs'
+
+  writeFile(prettierIgnorePath, readFile('../../../configuration/.prettierignore'))
+  writeFile(eslintPath, readFile('../../../configuration/eslint.cjs'))
+  writeFile(stylelintPath, readFile('../../../configuration/stylelint.cjs'))
+
+  writeConfiguration()
+
+  const contentsPrettier = readFile(prettierIgnorePath)
+  const contentsEslint = readFile(eslintPath)
+  const contentsStylelint = readFile(stylelintPath)
+
+  expect(contentsPrettier).toEqual(['dist', 'node_modules', 'test/fixture'].join('\r\n'))
+  expect(contentsEslint).toContain("ignorePatterns: ['dist', 'node_modules', 'test/fixture'],")
+  expect(contentsStylelint).toContain("['dist', 'node_modules', 'test/fixture']")
+})
+
 test('No output folder when source mode active.', () => {
   prepare([
     packageJson('source', { padua: { source: true } }),
@@ -378,7 +454,7 @@ test('Ignores are written to all configuration files.', () => {
 
   let lintFiles = ['dist', 'node_modules', ignores[0], ignores[1], ignores[2].name]
 
-  expect(prettierContents).toEqual(lintFiles.join('\n'))
+  expect(prettierContents).toEqual(lintFiles.join('\r\n'))
   expect(eslintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
   expect(stylelintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
 
@@ -402,7 +478,7 @@ test('Ignores are written to all configuration files.', () => {
   eslintContents = files[1].contents
   stylelintContents = files[2].contents
 
-  expect(prettierContents).toEqual(lintFiles.join('\n'))
+  expect(prettierContents).toEqual(lintFiles.join('\r\n'))
   expect(eslintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
   expect(stylelintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
 
@@ -428,7 +504,7 @@ test('Ignores are written to all configuration files.', () => {
   eslintContents = files[1].contents
   stylelintContents = files[2].contents
 
-  expect(prettierContents).toEqual(lintFiles.join('\n'))
+  expect(prettierContents).toEqual(lintFiles.join('\r\n'))
   expect(eslintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
   expect(stylelintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
 
@@ -480,7 +556,7 @@ test('Proper ignores added when values are empty.', () => {
 
   const lintFiles = ['public/dist', 'node_modules']
 
-  expect(prettierContents).toEqual(lintFiles.join('\n'))
+  expect(prettierContents).toEqual(lintFiles.join('\r\n'))
   expect(eslintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
   expect(stylelintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
 
@@ -534,7 +610,7 @@ test('Ignores work with all possible configurations.', () => {
 
   const lintFiles = ['dist', 'node_modules', ignores[1].name, ignores[3].name]
 
-  expect(prettierContents).toEqual(lintFiles.join('\n'))
+  expect(prettierContents).toEqual(lintFiles.join('\r\n'))
   expect(eslintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
   expect(stylelintContents).toContain(lintFiles.map((item) => `'${item}'`).join(', '))
 

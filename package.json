@@ -10,19 +10,19 @@
     "test": "jest"
   },
   "dependencies": {
-    "@babel/eslint-parser": "^7.22.5",
-    "@babel/preset-env": "^7.22.5",
-    "@manypkg/find-root": "^2.2.0",
+    "@babel/eslint-parser": "^7.22.7",
+    "@babel/preset-env": "^7.22.7",
+    "@manypkg/find-root": "^2.2.1",
     "@npmcli/map-workspaces": "^3.0.4",
     "@types/jest": "^29.5.2",
-    "@typescript-eslint/eslint-plugin": "^5.60.0",
-    "@typescript-eslint/parser": "^5.60.0",
-    "babel-jest": "^29.5.0",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
+    "babel-jest": "^29.6.1",
     "current-git-branch": "^1.1.0",
     "deep-for-each": "^3.0.0",
     "deepmerge": "^4.3.1",
-    "esbuild": "^0.18.8",
-    "eslint": "^8.43.0",
+    "esbuild": "^0.18.11",
+    "eslint": "^8.44.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.8.0",
@@ -32,34 +32,34 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "fast-glob": "^3.2.12",
+    "fast-glob": "^3.3.0",
     "filesize": "^10.0.7",
     "gzip-size": "^7.0.0",
     "is-ci": "^3.0.1",
-    "jest": "^29.5.0",
+    "jest": "^29.6.1",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "lodash.unset": "^4.5.2",
-    "logua": "^2.2.0",
-    "npm-check-updates": "^16.10.13",
+    "logua": "^2.3.0",
+    "npm-check-updates": "^16.10.15",
     "pacote": "^15.2.0",
     "pakag": "^2.10.0",
     "parse-gitignore": "^2.0.0",
-    "prettier": "^2.8.8",
+    "prettier": "^3.0.0",
     "skip-local-postinstall": "^2.0.4",
     "standard-version": "^9.5.0",
     "strip-ansi": "^7.1.0",
-    "stylelint": "^15.9.0",
-    "stylelint-config-recommended": "^12.0.0",
-    "ts-jest": "^29.1.0",
-    "typescript": "^5.1.3"
+    "stylelint": "^15.10.1",
+    "stylelint-config-recommended": "^13.0.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.1.6"
   },
   "type": "module",
   "main": "index.js",
   "bin": "cli.js",
   "source": "index.js",
   "devDependencies": {
-    "jest-fixture": "^4.0.2"
+    "jest-fixture": "^4.1.0"
   },
   "files": [
     "configuration",
@@ -72,11 +72,7 @@
     "build",
     "plugin"
   ],
-  "prettier": {
-    "singleQuote": true,
-    "semi": false,
-    "printWidth": 100
-  },
+  "prettier": "./configuration/.prettierrc.json",
   "eslintConfig": {
     "extends": "./configuration/eslint.cjs",
     "rules": {
@@ -105,7 +101,7 @@
       ]
     },
     "transformIgnorePatterns": [
-      "/node_modules/(?!jest-fixture|logua|pakag|gzip-size|strip-ansi|ansi-regex|sort-package-json|detect-indent|detect-newline|is-plain-obj|sort-object-keys).*/"
+      "/node_modules/(?!jest-fixture|logua|pakag|gzip-size|strip-ansi|ansi-regex|sort-package-json|detect-indent|detect-newline|is-plain-obj|sort-object-keys|chalk).*/"
     ]
   },
   "publishConfig": {

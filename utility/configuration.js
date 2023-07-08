@@ -179,7 +179,7 @@ export const writeIgnore = (ignores) => {
   }
 
   // Prettier
-  writeFileSync(prettierIgnorePath, ignoreValues.lint.join('\n'))
+  writeFileSync(prettierIgnorePath, ignoreValues.lint.join('\r\n'))
 
   // ESLint
   replaceIgnoresFor('ignorePatterns', eslintConfigurationPath, ignoreValues.lint)
