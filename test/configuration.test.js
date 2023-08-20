@@ -8,7 +8,9 @@ import {
   packageJson,
   writeFile,
   contentsForFilesMatching,
+  registerVitest,
 } from 'jest-fixture'
+import { test, expect, beforeEach, afterEach, vi } from 'vitest'
 import { refresh } from '../utility/helper.js'
 import {
   writeGitIgnore,
@@ -16,6 +18,8 @@ import {
   writeIgnore,
   writeConfiguration,
 } from '../utility/configuration.js'
+
+registerVitest(beforeEach, afterEach, vi)
 
 environment('configuration')
 
@@ -45,7 +49,7 @@ test('Generates proper gitignore for typescript.', () => {
   )
 })
 
-test('Generates ignore files with default entries in plugin folder.', () => {
+test('Generates ignore files with default entries in plugin folder.', async () => {
   prepare([packageJson('ignore-entries'), file('index.js', '')])
   const prettierIgnorePath = 'node_modules/padua/configuration/.prettierignore'
   const eslintPath = 'node_modules/padua/configuration/eslint.cjs'
@@ -55,7 +59,7 @@ test('Generates ignore files with default entries in plugin folder.', () => {
   writeFile(eslintPath, readFile('../../../configuration/eslint.cjs'))
   writeFile(stylelintPath, readFile('../../../configuration/stylelint.cjs'))
 
-  writeConfiguration()
+  await writeConfiguration()
 
   const contentsPrettier = readFile(prettierIgnorePath)
   const contentsEslint = readFile(eslintPath)
@@ -66,7 +70,7 @@ test('Generates ignore files with default entries in plugin folder.', () => {
   expect(contentsStylelint).toContain("['dist', 'node_modules']")
 })
 
-test('Generates ignore files with customized entries in plugin folder.', () => {
+test('Generates ignore files with customized entries in plugin folder.', async () => {
   prepare([
     packageJson('ignore-entries', { padua: { ignore: ['test/fixture'] } }),
     file('index.js', ''),
@@ -79,7 +83,7 @@ test('Generates ignore files with customized entries in plugin folder.', () => {
   writeFile(eslintPath, readFile('../../../configuration/eslint.cjs'))
   writeFile(stylelintPath, readFile('../../../configuration/stylelint.cjs'))
 
-  writeConfiguration()
+  await writeConfiguration()
 
   const contentsPrettier = readFile(prettierIgnorePath)
   const contentsEslint = readFile(eslintPath)
@@ -90,7 +94,7 @@ test('Generates ignore files with customized entries in plugin folder.', () => {
   expect(contentsStylelint).toContain("['dist', 'node_modules', 'test/fixture']")
 })
 
-test('Generates ignore files with deeply customized entries in plugin folder.', () => {
+test('Generates ignore files with deeply customized entries in plugin folder.', async () => {
   prepare([
     packageJson('ignore-entries', {
       padua: {
@@ -110,7 +114,7 @@ test('Generates ignore files with deeply customized entries in plugin folder.', 
   writeFile(eslintPath, readFile('../../../configuration/eslint.cjs'))
   writeFile(stylelintPath, readFile('../../../configuration/stylelint.cjs'))
 
-  writeConfiguration()
+  await writeConfiguration()
 
   const contentsPrettier = readFile(prettierIgnorePath)
   const contentsEslint = readFile(eslintPath)
@@ -134,7 +138,7 @@ test('No output folder when source mode active.', () => {
   expect(contents).toEqual(['node_modules', 'package-lock.json', 'jsconfig.json', ''].join('\r\n'))
 })
 
-test('Updates old package json properties.', () => {
+test('Updates old package json properties.', async () => {
   prepare([
     packageJson('outdated', {
       engines: { hello: 'world', node: '>= 13.2.0' },
@@ -146,14 +150,14 @@ test('Updates old package json properties.', () => {
 
   expect(pkg.engines.node).toEqual('>= 13.2.0')
 
-  writePackageJson()
+  await writePackageJson()
 
   pkg = readFile('package.json')
 
   expect(pkg.engines.node).toEqual('>= 16')
 })
 
-test('Does not override configuration changes made by user after initial installation.', () => {
+test('Does not override configuration changes made by user after initial installation.', async () => {
   prepare([
     packageJson('update', {
       license: 'UNLICENSED',
@@ -169,7 +173,7 @@ test('Does not override configuration changes made by user after initial install
     file('index.js', ''),
   ])
 
-  writePackageJson()
+  await writePackageJson()
 
   const pkg = readFile('package.json')
 
@@ -179,7 +183,7 @@ test('Does not override configuration changes made by user after initial install
   expect(pkg.type).toBe(undefined)
 })
 
-test('eslintConfig extended when switching to source mode.', () => {
+test('eslintConfig extended when switching to source mode.', async () => {
   prepare([
     packageJson('source', {
       padua: {
@@ -194,7 +198,7 @@ test('eslintConfig extended when switching to source mode.', () => {
     file('index.js', ''),
   ])
 
-  writePackageJson()
+  await writePackageJson()
 
   const pkg = readFile('package.json')
 
@@ -202,7 +206,7 @@ test('eslintConfig extended when switching to source mode.', () => {
   expect(pkg.type).toBe('classic')
 })
 
-test('Type definitions will be added in source mode as soon as available.', () => {
+test('Type definitions will be added in source mode as soon as available.', async () => {
   prepare([
     packageJson('source', {
       padua: {
@@ -216,7 +220,7 @@ test('Type definitions will be added in source mode as soon as available.', () =
     file('index.js', ''),
   ])
 
-  writePackageJson()
+  await writePackageJson()
 
   let pkg = readFile('package.json')
 
@@ -224,7 +228,7 @@ test('Type definitions will be added in source mode as soon as available.', () =
 
   writeFile('index.d.ts', '')
 
-  writePackageJson()
+  await writePackageJson()
 
   pkg = readFile('package.json')
 
@@ -232,14 +236,14 @@ test('Type definitions will be added in source mode as soon as available.', () =
 
   unlinkSync(join(process.cwd(), 'index.d.ts'))
 
-  writePackageJson()
+  await writePackageJson()
 
   pkg = readFile('package.json')
 
   expect(pkg.types).not.toBeDefined()
 })
 
-test('Source entry will not be added again if removed by user.', () => {
+test('Source entry will not be added again if removed by user.', async () => {
   prepare([
     packageJson('source', {
       padua: {
@@ -249,7 +253,7 @@ test('Source entry will not be added again if removed by user.', () => {
     file('index.js', ''),
   ])
 
-  writePackageJson()
+  await writePackageJson()
 
   let pkg = readFile('package.json')
 
@@ -259,14 +263,14 @@ test('Source entry will not be added again if removed by user.', () => {
 
   writeFile('package.json', pkg)
 
-  writePackageJson()
+  await writePackageJson()
 
   pkg = readFile('package.json')
 
   expect(pkg.source).not.toBeDefined()
 })
 
-test('Files array is only changed initially.', () => {
+test('Files array is only changed initially.', async () => {
   prepare([
     packageJson('source', {
       padua: {
@@ -278,7 +282,7 @@ test('Files array is only changed initially.', () => {
     file('spec/basic.test.js'),
   ])
 
-  writePackageJson()
+  await writePackageJson()
 
   let pkg = readFile('package.json')
 
@@ -288,14 +292,14 @@ test('Files array is only changed initially.', () => {
 
   writeFile('package.json', pkg)
 
-  writePackageJson()
+  await writePackageJson()
 
   pkg = readFile('package.json')
 
   expect(pkg.files).toEqual(['1', '2', '3'])
 })
 
-test('Test configuration static after initial write.', () => {
+test('Test configuration static after initial write.', async () => {
   prepare([
     packageJson('source', {
       padua: {
@@ -306,7 +310,7 @@ test('Test configuration static after initial write.', () => {
     file('test/basic.test.js'),
   ])
 
-  writePackageJson()
+  await writePackageJson()
 
   let pkg = readFile('package.json')
 
@@ -318,7 +322,7 @@ test('Test configuration static after initial write.', () => {
 
   writeFile('package.json', pkg)
 
-  writePackageJson()
+  await writePackageJson()
 
   pkg = readFile('package.json')
 
@@ -328,7 +332,7 @@ test('Test configuration static after initial write.', () => {
   expect(pkg.jest.transformIgnorePatterns).toBeDefined()
 })
 
-test('No jest configuration added if vitest installed.', () => {
+test('No jest configuration added if vitest installed.', async () => {
   prepare([
     packageJson('source', {
       dependencies: {
@@ -339,14 +343,14 @@ test('No jest configuration added if vitest installed.', () => {
     file('test/basic.test.ts'),
   ])
 
-  writePackageJson()
+  await writePackageJson()
 
   const pkg = readFile('package.json')
 
   expect(pkg.jest).not.toBeDefined()
 })
 
-test('Stylelint configuration is added if dependency present and can be removed.', () => {
+test('Stylelint configuration is added if dependency present and can be removed.', async () => {
   prepare([
     packageJson('stylelint', {
       dependencies: {
@@ -357,7 +361,7 @@ test('Stylelint configuration is added if dependency present and can be removed.
     file('index.js', ''),
   ])
 
-  writePackageJson()
+  await writePackageJson()
 
   let pkg = readFile('package.json')
 
@@ -370,14 +374,14 @@ test('Stylelint configuration is added if dependency present and can be removed.
 
   refresh()
 
-  writePackageJson()
+  await writePackageJson()
 
   pkg = readFile('package.json')
 
   expect(pkg.stylelint).not.toBeDefined()
 })
 
-test('Stylelint works with several popular packages and can be overriden.', () => {
+test('Stylelint works with several popular packages and can be overriden.', async () => {
   prepare([
     packageJson('stylelint-override', {
       dependencies: {
@@ -387,7 +391,7 @@ test('Stylelint works with several popular packages and can be overriden.', () =
     file('index.js', ''),
   ])
 
-  writePackageJson()
+  await writePackageJson()
 
   let pkg = readFile('package.json')
 
@@ -402,14 +406,14 @@ test('Stylelint works with several popular packages and can be overriden.', () =
 
   refresh()
 
-  writePackageJson()
+  await writePackageJson()
 
   pkg = readFile('package.json')
 
   expect(pkg.stylelint).not.toBeDefined()
 })
 
-test('Ignores are written to all configuration files.', () => {
+test('Ignores are written to all configuration files.', async () => {
   const ignores = [
     'demo',
     'documentation',
@@ -439,8 +443,8 @@ test('Ignores are written to all configuration files.', () => {
     ),
   ])
 
-  writePackageJson()
-  writeIgnore(ignores)
+  await writePackageJson()
+  await writeIgnore(ignores)
 
   const configurationFolder = join(dist, '..', 'node_modules/padua/configuration')
 
@@ -467,8 +471,8 @@ test('Ignores are written to all configuration files.', () => {
   ])
 
   // Result stays the same after multiple writes.
-  writePackageJson()
-  writeIgnore(ignores)
+  await writePackageJson()
+  await writeIgnore(ignores)
 
   files = contentsForFilesMatching('*', configurationFolder)
 
@@ -491,8 +495,8 @@ test('Ignores are written to all configuration files.', () => {
   ])
 
   // Old values gone when missing in new configuration.
-  writePackageJson()
-  writeIgnore([ignores[0]])
+  await writePackageJson()
+  await writeIgnore([ignores[0]])
 
   lintFiles = ['dist', 'node_modules', ignores[0]]
 
@@ -518,7 +522,7 @@ test('Ignores are written to all configuration files.', () => {
   ])
 })
 
-test('Proper ignores added when values are empty.', () => {
+test('Proper ignores added when values are empty.', async () => {
   const { dist } = prepare([
     packageJson('ignore-empty', {
       padua: {
@@ -541,8 +545,8 @@ test('Proper ignores added when values are empty.', () => {
     ),
   ])
 
-  writePackageJson()
-  writeIgnore(undefined)
+  await writePackageJson()
+  await writeIgnore(undefined)
 
   const configurationFolder = join(dist, '..', 'node_modules/padua/configuration')
 
@@ -565,7 +569,7 @@ test('Proper ignores added when values are empty.', () => {
   expect(packageJsonContents.jest.testPathIgnorePatterns).toBeUndefined()
 })
 
-test('Ignores work with all possible configurations.', () => {
+test('Ignores work with all possible configurations.', async () => {
   const ignores = [
     { name: 'empty', test: false, lint: false },
     { name: 'lint', test: false },
@@ -595,8 +599,8 @@ test('Ignores work with all possible configurations.', () => {
     ),
   ])
 
-  writePackageJson()
-  writeIgnore(ignores)
+  await writePackageJson()
+  await writeIgnore(ignores)
 
   const configurationFolder = join(dist, '..', 'node_modules/padua/configuration')
 
@@ -622,7 +626,7 @@ test('Ignores work with all possible configurations.', () => {
   ])
 })
 
-test('TSConfig can be extended.', () => {
+test('TSConfig can be extended.', async () => {
   prepare([
     packageJson('configuration-user-extend', {
       padua: {
@@ -637,7 +641,7 @@ test('TSConfig can be extended.', () => {
     file('index.ts', "console.log('typescript')"),
   ])
 
-  writeConfiguration()
+  await writeConfiguration()
 
   const contents = readFile('tsconfig.json')
 

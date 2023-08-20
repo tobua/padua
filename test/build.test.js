@@ -7,9 +7,13 @@ import {
   contentsForFilesMatching,
   writeFile,
   wait,
+  registerVitest,
 } from 'jest-fixture'
+import { test, expect, beforeEach, afterEach, vi } from 'vitest'
 import { refresh } from '../utility/helper.js'
 import { build, watch } from '../index.js'
+
+registerVitest(beforeEach, afterEach, vi)
 
 environment('build')
 
@@ -163,4 +167,25 @@ test('Watches for changes.', async () => {
   expect(contents[0].contents).toContain('CHANGED')
 
   await stop()
+})
+
+test('Can build for node as a target.', async () => {
+  const { dist } = prepare([
+    packageJson('nodebuild', {
+      // target: esnext required for top-level await (node >= 14, ES2022)
+      padua: { esbuild: { platform: 'node', format: 'esm', target: 'esnext' } },
+    }),
+    file(
+      'index.js',
+      "import { readFileSync } from 'fs'; import { join } from 'path'; console.log('INDEX', readFileSync, join, process.env, await new Promise(done => { setTimeout(done, 1) }))"
+    ),
+  ])
+
+  await build()
+
+  const jsContents = contentsForFilesMatching('*.js', dist)[0].contents
+
+  expect(jsContents).toContain('INDEX')
+  expect(jsContents).toContain('join')
+  expect(jsContents).toContain('readFileSync')
 })

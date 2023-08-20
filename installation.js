@@ -7,10 +7,12 @@ skip()
 
 const workspaces = await getWorkspacePaths()
 
-workspaces.forEach((workspacePath) => {
+// eslint-disable-next-line no-restricted-syntax
+for (const workspacePath of workspaces) {
   setWorkspace(workspacePath)
-  writeConfiguration()
-})
+  // eslint-disable-next-line no-await-in-loop
+  await writeConfiguration()
+}
 
 resetWorkspace()
 

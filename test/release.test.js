@@ -1,9 +1,12 @@
 import { execSync } from 'child_process'
 import isCI from 'is-ci'
 import pacote from 'pacote'
-import { environment, prepare, packageJson, file } from 'jest-fixture'
+import { environment, prepare, packageJson, file, registerVitest } from 'jest-fixture'
+import { test, expect, beforeEach, afterEach, vi } from 'vitest'
 import { refresh } from '../utility/helper.js'
 import { checkOwner, firstRelease, validatePackage, releaseAs } from '../script/release.js'
+
+registerVitest(beforeEach, afterEach, vi)
 
 environment('release')
 

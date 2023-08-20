@@ -1,6 +1,9 @@
-import { environment, prepare, packageJson, file } from 'jest-fixture'
+import { environment, prepare, packageJson, file, registerVitest } from 'jest-fixture'
+import { test, expect, beforeEach, afterEach, vi } from 'vitest'
 import { refresh } from '../utility/helper.js'
 import { getOptions } from '../utility/options.js'
+
+registerVitest(beforeEach, afterEach, vi)
 
 environment('options')
 
@@ -125,10 +128,7 @@ test('Nested globs are possible.', () => {
 })
 
 test('Stylelint can be turned on.', () => {
-  prepare([
-    packageJson('stylelint', { padua: { stylelint: true } }),
-    file('first.js', ''),
-  ])
+  prepare([packageJson('stylelint', { padua: { stylelint: true } }), file('first.js', '')])
 
   const options = getOptions()
 

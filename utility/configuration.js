@@ -1,6 +1,6 @@
 import { accessSync, existsSync, constants, readFileSync, writeFileSync, unlinkSync } from 'fs'
 import { join } from 'path'
-import formatJson from 'pakag'
+import { formatPackageJson } from 'pakag'
 import merge from 'deepmerge'
 import deepForEach from 'deep-for-each'
 import parse from 'parse-gitignore'
@@ -16,7 +16,7 @@ import { getOptions } from './options.js'
 import { getProjectBasePath } from './path.js'
 import { readPackageJsonFile, writePackageJsonFile } from './file.js'
 
-const writeUserAndPackageConfig = (
+const writeUserAndPackageConfig = async (
   filename,
   userConfig,
   packageConfig,
@@ -24,8 +24,14 @@ const writeUserAndPackageConfig = (
   packageTSConfigPath
 ) => {
   try {
-    writeFileSync(packageTSConfigPath, formatJson(JSON.stringify(packageConfig), { sort: false }))
-    writeFileSync(userTSConfigPath, formatJson(JSON.stringify(userConfig), { sort: false }))
+    writeFileSync(
+      packageTSConfigPath,
+      await formatPackageJson(JSON.stringify(packageConfig), { sort: false })
+    )
+    writeFileSync(
+      userTSConfigPath,
+      await formatPackageJson(JSON.stringify(userConfig), { sort: false })
+    )
   } catch (_) {
     log(`Couldn't write ${filename}, therefore this plugin might not work as expected`, 'warning')
   }
@@ -45,21 +51,26 @@ const adaptConfigToRoot = (packageConfig) => {
   })
 }
 
-const writeOnlyUserConfig = (filename, userConfig, packageConfig, userTSConfigPath) => {
+const writeOnlyUserConfig = async (filename, userConfig, packageConfig, userTSConfigPath) => {
   try {
     // eslint-disable-next-line no-param-reassign
     delete userConfig.extends
     adaptConfigToRoot(packageConfig)
     writeFileSync(
       userTSConfigPath,
-      formatJson(JSON.stringify(merge(packageConfig, userConfig)), { sort: false })
+      await formatPackageJson(JSON.stringify(merge(packageConfig, userConfig)), { sort: false })
     )
   } catch (_) {
     log(`Couldn't write ${filename}, therefore this plugin might not work as expected`, 'warning')
   }
 }
 
-const writePackageAndUserFile = (shouldRemove, filename, getConfiguration, userConfigOverrides) => {
+const writePackageAndUserFile = async (
+  shouldRemove,
+  filename,
+  getConfiguration,
+  userConfigOverrides
+) => {
   const userTSConfigPath = join(getProjectBasePath(), `./${filename}`)
   const packageTSConfigPath = join(
     getProjectBasePath(),
@@ -83,7 +94,7 @@ const writePackageAndUserFile = (shouldRemove, filename, getConfiguration, userC
       // eslint-disable-next-line no-bitwise
       constants.F_OK | constants.R_OK | constants.W_OK
     )
-    writeUserAndPackageConfig(
+    await writeUserAndPackageConfig(
       filename,
       userConfig,
       packageConfig,
@@ -92,12 +103,12 @@ const writePackageAndUserFile = (shouldRemove, filename, getConfiguration, userC
     )
   } catch (_) {
     // Package config cannot be written, write full contents to user file.
-    writeOnlyUserConfig(filename, userConfig, packageConfig, userTSConfigPath)
+    await writeOnlyUserConfig(filename, userConfig, packageConfig, userTSConfigPath)
   }
 }
 
-const writeTSConfig = (tsConfigUserOverrides = {}) => {
-  writePackageAndUserFile(
+const writeTSConfig = async (tsConfigUserOverrides = {}) => {
+  await writePackageAndUserFile(
     !getOptions().typescript,
     'tsconfig.json',
     tsconfig,
@@ -105,8 +116,13 @@ const writeTSConfig = (tsConfigUserOverrides = {}) => {
   )
 }
 
-const writeJSConfig = (jsConfigUserOverrides = {}) => {
-  writePackageAndUserFile(getOptions().typescript, 'jsconfig.json', jsconfig, jsConfigUserOverrides)
+const writeJSConfig = async (jsConfigUserOverrides = {}) => {
+  await writePackageAndUserFile(
+    getOptions().typescript,
+    'jsconfig.json',
+    jsconfig,
+    jsConfigUserOverrides
+  )
 }
 
 const replaceIgnoresFor = (property, filePath, values) => {
@@ -124,7 +140,7 @@ const replaceIgnoresFor = (property, filePath, values) => {
   }
 }
 
-export const writeIgnore = (ignores) => {
+export const writeIgnore = async (ignores) => {
   if (!ignores || (typeof ignores !== 'string' && !Array.isArray(ignores))) {
     // eslint-disable-next-line no-param-reassign
     ignores = []
@@ -204,7 +220,7 @@ export const writeIgnore = (ignores) => {
     } else {
       packageJsonContents.jest.testPathIgnorePatterns = ignoreValues.test
     }
-    writePackageJsonFile(packageJsonContents)
+    await writePackageJsonFile(packageJsonContents)
   }
 }
 
@@ -250,7 +266,7 @@ const resetIgnoredProperties = (pkg) => {
   })
 }
 
-export const writePackageJson = () => {
+export const writePackageJson = async () => {
   let contents = readPackageJsonFile()
   const isInitial = packageJson.isInitial(contents)
 
@@ -270,7 +286,7 @@ export const writePackageJson = () => {
 
   resetIgnoredProperties(contents)
 
-  writePackageJsonFile(contents)
+  await writePackageJsonFile(contents)
 
   if (!contents.padua) {
     contents.padua = {}
@@ -279,11 +295,11 @@ export const writePackageJson = () => {
   return { packageContents: contents }
 }
 
-export const writeConfiguration = () => {
-  const { packageContents } = writePackageJson()
-  writeJSConfig(packageContents.padua.jsconfig)
-  writeTSConfig(packageContents.padua.tsconfig)
+export const writeConfiguration = async () => {
+  const { packageContents } = await writePackageJson()
+  await writeJSConfig(packageContents.padua.jsconfig)
+  await writeTSConfig(packageContents.padua.tsconfig)
   writeGitIgnore(packageContents.padua.gitignore)
-  writeIgnore(packageContents.padua.ignore)
+  await writeIgnore(packageContents.padua.ignore)
   return { packageContents }
 }
