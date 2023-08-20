@@ -1,0 +1,21 @@
+{
+  "name": "<%= name %>",
+  "description": "<%= description %>",
+  "version": "0.0.0",
+  "devDependencies": {
+    "padua": "latest"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": [
+        "babel-jest",
+        {
+          "configFile": "./node_modules/padua/configuration/.babelrc"
+        }
+      ]
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/(?!ky|is-plain-obj).*/"
+    ]
+  }
+}

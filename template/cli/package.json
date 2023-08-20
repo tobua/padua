@@ -10,6 +10,6 @@
     "cli"
   ],
   "devDependencies": {
-    "padua": "^1.0.0"
+    "padua": "latest"
   }
 }

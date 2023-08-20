@@ -1,0 +1,10 @@
+{
+  "prompts": [
+    {
+      "name": "name"
+    },
+    {
+      "name": "description"
+    }
+  ]
+}

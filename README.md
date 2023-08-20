@@ -20,7 +20,7 @@ Alternatively, you can start with various templates:
 npm init now padua ./my-plugin [template]
 ```
 
-Replace `[template]` with one of the following available templates: default, node, react, typescript or cli.
+Replace `[template]` with one of the following available templates: default, node, react, typescript, test or cli.
 
 ## Usage
 
