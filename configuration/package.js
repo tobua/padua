@@ -38,7 +38,7 @@ const initial = () => {
       extends: './node_modules/padua/configuration/eslint.cjs',
     },
     engines: {
-      node: '>= 16',
+      node: '>= 18',
     },
   }
 

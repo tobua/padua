@@ -16,6 +16,11 @@ const customRules = {
   'react/no-array-index-key': 0,
   // Allow assignment to function param properties, like parameter.innerHTML = ...
   'no-param-reassign': [2, { props: false }],
+  // Any dependency can be imported, devDependencies however will be bundled if imported.
+  'import/no-extraneous-dependencies': [
+    2,
+    { dependencies: true, devDependencies: true, peerDependencies: true },
+  ],
 }
 
 const customSettings = {
