@@ -19,7 +19,7 @@ const customRules = {
   // Any dependency can be imported, devDependencies however will be bundled if imported.
   'import/no-extraneous-dependencies': [
     2,
-    { dependencies: true, devDependencies: true, peerDependencies: true },
+    { devDependencies: true, peerDependencies: true },
   ],
 }
 
