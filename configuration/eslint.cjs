@@ -17,10 +17,7 @@ const customRules = {
   // Allow assignment to function param properties, like parameter.innerHTML = ...
   'no-param-reassign': [2, { props: false }],
   // Any dependency can be imported, devDependencies however will be bundled if imported.
-  'import/no-extraneous-dependencies': [
-    2,
-    { devDependencies: true, peerDependencies: true },
-  ],
+  'import/no-extraneous-dependencies': [2, { devDependencies: true, peerDependencies: true }],
 }
 
 const customSettings = {
@@ -75,7 +72,7 @@ module.exports = {
     {
       // TypeScript
       files: ['**/*.ts', '**/*.tsx'],
-      extends: ['airbnb-typescript', 'prettier'],
+      extends: ['airbnb', 'airbnb-typescript', 'prettier'],
       rules: customRules,
       settings: customSettings,
       parser: '@typescript-eslint/parser',

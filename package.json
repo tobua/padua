@@ -1,36 +1,33 @@
 {
   "name": "padua",
   "description": "Setup, configure, build and publish npm plugins.",
-  "version": "0.3.14",
+  "version": "0.0.0-development",
   "repository": "github:tobua/padua",
   "license": "MIT",
   "author": "Matthias Giger",
   "scripts": {
+    "lint": "eslint . --fix --ext .js,.jsx",
+    "lint-list": "DEBUG=eslint:cli-engine eslint . --fix --ext .js,.jsx",
     "postinstall": "node ./installation.js",
     "test": "vitest run --dir test"
   },
   "dependencies": {
-    "@babel/eslint-parser": "^7.23.3",
-    "@babel/preset-env": "^7.23.8",
+    "@babel/eslint-parser": "^7.23.10",
+    "@babel/preset-env": "^7.23.9",
     "@manypkg/find-root": "^2.2.1",
     "@npmcli/map-workspaces": "^3.0.4",
-    "@types/jest": "^29.5.11",
-    "@typescript-eslint/eslint-plugin": "^6.19.1",
-    "@typescript-eslint/parser": "^6.19.1",
+    "@types/jest": "^29.5.12",
+    "@typescript-eslint/eslint-plugin": "^7.0.1",
+    "@typescript-eslint/parser": "^7.0.1",
     "current-git-branch": "^1.1.0",
     "deep-for-each": "^3.0.0",
     "deepmerge": "^4.3.1",
-    "esbuild": "^0.19.11",
+    "esbuild": "^0.20.0",
     "eslint": "^8.56.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-babel": "^5.3.1",
     "eslint-plugin-cypress": "^2.15.1",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-jsx-a11y": "^6.8.0",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "fast-glob": "^3.3.2",
     "filesize": "^10.1.0",
     "gzip-size": "^7.0.0",
@@ -40,15 +37,15 @@
     "lodash.set": "^4.3.2",
     "lodash.unset": "^4.5.2",
     "logua": "^3.0.3",
-    "npm-check-updates": "^16.14.12",
+    "npm-check-updates": "^16.14.15",
     "pacote": "^17.0.6",
     "pakag": "^3.1.1",
     "parse-gitignore": "^2.0.0",
-    "prettier": "^3.2.4",
+    "prettier": "^3.2.5",
     "skip-local-postinstall": "^2.0.4",
     "standard-version": "^9.5.0",
     "strip-ansi": "^7.1.0",
-    "stylelint": "^16.2.0",
+    "stylelint": "^16.2.1",
     "stylelint-config-recommended": "^14.0.0",
     "ts-jest": "^29.1.2",
     "typescript": "^5.3.3"
@@ -59,7 +56,7 @@
   "source": "index.js",
   "devDependencies": {
     "jest-fixture": "^4.1.0",
-    "vitest": "^1.2.1"
+    "vitest": "^1.2.2"
   },
   "files": [
     "configuration",
@@ -72,10 +69,16 @@
     "build",
     "plugin"
   ],
+  "overrides": {
+    "@typescript-eslint/eslint-plugin": "^7.0.1",
+    "@typescript-eslint/parser": "^7.0.1"
+  },
   "prettier": "./configuration/.prettierrc.json",
   "eslintConfig": {
     "extends": "./configuration/eslint.cjs",
+    "ignorePatterns": ["template"],
     "rules": {
+      "no-console": "off",
       "import/extensions": [
         2,
         "always"

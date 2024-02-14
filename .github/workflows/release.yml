@@ -11,7 +11,7 @@ jobs:
       id-token: write # npm provenance
       contents: write # Create GitHub release and tag
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 🗄️ Configure Cache
         id: cache-dependencies
         uses: actions/cache@v3
@@ -21,9 +21,10 @@ jobs:
       - name: 📁 Install Dependencies
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: npm install
+      - name: 🧹 Lint
+        run: npm run lint
       - name: 🧪 Test
         run: npm test
-      - run: npm install -g npm@latest
-      - uses: tobua/release-npm-action@v2
+      - uses: tobua/release-npm-action@v3
         with:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
