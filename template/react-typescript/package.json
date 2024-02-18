@@ -3,6 +3,8 @@
   "description": "<%= description %>",
   "version": "0.0.0",
   "devDependencies": {
+    "@types/react": "^18.2.56",
+    "@types/react-dom": "^18.2.19",
     "padua": "latest"
   },
   "peerDependencies": {

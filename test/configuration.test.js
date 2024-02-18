@@ -33,7 +33,7 @@ test('Generates gitignore with default entries.', () => {
   const contents = readFile('.gitignore')
 
   expect(contents).toEqual(
-    ['node_modules', 'package-lock.json', 'jsconfig.json', 'dist', ''].join('\r\n')
+    ['node_modules', 'package-lock.json', 'jsconfig.json', 'dist', ''].join('\r\n'),
   )
 })
 
@@ -45,7 +45,7 @@ test('Generates proper gitignore for typescript.', () => {
   const contents = readFile('.gitignore')
 
   expect(contents).toEqual(
-    ['node_modules', 'package-lock.json', 'tsconfig.json', 'dist', ''].join('\r\n')
+    ['node_modules', 'package-lock.json', 'tsconfig.json', 'dist', ''].join('\r\n'),
   )
 })
 
@@ -181,6 +181,8 @@ test('Does not override configuration changes made by user after initial install
   expect(pkg.sideEffects).toBe(true)
   expect(pkg.scripts.start).toBe('my-own-script')
   expect(pkg.type).toBe(undefined)
+  expect(pkg.main).toBe('./dist/index.js')
+  expect(pkg.exports['.'].types).not.toBeDefined()
 })
 
 test('eslintConfig extended when switching to source mode.', async () => {
@@ -232,7 +234,7 @@ test('Type definitions will be added in source mode as soon as available.', asyn
 
   pkg = readFile('package.json')
 
-  expect(pkg.types).toBe('index.d.ts')
+  expect(pkg.types).toBe('./index.d.ts')
 
   unlinkSync(join(process.cwd(), 'index.d.ts'))
 
@@ -268,6 +270,21 @@ test('Source entry will not be added again if removed by user.', async () => {
   pkg = readFile('package.json')
 
   expect(pkg.source).not.toBeDefined()
+})
+
+test('Types will be added.', async () => {
+  prepare([packageJson('typescript'), file('index.tsx', '')])
+
+  await writePackageJson()
+
+  const pkg = readFile('package.json')
+
+  expect(pkg.jest).not.toBeDefined()
+  // "default" must be last.
+  expect(Object.keys(pkg.exports['.'])[0]).toBe('types')
+  expect(pkg.main).toBe('./dist/index.js')
+  expect(pkg.types).toBe('./dist/index.d.ts')
+  expect(pkg.files).toEqual(['dist'])
 })
 
 test('Files array is only changed initially.', async () => {
@@ -431,15 +448,15 @@ test('Ignores are written to all configuration files.', async () => {
     file('test/basic.test.js', ''),
     file(
       'node_modules/padua/configuration/.prettierignore',
-      readFile('../../../configuration/.prettierignore')
+      readFile('../../../configuration/.prettierignore'),
     ),
     file(
       'node_modules/padua/configuration/eslint.cjs',
-      readFile('../../../configuration/eslint.cjs')
+      readFile('../../../configuration/eslint.cjs'),
     ),
     file(
       'node_modules/padua/configuration/stylelint.cjs',
-      readFile('../../../configuration/stylelint.cjs')
+      readFile('../../../configuration/stylelint.cjs'),
     ),
   ])
 
@@ -533,15 +550,15 @@ test('Proper ignores added when values are empty.', async () => {
     file('test/basic.test.js', ''),
     file(
       'node_modules/padua/configuration/.prettierignore',
-      readFile('../../../configuration/.prettierignore')
+      readFile('../../../configuration/.prettierignore'),
     ),
     file(
       'node_modules/padua/configuration/eslint.cjs',
-      readFile('../../../configuration/eslint.cjs')
+      readFile('../../../configuration/eslint.cjs'),
     ),
     file(
       'node_modules/padua/configuration/stylelint.cjs',
-      readFile('../../../configuration/stylelint.cjs')
+      readFile('../../../configuration/stylelint.cjs'),
     ),
   ])
 
@@ -587,15 +604,15 @@ test('Ignores work with all possible configurations.', async () => {
     file('test/basic.test.js', ''),
     file(
       'node_modules/padua/configuration/.prettierignore',
-      readFile('../../../configuration/.prettierignore')
+      readFile('../../../configuration/.prettierignore'),
     ),
     file(
       'node_modules/padua/configuration/eslint.cjs',
-      readFile('../../../configuration/eslint.cjs')
+      readFile('../../../configuration/eslint.cjs'),
     ),
     file(
       'node_modules/padua/configuration/stylelint.cjs',
-      readFile('../../../configuration/stylelint.cjs')
+      readFile('../../../configuration/stylelint.cjs'),
     ),
   ])
 

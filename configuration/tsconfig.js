@@ -26,7 +26,7 @@ export const tsconfig = (tsconfigUserOverrides = {}) => {
   }
 
   if (options.react) {
-    packageTSConfig.compilerOptions.jsx = 'react'
+    packageTSConfig.compilerOptions.jsx = 'react-jsx'
   }
 
   userTSConfig = merge(userTSConfig, tsconfigUserOverrides)

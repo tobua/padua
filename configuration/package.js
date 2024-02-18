@@ -81,21 +81,23 @@ const switchable = (pkg) => {
   }
 
   if (options.typescript && !pkg.types) {
-    pkg.types = `${options.output}/index.d.ts`
+    pkg.types = `./${options.output}/index.d.ts`
   } else if (options.source && existsSync(join(getProjectBasePath(), 'index.d.ts'))) {
-    pkg.types = 'index.d.ts'
+    pkg.types = './index.d.ts'
   } else if (options.source && pkg.types && !existsSync(join(getProjectBasePath(), pkg.types))) {
     delete pkg.types
   }
 
   if (options.source) {
     if (pkg.main && !existsSync(join(getProjectBasePath(), pkg.main))) {
-      pkg.main = `${options.entry[0]}`
+      pkg.main = `./${options.entry[0]}`
     }
 
     if (!pkg.exports && !pkg.bin) {
       pkg.exports = {
-        default: `./${pkg.main}`,
+        '.': {
+          default: `./index.js`,
+        },
       }
     }
 
@@ -115,11 +117,23 @@ const switchable = (pkg) => {
       pkg.scripts.build = 'padua build'
     }
     if (!pkg.main) {
-      pkg.main = `${options.output}/index.js`
+      pkg.main = `./${options.output}/index.js`
     }
     if (!pkg.exports) {
-      pkg.exports = {
-        default: `./${pkg.main}`,
+      if (options.typescript) {
+        pkg.exports = {
+          '.': {
+            types: `./${options.output}/index.d.ts`,
+            // "default" condition must be last with most bundlers.
+            default: `./${options.output}/${pkg.main}`,
+          },
+        }
+      } else {
+        pkg.exports = {
+          '.': {
+            default: `./${options.output}/${pkg.main}`,
+          },
+        }
       }
     }
   }
