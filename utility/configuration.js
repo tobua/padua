@@ -287,7 +287,7 @@ export const writePackageJson = async () => {
   resetIgnoredProperties(contents)
 
   // Avoid adding additional properties in CI environment.
-  if (!isCI && typeof jest !== 'undefined') {
+  if (!isCI || typeof jest !== 'undefined') {
     await writePackageJsonFile(contents)
   }
 
