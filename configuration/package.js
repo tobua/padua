@@ -125,13 +125,13 @@ const switchable = (pkg) => {
           '.': {
             types: `./${options.output}/index.d.ts`,
             // "default" condition must be last with most bundlers.
-            default: `./${options.output}/${pkg.main}`,
+            default: pkg.main,
           },
         }
       } else {
         pkg.exports = {
           '.': {
-            default: `./${options.output}/${pkg.main}`,
+            default: pkg.main,
           },
         }
       }
@@ -151,7 +151,7 @@ const switchable = (pkg) => {
       pkg.scripts.test = 'padua test'
     }
 
-    if (!pkg.jest) {
+    if (!pkg.jest && typeof Bun === 'undefined') {
       pkg.jest = {
         transform: {},
       }
@@ -170,7 +170,7 @@ const switchable = (pkg) => {
         ]
       }
     }
-  } else if (pkg.jest) {
+  } else if (pkg.jest && typeof Bun === 'undefined') {
     delete pkg.jest
   }
 }

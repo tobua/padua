@@ -183,6 +183,7 @@ test('Does not override configuration changes made by user after initial install
   expect(pkg.type).toBe(undefined)
   expect(pkg.main).toBe('./dist/index.js')
   expect(pkg.exports['.'].types).not.toBeDefined()
+  expect(pkg.exports['.'].default).toBe('./dist/index.js')
 })
 
 test('eslintConfig extended when switching to source mode.', async () => {
@@ -285,6 +286,7 @@ test('Types will be added.', async () => {
   expect(pkg.main).toBe('./dist/index.js')
   expect(pkg.types).toBe('./dist/index.d.ts')
   expect(pkg.files).toEqual(['dist'])
+  expect(pkg.exports['.'].default).toBe('./dist/index.js')
 })
 
 test('Files array is only changed initially.', async () => {

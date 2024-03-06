@@ -21,16 +21,16 @@ const writeUserAndPackageConfig = async (
   userConfig,
   packageConfig,
   userTSConfigPath,
-  packageTSConfigPath
+  packageTSConfigPath,
 ) => {
   try {
     writeFileSync(
       packageTSConfigPath,
-      await formatPackageJson(JSON.stringify(packageConfig), { sort: false })
+      await formatPackageJson(JSON.stringify(packageConfig), { sort: false }),
     )
     writeFileSync(
       userTSConfigPath,
-      await formatPackageJson(JSON.stringify(userConfig), { sort: false })
+      await formatPackageJson(JSON.stringify(userConfig), { sort: false }),
     )
   } catch (_) {
     log(`Couldn't write ${filename}, therefore this plugin might not work as expected`, 'warning')
@@ -58,7 +58,7 @@ const writeOnlyUserConfig = async (filename, userConfig, packageConfig, userTSCo
     adaptConfigToRoot(packageConfig)
     writeFileSync(
       userTSConfigPath,
-      await formatPackageJson(JSON.stringify(merge(packageConfig, userConfig)), { sort: false })
+      await formatPackageJson(JSON.stringify(merge(packageConfig, userConfig)), { sort: false }),
     )
   } catch (_) {
     log(`Couldn't write ${filename}, therefore this plugin might not work as expected`, 'warning')
@@ -69,12 +69,12 @@ const writePackageAndUserFile = async (
   shouldRemove,
   filename,
   getConfiguration,
-  userConfigOverrides
+  userConfigOverrides,
 ) => {
   const userTSConfigPath = join(getProjectBasePath(), `./${filename}`)
   const packageTSConfigPath = join(
     getProjectBasePath(),
-    `./node_modules/padua/configuration/${filename}`
+    `./node_modules/padua/configuration/${filename}`,
   )
 
   if (shouldRemove) {
@@ -92,14 +92,14 @@ const writePackageAndUserFile = async (
     accessSync(
       packageTSConfigPath,
       // eslint-disable-next-line no-bitwise
-      constants.F_OK | constants.R_OK | constants.W_OK
+      constants.F_OK | constants.R_OK | constants.W_OK,
     )
     await writeUserAndPackageConfig(
       filename,
       userConfig,
       packageConfig,
       userTSConfigPath,
-      packageTSConfigPath
+      packageTSConfigPath,
     )
   } catch (_) {
     // Package config cannot be written, write full contents to user file.
@@ -112,7 +112,7 @@ const writeTSConfig = async (tsConfigUserOverrides = {}) => {
     !getOptions().typescript,
     'tsconfig.json',
     tsconfig,
-    tsConfigUserOverrides
+    tsConfigUserOverrides,
   )
 }
 
@@ -121,7 +121,7 @@ const writeJSConfig = async (jsConfigUserOverrides = {}) => {
     getOptions().typescript,
     'jsconfig.json',
     jsconfig,
-    jsConfigUserOverrides
+    jsConfigUserOverrides,
   )
 }
 
@@ -134,7 +134,7 @@ const replaceIgnoresFor = (property, filePath, values) => {
   if (match && Array.isArray(match) && match.length > 0) {
     configurationContents = configurationContents.replace(
       match[0],
-      `${property}: [${values.map((value) => `'${value}'`).join(', ')}],`
+      `${property}: [${values.map((value) => `'${value}'`).join(', ')}],`,
     )
     writeFileSync(filePath, configurationContents)
   }
@@ -179,15 +179,15 @@ export const writeIgnore = async (ignores) => {
   // Write ignores.
   const prettierIgnorePath = join(
     getProjectBasePath(),
-    `./node_modules/padua/configuration/.prettierignore`
+    `./node_modules/padua/configuration/.prettierignore`,
   )
   const eslintConfigurationPath = join(
     getProjectBasePath(),
-    `./node_modules/padua/configuration/eslint.cjs`
+    `./node_modules/padua/configuration/eslint.cjs`,
   )
   const stylelintConfigurationPath = join(
     getProjectBasePath(),
-    `./node_modules/padua/configuration/stylelint.cjs`
+    `./node_modules/padua/configuration/stylelint.cjs`,
   )
 
   if (!existsSync(prettierIgnorePath)) {
@@ -211,7 +211,7 @@ export const writeIgnore = async (ignores) => {
     if (Array.isArray(packageJsonContents.jest.testPathIgnorePatterns)) {
       packageJsonContents.jest.testPathIgnorePatterns =
         packageJsonContents.jest.testPathIgnorePatterns.filter(
-          (pattern) => !ignoreValues.test.includes(pattern)
+          (pattern) => !ignoreValues.test.includes(pattern),
         )
       packageJsonContents.jest.testPathIgnorePatterns = [
         ...packageJsonContents.jest.testPathIgnorePatterns,
@@ -286,7 +286,10 @@ export const writePackageJson = async () => {
 
   resetIgnoredProperties(contents)
 
-  await writePackageJsonFile(contents)
+  // Avoid adding additional properties in CI environment.
+  if (!isCI) {
+    await writePackageJsonFile(contents)
+  }
 
   if (!contents.padua) {
     contents.padua = {}
