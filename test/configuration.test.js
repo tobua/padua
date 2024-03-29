@@ -25,6 +25,8 @@ environment('configuration')
 
 beforeEach(refresh)
 
+vi.mock('is-ci', () => ({ default: false }))
+
 test('Generates gitignore with default entries.', () => {
   prepare([file('index.js', "console.log('gitignore')"), packageJson('gitignore')])
 

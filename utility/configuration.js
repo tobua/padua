@@ -267,7 +267,8 @@ const resetIgnoredProperties = (pkg) => {
 }
 
 export const writePackageJson = async () => {
-  let contents = readPackageJsonFile()
+  const initialContents = readPackageJsonFile()
+  let contents = { ...initialContents }
   const isInitial = packageJson.isInitial(contents)
 
   if (isInitial) {
@@ -277,7 +278,7 @@ export const writePackageJson = async () => {
 
   // Certain properties should be kept up-to-date.
   // Don't make updates in CI to avoid surprises.
-  if (!isCI || typeof jest !== 'undefined') {
+  if (!isCI) {
     packageJson.update(contents)
   }
 
@@ -287,7 +288,7 @@ export const writePackageJson = async () => {
   resetIgnoredProperties(contents)
 
   // Avoid adding additional properties in CI environment.
-  if (!isCI || typeof jest !== 'undefined') {
+  if (!isCI || !initialContents.license) {
     await writePackageJsonFile(contents)
   }
 
